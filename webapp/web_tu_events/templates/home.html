@@ -1,16 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block title %}
+<title>Home</title>
+{% endblock %}
 
-<body>
-    <h1>sawasdee</h1>
+{% block content %}
+<div id="body">
+    <div class="img-home">
+        <img src="https://lh3.googleusercontent.com/d/15dWEpvyw6XcbV522fW-ucRpvYZOZ86Js" alt="home_photo">
+        <div class="welcome-text">
+            Welcome to TU Events Website
+        </div>
+    </div>
+</div>
 
-</body>
-
-</html>
+{% endblock %}

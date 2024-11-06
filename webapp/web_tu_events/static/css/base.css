@@ -1,0 +1,69 @@
+#head {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.p-3 {
+    padding: 0rem !important;
+
+}
+
+.mb-5 {
+    margin-bottom: 0.5rem !important;
+}
+
+.box {
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
+}
+
+.bg-body-tertiary {
+    display: grid;
+    grid-template-columns: 2fr 5fr 1.5fr;
+    height: 100px;
+}
+
+.logo {
+    text-align: right;
+    margin-top: -7px;
+}
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 300 to 900 */
+
+.red-hat-display-font-nav {
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+}
+
+.nav-menu>ul>li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.nav-menu,
+.nav-button {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.nav-menu {
+    margin-top: 15px;
+}
+
+.nav-item:hover {
+    color: black;
+    opacity: 50%;
+}
+
+.login-button {
+    border-radius: 20px;
+    background-color: rgb(227, 44, 44);
+    border-color: rgb(172, 0, 0);
+    font-size: 20px;
+    color: white;
+}
