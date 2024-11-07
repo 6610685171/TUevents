@@ -34,9 +34,9 @@
 .red-hat-display-font-nav {
     font-family: "Red Hat Display", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 500;
+    font-weight: 400;
     font-style: normal;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .nav-menu>ul>li {
@@ -66,4 +66,10 @@
     border-color: rgb(172, 0, 0);
     font-size: 20px;
     color: white;
+}
+
+.login-button:hover {
+    background-color: rgb(255, 221, 49);
+    border-color: rgb(255, 234, 101);
+    color: grey;
 }

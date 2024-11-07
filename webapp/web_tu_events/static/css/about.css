@@ -1,0 +1,78 @@
+#about {
+    margin-top: 70px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.about-1 {
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    min-height: 400px;
+    justify-content: space-between;
+}
+
+.about-box-1 {
+    border-radius: 30px;
+    background-color: white;
+    height: 600px;
+    width: 600px;
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
+}
+
+.goal-title,
+.developer-title {
+    margin-left: 35px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    font-weight: 700;
+    font-size: 70px;
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 60px;
+    opacity: 70%;
+}
+
+.goal-description {
+    margin-right: 50px;
+    margin-left: 50px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    opacity: 70%;
+}
+
+.goal-description>.des {
+    text-indent: 90px;
+}
+
+#side {
+    text-align: right;
+    font-weight: 600;
+}
+
+.developers {
+    margin-right: 50px;
+    margin-left: 50px;
+    margin-top: 15px;
+    opacity: 70%;
+
+}
+
+.project-link {
+    margin-right: 50px;
+    margin-left: 50px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900 */
+
+.noto-sans-thai-about {
+    font-family: "Noto Sans Thai", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
