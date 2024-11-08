@@ -1,5 +1,5 @@
 # TU Events
-#### Developer
+#### Developers
     1. 6610625011 ชุติกาญจน์ กีดคำ
     2. 6610685171 ธนวรรณ ผ่องแผ้ว
     3. 6610685346 ศุภวิชญ์ บุญประเสริฐ
@@ -19,3 +19,4 @@
 
 ####
 > [Tracker: Jira](https://webtuevents.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiYmRhMmQ3ZTQ4Yzc5NDkxZmIwZTFmMzE1ZjdiMmJkMDMiLCJwIjoiaiJ9)
+> [TU Events](https://6610685353.pythonanywhere.com/)
