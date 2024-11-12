@@ -1,27 +1,36 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Student(models.Model):
-    image = models.ImageField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    image = models.ImageField(blank=True,null=True)
     email = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     student_id = models.IntegerField(unique=True)
     username = models.CharField(max_length=10, unique=True)
     password = models.CharField(max_length=30)
     
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.filter(user__is_staff=False, user__is_superuser=False)
+    def __str__(self):
+        return f'{self.name} ({self.student_id})'
 
 class Announcement(models.Model):
+    ORIGIN_CHOICES = [
+        ('entertainment', 'Entertainment'),
+        ('sports', 'Sports'),
+        ('cultural', 'Cultural'),
+        ('religions', 'Religions'),
+        ('education', 'Education'),
+    ]
+    
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField()
-    date = models.DateField()
-    categories = models.CharField(max_length=100)
-    start_date = models.DateTimeField(auto_now=False, auto_now_add=False)    
-    end_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    image = models.ImageField(blank=True,null=True)
+    date = models.DateTimeField(auto_now=True,auto_now_add=False)
+    categories = models.CharField(max_length=100,choices=ORIGIN_CHOICES)
+    start_date = models.DateTimeField(auto_now=False, auto_now_add=False,help_text="กรอกวันที่เริ่มกิจกรรม")    
+    end_date = models.DateTimeField(auto_now=False, auto_now_add=False,help_text="กรอกวันที่สิ้นสุดกิจกรรม")
     place = models.CharField(max_length=200,default="TU")    
 
     def __str__(self):
@@ -48,6 +57,7 @@ class Club(models.Model):
     ]
         
     title = models.CharField(max_length=100)
+    image = models.ImageField(blank=False,null=True)    
     description = models.TextField()
     enable_to_join = models.BooleanField(default=True)
     origin = models.CharField(max_length=100, choices=ORIGIN_CHOICES)
@@ -57,7 +67,7 @@ class Club(models.Model):
     
 class Lost(models.Model):
     items_name = models.CharField(max_length=100)
-    image = models.ImageField()
+    image = models.ImageField(blank=True,null=True)
     description = models.TextField(default="description")
     lost_at = models.CharField(max_length=100)
     contact = models.CharField(max_length=100)

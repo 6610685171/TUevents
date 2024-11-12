@@ -2,10 +2,13 @@ from django.contrib import admin
 from .models import Student,Announcement,Club,Lost,Found
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ["email","name" ,"student_id" , "username"]
+    list_display = ["student_id" ,"name" ,"email", "username"]
     search_fields = ('name', 'email', 'student_id', 'username')
-    list_filter = ('student_id',)
     readonly_fields = ('password',)
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(user__is_staff=False, user__is_superuser=False)
     
 class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ["title","categories" ,"date" , "start_date","end_date"]
