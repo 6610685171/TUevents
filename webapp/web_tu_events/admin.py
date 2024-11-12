@@ -1,8 +1,11 @@
 from django.contrib import admin
 from .models import Student,Announcement,Club,Lost,Found
 
-class StudentInfo(admin.ModelAdmin):
+class StudentAdmin(admin.ModelAdmin):
     list_display = ["email","name" ,"student_id" , "username"]
+    search_fields = ('name', 'email', 'student_id', 'username')
+    list_filter = ('student_id',)
+    readonly_fields = ('password',)
     
 class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ["title","categories" ,"date" , "start_date","end_date"]
@@ -17,7 +20,7 @@ class FoundAdmin(admin.ModelAdmin):
     list_display = ["items_name","found_at" ,"contact" , "founded_status"]
         
 # Register your models here.     
-admin.site.register(Student, StudentInfo)
+admin.site.register(Student, StudentAdmin)
 admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(Club, ClubAdmin)
 admin.site.register(Lost, LostAdmin)

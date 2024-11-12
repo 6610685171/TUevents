@@ -9,6 +9,10 @@ class Student(models.Model):
     student_id = models.IntegerField(unique=True)
     username = models.CharField(max_length=10, unique=True)
     password = models.CharField(max_length=30)
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(user__is_staff=False, user__is_superuser=False)
 
 class Announcement(models.Model):
     title = models.CharField(max_length=100)
