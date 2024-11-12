@@ -18,16 +18,35 @@ class Announcement(models.Model):
     categories = models.CharField(max_length=100)
     start_date = models.DateTimeField(auto_now=False, auto_now_add=False)    
     end_date = models.DateTimeField(auto_now=False, auto_now_add=False)
-    place = models.CharField(max_length=200)    
+    place = models.CharField(max_length=200,default="TU")    
 
     def __str__(self):
         return self.title
     
 class Club(models.Model):
+    ORIGIN_CHOICES = [
+        ('law', 'Faculty of Law (คณะนิติศาสตร์)'),
+        ('business', 'Thammasat Business School (คณะพาณิชยศาสตร์และการบัญชี)'),
+        ('political_science', 'Faculty of Political Science (คณะรัฐศาสตร์)'),
+        ('economics', 'Faculty of Economics (คณะเศรษฐศาสตร์)'),
+        ('social_administration', 'Faculty of Social Administration (คณะสังคมสงเคราะห์ศาสตร์)'),
+        ('sociology_anthropology', 'Faculty of Sociology and Anthropology (คณะสังคมวิทยาและมานุษยวิทยา)'),
+        ('liberal_arts', 'Faculty of Liberal Arts (คณะศิลปศาสตร์)'),
+        ('journalism_mass_comm', 'Faculty of Journalism and Mass Communication (คณะวารสารศาสตร์และสื่อสารมวลชน)'),
+        ('science_technology', 'Faculty of Science and Technology (คณะวิทยาศาสตร์และเทคโนโลยี)'),
+        ('engineering', 'Faculty of Engineering (คณะวิศวกรรมศาสตร์)'),
+        ('architecture_planning', 'Faculty of Architecture and Planning (คณะสถาปัตยกรรมศาสตร์และการผังเมือง)'),
+        ('medicine', 'Faculty of Medicine (คณะแพทยศาสตร์)'),
+        ('allied_health', 'Faculty of Allied Health Sciences (คณะสหเวชศาสตร์)'),
+        ('dentistry', 'Faculty of Dentistry (คณะทันตแพทยศาสตร์)'),
+        ('nursing', 'Faculty of Nursing (คณะพยาบาลศาสตร์)'),
+        ('public_health', 'Faculty of Public Health (คณะสาธารณสุขศาสตร์)'),
+    ]
+        
     title = models.CharField(max_length=100)
     description = models.TextField()
     enable_to_join = models.BooleanField(default=True)
-    origin = models.CharField(max_length=100)
+    origin = models.CharField(max_length=100, choices=ORIGIN_CHOICES)
 
     def __str__(self):
         return self.title
@@ -35,7 +54,7 @@ class Club(models.Model):
 class Lost(models.Model):
     items_name = models.CharField(max_length=100)
     image = models.ImageField()
-    description = models.TextField()
+    description = models.TextField(default="description")
     lost_at = models.CharField(max_length=100)
     contact = models.CharField(max_length=100)
     founded_status = models.BooleanField(default=False)
@@ -46,7 +65,7 @@ class Lost(models.Model):
 class Found(models.Model):
     items_name = models.CharField(max_length=100)
     image = models.ImageField()
-    description = models.TextField()
+    description = models.TextField(default="description")
     found_at = models.CharField(max_length=100)
     contact = models.CharField(max_length=100)
     founded_status = models.BooleanField(default=False)
