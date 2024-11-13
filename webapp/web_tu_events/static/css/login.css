@@ -6,9 +6,8 @@
 }
 
 .login-bg {
-    background-color: white;
-    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
-    height: 595px;
+    background-color: #f3f3f3;
+    height: 620px;
     opacity: 80%;
     border-radius: 5px;
     display: flex;
@@ -18,8 +17,7 @@
 
 .login-box {
     background-color: white;
-    border-style: solid;
-    border-color: black;
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
     border-width: 2px;
     width: 350px;
     height: 400px;
@@ -77,4 +75,8 @@
     text-align: right;
 }
 
-@media (max-width: 600px) {}
+@media (max-width: 600px) {
+    .login-bg {
+        height: 800px;
+    }
+}

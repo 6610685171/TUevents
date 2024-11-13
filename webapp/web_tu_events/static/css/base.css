@@ -10,7 +10,7 @@
 }
 
 .mb-5 {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: -0.7rem !important;
 }
 
 .box {
@@ -72,6 +72,27 @@
     background-color: rgb(255, 221, 49);
     border-color: rgb(255, 234, 101);
     color: grey;
+}
+
+.logout-button {
+    display: flex;
+    align-items: center;
+}
+
+.logout-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.logout {
+    display: block;
+    margin-top: 21%;
+}
+
+a {
+    color: black;
 }
 
 @media (max-width: 600px) {
@@ -136,6 +157,15 @@
 
     .lost-found {
         margin-left: 1px;
+    }
+
+    .logout-content>img {
+        width: 10px;
+        height: 10px;
+    }
+
+    .logout-content>p {
+        margin-top: 36%;
     }
 
 
