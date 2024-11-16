@@ -2,16 +2,9 @@ from django.contrib import admin
 from .models import Student,Announcement,Club,Lost,Found
     
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ["student_id" ,"name" ,"email", "username","status_user"]
+    list_display = ["student_id" ,"name" ,"email", "username"]
     search_fields = ('name', 'email', 'student_id', 'username')
     readonly_fields = ('password',)
-    
-    # แสดงว่าเป็นuserแบบไหน (แอคชุมนุม,แอคธรรมดา)
-    def status_user(self, obj):
-        if obj.username.startswith("tu_"):
-            return "account ชุมนุม"
-        return "account ทั่วไป"
-    status_user.short_description = "Account Type"
             
     # แสดงเฉพาะข้อมูลของuserที่ไม่ใช่admin    
     def get_queryset(self, request):

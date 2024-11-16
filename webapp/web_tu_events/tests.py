@@ -60,7 +60,7 @@ class AdminTest(TestCase):
 
     def test_student_admin_list_display(self):
         self.assertEqual(
-            self.student_admin.list_display, ["student_id", "name", "email", "username","status_user"]
+            self.student_admin.list_display, ["student_id", "name", "email", "username"]
         )
 
     def test_student_admin_search_fields(self):
