@@ -7,7 +7,7 @@
 
 .login-bg {
     background-color: #f3f3f3;
-    height: 620px;
+    height: 700px;
     opacity: 80%;
     border-radius: 5px;
     display: flex;
@@ -77,6 +77,21 @@
 
 @media (max-width: 600px) {
     .login-bg {
-        height: 800px;
+        height: 850px;
+    }
+
+    .login-box {
+        width: 300px;
+        height: 350px;
+    }
+
+    .login-title {
+        font-size: 20px;
+        margin-bottom: 30px;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        width: 250px;
     }
 }
