@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .models import Announcement
 # Create your views here.
 
 
@@ -12,4 +13,5 @@ def login(request):
     return render(request, "login.html")
 
 def events(request):
+    All_Announcement = Announcement.objects.all()
     return render(request, "events.html")

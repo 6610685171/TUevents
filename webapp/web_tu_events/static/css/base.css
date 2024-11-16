@@ -9,8 +9,8 @@
 
 }
 
-.mb-5 {
-    margin-bottom: -0.7rem !important;
+body>.mb-5 {
+    margin-bottom: 0.5rem !important;
 }
 
 .box {
