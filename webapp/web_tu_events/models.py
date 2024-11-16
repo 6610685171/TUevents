@@ -8,8 +8,8 @@ class Student(models.Model):
     image = models.ImageField(blank=True,null=True)
     email = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    student_id = models.IntegerField(unique=True)
-    username = models.CharField(max_length=10, unique=True)
+    student_id = models.IntegerField(unique=True,blank=True,null=True)
+    username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=30)
     
     def __str__(self):
