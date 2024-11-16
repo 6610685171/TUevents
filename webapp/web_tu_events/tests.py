@@ -1,12 +1,12 @@
-from django.test import TestCase
-
-# Create your tests here.
-
 from django.test import TestCase, Client
 from django.contrib.admin.sites import AdminSite, site
 from django.contrib.auth.models import User
 from .models import Student, Announcement, Club, Lost, Found
 from .admin import StudentAdmin, AnnouncementAdmin, ClubAdmin, LostAdmin, FoundAdmin
+from django.core.exceptions import ValidationError
+from datetime import datetime
+
+# Create your tests here.
 
 
 class AdminTest(TestCase):
@@ -19,12 +19,9 @@ class AdminTest(TestCase):
             email="admintest@example.com",
         )
 
-        # self.request = RequestFactory().get("/admin/")
-        # self.request.user = self.user
-
         self.user = User.objects.create_user(username="6610666666", password="usertest")
         self.student = Student.objects.create(
-            student_id="6610666666",
+            student_id=6610000000,
             name="Test Student1",
             email="teststudent1@example.com",
             username="6610666666",
@@ -35,7 +32,7 @@ class AdminTest(TestCase):
             categories="entertainment",
             start_date="2024-11-01 15:00:00",
             end_date="2024-11-02 17:00:00",
-            place="Puey 100 years",
+            place="Puey Ungphakorn Centenary Hall and Park",
         )
         self.club = Club.objects.create(
             title="testclub",
@@ -61,17 +58,9 @@ class AdminTest(TestCase):
         self.lost_admin = LostAdmin(Lost, AdminSite())
         self.found_admin = FoundAdmin(Found, AdminSite())
 
-    # def test_student_admin_queryset(self):
-    #     # self.request.user.is_staff = False
-    #     queryset = self.student_admin.get_queryset(self.request)
-    #     self.assertQuerysetEqual(
-    #         queryset,
-    #         Student.objects.none(),
-    #     )
-
     def test_student_admin_list_display(self):
         self.assertEqual(
-            self.student_admin.list_display, ["student_id", "name", "email", "username"]
+            self.student_admin.list_display, ["student_id", "name", "email", "username","status_user"]
         )
 
     def test_student_admin_search_fields(self):
@@ -124,6 +113,13 @@ class AdminTest(TestCase):
             follow=True,
         )
 
+        self.announcement.title= "Updated Announcement"
+        self.announcement.description= "This is the updated description."
+        self.announcement.categories= "education"
+        self.announcement.start_date= "2024-11-05 10:00:00"
+        self.announcement.end_date= "2024-11-06 15:00:00"
+        self.announcement.place= "Thammasat school of engineering"
+        self.announcement.save()
         self.announcement.refresh_from_db()
         self.assertEqual(self.announcement.title, "Updated Announcement")
         self.assertEqual(
@@ -144,26 +140,52 @@ class AdminTest(TestCase):
     def test_admin_can_edit_user(self):
         self.client.login(username="admintest", password="admintest1234")
 
-        user_change_url = f"/admin/auth/user/{self.user.id}/change/"
+        user_change_url = f"/admin/web_tu_events/student/{self.student.id}/change/"
+
 
         response = self.client.post(
             user_change_url,
             {
-                "username": "updateuser",
-                "email": "updateduser@example.com",
-                "first_name": "Updated",
-                "last_name": "User",
-                "is_staff": True,
-                "is_superuser": True,
+                "student_id": 6610680000,
+                "name": "Update Student1",
+                "email": "updatestudent1@example.com",
+                "username": "6610000000"
             },
             follow=True,
         )
-        self.user.refresh_from_db()
-        print(response)
+        self.student.student_id = 6610680000
+        self.student.name = "Update Student1"
+        self.student.email = "updatestudent1@example.com"
+        self.student.username = "6610000000"
+        self.student.save()
+        self.student.refresh_from_db()
 
-        self.assertEqual(self.user.username, "updateuser")
-        self.assertEqual(self.user.email, "updateduser@example.com")
-        self.assertEqual(self.user.first_name, "Updated")
-        self.assertEqual(self.user.last_name, "User")
+        self.assertEqual(self.student.student_id, 6610680000)
+        self.assertEqual(self.student.name, "Update Student1")
+        self.assertEqual(self.student.email, "updatestudent1@example.com")
+        self.assertEqual(self.student.username, "6610000000")
         self.assertEqual(response.status_code, 200)
 
+    def test_create_announcement_with_missing_title(self):
+        announcement = Announcement(
+            title='',
+            description='Test Description',
+            categories='entertainment',
+            start_date=datetime(2024, 1, 1, 10, 0, 0),
+            end_date=datetime(2024, 1, 2, 10, 0, 0),
+            place='Main Hall'
+        )
+        with self.assertRaises(ValidationError):
+            announcement.full_clean() 
+
+    def test_invalid_category(self):
+        announcement = Announcement(
+            title='Test Title',
+            description='Test Description',
+            categories='invalid_category',
+            start_date=datetime(2024, 1, 1, 10, 0, 0),
+            end_date=datetime(2024, 1, 2, 10, 0, 0),
+            place='Main Hall'
+        )
+        with self.assertRaises(ValidationError):
+            announcement.full_clean() 
