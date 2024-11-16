@@ -16,7 +16,7 @@ class Student(models.Model):
         return f'{self.name} ({self.student_id})'
 
 class Announcement(models.Model):
-    ORIGIN_CHOICES = [
+    CATEGORIES_CHOICES = [
         ('entertainment', 'Entertainment'),
         ('sports', 'Sports'),
         ('cultural', 'Cultural'),
@@ -28,7 +28,7 @@ class Announcement(models.Model):
     description = models.TextField()
     image = models.ImageField(blank=True,null=True)
     date = models.DateTimeField(auto_now=True,auto_now_add=False)
-    categories = models.CharField(max_length=100,choices=ORIGIN_CHOICES)
+    categories = models.CharField(max_length=100,choices=CATEGORIES_CHOICES)
     start_date = models.DateTimeField(auto_now=False, auto_now_add=False,help_text="กรอกวันที่เริ่มกิจกรรม")    
     end_date = models.DateTimeField(auto_now=False, auto_now_add=False,help_text="กรอกวันที่สิ้นสุดกิจกรรม")
     place = models.CharField(max_length=200,default="TU")    
