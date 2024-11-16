@@ -159,7 +159,7 @@ class AdminTest(TestCase):
             follow=True,
         )
         self.user.refresh_from_db()
-        print(self.user)
+        print(response)
 
         self.assertEqual(self.user.username, "updateuser")
         self.assertEqual(self.user.email, "updateduser@example.com")
