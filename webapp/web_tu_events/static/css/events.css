@@ -47,9 +47,11 @@
 
 .event-name {
     font-size: 14px;
-    margin-top: 10px;
+    margin-top: 13px;
     margin-bottom: 10px;
     font-weight: 600;
+    display: block;
+    height: 40px;
 }
 
 .event-name:hover {
@@ -58,14 +60,14 @@
 
 .event-duration,
 .event-place {
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .event-duration-box,
 .event-place-box {
     display: flex;
     flex-direction: row;
-    margin-top: 5px;
+    margin-top: 9px;
 }
 
 .event-duration-box>img {
