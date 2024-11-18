@@ -165,6 +165,24 @@ class AdminTest(TestCase):
         self.assertEqual(self.student.email, "updatestudent1@example.com")
         self.assertEqual(self.student.username, "6610000000")
         self.assertEqual(response.status_code, 200)
+        
+    def test_create_announcement(self):
+        announcement = Announcement.objects.create(
+            title="Event 1",
+            description="Event1 description",
+            categories="entertainment",
+            start_date="2024-11-01 15:00:00",
+            end_date="2024-11-02 17:00:00",
+            place="Puey Ungphakorn Centenary Hall and Park",
+        )        
+        self.assertEqual(announcement.title, "Event 1")
+        self.assertEqual(announcement.description, "Event1 description")
+        self.assertEqual(announcement.categories, "entertainment")
+        self.assertEqual(announcement.start_date, "2024-11-01 15:00:00")
+        self.assertEqual(announcement.end_date, "2024-11-02 17:00:00")
+        self.assertEqual(announcement.place, "Puey Ungphakorn Centenary Hall and Park")
+        self.assertIsNotNone(announcement.id)        
+        
 
     def test_create_announcement_with_missing_title(self):
         announcement = Announcement(
