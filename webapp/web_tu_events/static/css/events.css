@@ -16,20 +16,101 @@
 
 .btn-group {
     margin-top: 80px;
-    margin-left: 80px;
+    margin-left: 150px;
     margin-bottom: 30px;
 }
 
+
 .events-content {
-    margin-left: 80px;
-    margin-right: 80px;
+    margin-left: 150px;
+    margin-right: 150px;
     display: flex;
     gap: 20px;
     justify-items: center;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
-.box-ev {
-    width: 300px;
-    height: 500px;
+.event-image>img {
+    border-radius: 5px;
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
+    transition: all .1s ease-in-out;
+    object-fit: cover;
+    display: block;
+    overflow: hidden;
+}
+
+.event-image>img:hover {
+    transform: scale(1.03);
+}
+
+.event-name {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.event-name:hover {
+    transform: scale(1.03);
+}
+
+.event-duration,
+.event-place {
+    font-size: 9px;
+}
+
+.event-duration-box,
+.event-place-box {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+.event-duration-box>img {
+    margin-right: 5px;
+}
+
+.event-box {
+    width: 170px;
+}
+
+.btn-interest {
+    background-image: linear-gradient(to right, #e52d27 0%, rgb(172, 0, 0) 51%, rgb(227, 44, 44) 100%)
+}
+
+.btn-interest {
+    padding: 3px 41px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 65px;
+    display: block;
+    border-color: red;
+    margin-top: 10px;
+}
+
+.interest {
+    font-family: "Red Hat Display", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 15.5px;
+
+}
+
+.btn-interest:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.interest-container {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
 }

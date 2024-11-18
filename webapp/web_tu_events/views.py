@@ -13,5 +13,5 @@ def login(request):
     return render(request, "login.html")
 
 def events(request):
-    All_Announcement = Announcement.objects.all()
-    return render(request, "events.html")
+    all_announcement = Announcement.objects.all()
+    return render(request, "events.html", {'all_announcement': all_announcement})
