@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Announcement
 # Create your views here.
 
@@ -14,4 +14,8 @@ def login(request):
 
 def events(request):
     all_announcement = Announcement.objects.all()
-    return render(request, "events.html", {'all_announcement': all_announcement})
+    return render(request, "events/events.html", {'all_announcement': all_announcement})
+
+def event_detail(request, announcement_id):
+    announcement = get_object_or_404(Announcement, id = announcement_id)
+    return render(request, "events/event_detail.html", {"announcement": announcement})

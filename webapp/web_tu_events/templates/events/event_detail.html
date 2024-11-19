@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>{{ announcement.title }}</title>
+{% endblock %}
+
+{% block content %}
+<div id="body-event-detail">
+    <div class="event-detail-container">
+        <div>
+            <div class="back-event">
+                <a href="{% url 'events' %}">
+                    <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
+                        width="20" height="auto">
+                    <h8>Back to Events</h4>
+                </a>
+            </div>
+        </div>
+        {% if announcement.image %}
+        <div class="event-detail-title noto-sans-thai-about">{{ announcement.title }}</div>
+        <div class="event-detail-bg">
+            <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}">
+            {% else %}
+            <p>No image available.</p>
+            {% endif %}
+        </div>
+        <div id="event-detail-box">
+            <div class="event-detail-box">
+                <p class="event-detail-description noto-sans-thai-about">{{ announcement.description }}</p>
+                <div class="event-detail-duration noto-sans-thai-about"><img
+                        src="https://lh3.googleusercontent.com/d/1cC59hVdiBcd2xTmRPf0PbXL6l7gB-lAw" alt="clock_logo"
+                        width="25" height="25">
+                    <div class="event-detail-time">
+                        <div>{{ announcement.start_date }}
+                        </div>
+                        <div>{{ announcement.end_date }}</div>
+                    </div>
+                </div>
+                <div id="event-detail-place">
+                    <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ" alt="location_logo"
+                        width="20" height="20">
+                    <a href="https://www.google.com/maps/search/{{ announcement.place | urlize }}" target="_blank"
+                        class="event-detail-place noto-sans-thai-about">
+                        {{ announcement.place }}
+                    </a>
+                </div>
+                <button class="btn-interest-detail">
+                    <div class="interest-container-detail">
+                        <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa" width="10"
+                            height="10" alt="star">
+
+                        <div class="interest-detail">
+                            interest</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

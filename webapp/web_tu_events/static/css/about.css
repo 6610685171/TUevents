@@ -158,3 +158,17 @@
     }
 
 }
+
+@media (min-width: 1980px) {
+    .about-1 {
+        gap: 80px;
+        justify-content: center;
+    }
+
+    #about {
+        height: 900px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
