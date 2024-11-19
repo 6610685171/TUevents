@@ -29,9 +29,8 @@
 .events-content {
     margin-left: 150px;
     margin-right: 150px;
-    margin-bottom: 60px;
     display: flex;
-    gap: 20px;
+    gap: 60px;
     justify-items: center;
     align-items: center;
     flex-wrap: wrap;
@@ -66,14 +65,15 @@
 
 .event-duration,
 .event-place {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .event-duration-box,
 .event-place-box {
     display: flex;
     flex-direction: row;
-    margin-top: 9px;
+    margin-top: 2px;
+    height: 45px;
 }
 
 .event-duration-box>img {
@@ -81,7 +81,7 @@
 }
 
 .event-box {
-    width: 170px;
+    flex: 0 0 170px;
 }
 
 .btn-interest {
@@ -121,4 +121,15 @@
     flex-direction: row;
     justify-items: center;
     align-items: center;
+}
+
+@media (min-width: 1980px) {
+    .btn-group {
+        margin-left: 350px;
+    }
+
+    .events-content {
+        margin-left: 350px;
+        margin-right: 350px;
+    }
 }

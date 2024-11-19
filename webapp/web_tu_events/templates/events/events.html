@@ -34,45 +34,48 @@
                 </ul>
             </div>
             <div class="events-content">
+                {% for info in all_announcement %}
                 <div class="event-box">
-                    {% for info in all_announcement %}
-                    <a href="{{ info.get_absolute_url }}">
-                        <div class="event-image">
-                            {% if info.image %}
-                            <img src="{{ info.image.url }}" alt="{{ info.title }}" width="100%" height="100%">
-                            {% else %}
-                            <p>No image available.</p>
-                            {% endif %}
-                        </div>
-                        <div class="event-name noto-sans-thai-about">{{ info.title }}</div>
-                    </a>
-                    <div class="event-duration-box">
-                        <img src="https://lh3.googleusercontent.com/d/1cC59hVdiBcd2xTmRPf0PbXL6l7gB-lAw"
-                            alt="clock_logo" width="15" height="15">
-                        <div class="event-duration noto-sans-thai-about">
-                            <div>{{ info.start_date }}
+
+                    <div>
+                        <a href="{{ info.get_absolute_url }}">
+                            <div class="event-image">
+                                {% if info.image %}
+                                <img src="{{ info.image.url }}" alt="{{ info.title }}" width="100%" height="100%">
+                                {% else %}
+                                <p>No image available.</p>
+                                {% endif %}
                             </div>
-                            <div>{{ info.end_date }}</div>
+                            <div class="event-name noto-sans-thai-about">{{ info.title }}</div>
+                        </a>
+                        <div class="event-duration-box">
+                            <img src="https://lh3.googleusercontent.com/d/1cC59hVdiBcd2xTmRPf0PbXL6l7gB-lAw"
+                                alt="clock_logo" width="15" height="15">
+                            <div class="event-duration noto-sans-thai-about">
+                                <div>{{ info.start_date }}
+                                </div>
+                                <div>{{ info.end_date }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="event-place-box">
-                        <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ"
-                            alt="location_logo" width="15" height="15">
-                        <div class="event-place noto-sans-thai-about">{{ info.place }}</div>
-                    </div>
-
-                    <button class="btn-interest">
-                        <div class="interest-container">
-                            <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa" width="10"
-                                height="10" alt="star">
-
-                            <div class="interest">
-                                interest</div>
+                        <div class="event-place-box">
+                            <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ"
+                                alt="location_logo" width="15" height="15">
+                            <div class="event-place noto-sans-thai-about">{{ info.place }}</div>
                         </div>
 
-                    </button>
-                    {% endfor %}
+                        <button class="btn-interest">
+                            <div class="interest-container">
+                                <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa"
+                                    width="10" height="10" alt="star">
+
+                                <div class="interest">
+                                    interest</div>
+                            </div>
+
+                        </button>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>
