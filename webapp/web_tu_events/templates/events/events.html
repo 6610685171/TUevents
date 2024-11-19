@@ -34,8 +34,8 @@
                 </ul>
             </div>
             <div class="events-content">
-                {% for info in all_announcement %}
                 <div class="event-box">
+                    {% for info in all_announcement %}
                     <a href="{{ info.get_absolute_url }}">
                         <div class="event-image">
                             {% if info.image %}

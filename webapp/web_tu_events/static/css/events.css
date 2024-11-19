@@ -29,6 +29,7 @@
 .events-content {
     margin-left: 150px;
     margin-right: 150px;
+    margin-bottom: 60px;
     display: flex;
     gap: 20px;
     justify-items: center;
