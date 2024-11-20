@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-egtzc9%z7eukd&yy=_#2p+%ku)$p_8c97ki8-vixy03)m71d$u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['TUevents.pythonanywhere.com']
 
 
 # Application definition
@@ -154,7 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ]
 import os
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "web_tu_events/static")]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'web_tu_events/staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'web_tu_events/media')
