@@ -8,29 +8,33 @@
 <div id="body-events">
     <div>
         <div>
+            <div class="all-events">
+                <h2>All Events</h2>
+            </div>
             <div class="btn-group category">
                 <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     Category
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Cultural</a></li>
+                    <li><a class="dropdown-item" href="{% url 'category_events' 'cultural' %}">Cultural</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#">Entertainment</a></li>
+                    <li><a class="dropdown-item" href="{% url 'category_events' 'entertainment' %}">Entertainment</a>
+                    </li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#">Religious</a></li>
+                    <li><a class="dropdown-item" href="{% url 'category_events' 'religious' %}">Religious</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#">Sports</a></li>
+                    <li><a class="dropdown-item" href="{% url 'category_events' 'sports' %}">Sports</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#">Workshops</a></li>
+                    <li><a class="dropdown-item" href="{% url 'category_events' 'workshops' %}">Workshops</a></li>
                 </ul>
             </div>
             <div class="events-content">

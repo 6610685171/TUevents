@@ -12,10 +12,14 @@ def about(request):
 def login(request):
     return render(request, "login.html")
 
-def events(request):
+def all_events(request):
     all_announcement = Announcement.objects.all()
-    return render(request, "events/events.html", {'all_announcement': all_announcement})
+    return render(request, "events/all_events.html", {'all_announcement': all_announcement})
 
 def event_detail(request, announcement_id):
     announcement = get_object_or_404(Announcement, id = announcement_id)
     return render(request, "events/event_detail.html", {"announcement": announcement})
+
+def category_events(request, category):
+    announcement = Announcement.objects.filter(categories=category)
+    return render(request, "events/category_events.html", {"announcement": announcement, "category": category})
