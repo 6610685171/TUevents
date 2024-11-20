@@ -75,12 +75,38 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+import os
+if 'pythonanywhere' in os.environ.get('HOSTNAME', ''):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'TUevents$tuevents_2024',
+            'USER': 'TUevents',
+            'PASSWORD': 'eventsproject2024',
+            'HOST': 'TUevents.mysql.pythonanywhere-services.com',
+            'PORT': '3306',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'tuevents_2024',
+            'USER': 'admin',
+            'PASSWORD': 'eventsproject2024',
+            'HOST': 'localhost',
+            'PORT': '3306',
+            'OPTIONS': {
+            'charset': 'utf8mb4',
+            }
+        }
+    }
 
 
 # Password validation
