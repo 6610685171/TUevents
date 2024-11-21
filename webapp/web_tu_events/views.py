@@ -7,6 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
+from .models import Found
+from .forms import FoundForm
 
 # Create your views here.
 
@@ -92,3 +94,20 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Logout successful")
     return redirect("login")
+
+# โพสของที่เจอ
+def create_found_announcement(request):
+    if request.method == 'POST':
+        form = FoundForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('found_announcement_list')
+    else:
+        form = FoundForm()
+    
+    return render(request, 'found/create_announcement.html', {'form': form})
+
+# หน้ารวมของที่เจอ
+def found_announcement_list(request):
+    announcements = Found.objects.all().order_by('-id')  # เรียงตาม id ล่าสุด
+    return render(request, 'found/announcement_list.html', {'announcements': announcements})
