@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
-from .forms import FoundForm,LostForm
+from .forms import FoundForm,LostForm,ClubAnnouncementForm
 
 # Create your views here.
 def home(request):
@@ -126,3 +126,25 @@ def lost_items_list(request):
     lost_items = Lost.objects.filter(founded_status=False).order_by('-id')
     return render(request, 'lost/lost_items_list.html', {'lost_items': lost_items})
 
+# สมาชิกชุมนุมโพสประกาศกิจกรรม
+@login_required
+def club_create_announcement(request):
+    if not request.user.username.startswith('tu_'):
+        return redirect('home')  # ถ้าไม่ใช่accountชุมนุมจะกลับไปหน้าhome
+
+    if request.method == 'POST':
+        form = ClubAnnouncementForm(request.POST, request.FILES)
+        if form.is_valid():
+            announcement = form.save(commit=False)
+            announcement.categories = 'clubs'  
+            announcement.save() 
+            return redirect('club_announcement_list')
+    else:
+        form = ClubAnnouncementForm()
+    
+    return render(request, 'club/club_create_announcement.html', {'form': form})
+
+# รวมโพสจากทุกclub
+def all_club_announcement_list(request):
+    all_club_announcements = Announcement.objects.filter(categories='clubs').order_by('-date')
+    return render(request, 'club/club_announcement_list.html', {'announcements': all_club_announcements})

@@ -23,6 +23,7 @@ class Announcement(models.Model):
         ('cultural', 'Cultural'),
         ('religions', 'Religions'),
         ('education', 'Education'),
+        ('clubs','Clubs')
     ]
     
     title = models.CharField(max_length=100)
@@ -42,6 +43,7 @@ class Announcement(models.Model):
     
 class Club(models.Model):
     ORIGIN_CHOICES = [
+        ('tu','Thammasat University (มหาวิทยาลัยธรรมศาสตร์)'),
         ('law', 'Faculty of Law (คณะนิติศาสตร์)'),
         ('business', 'Thammasat Business School (คณะพาณิชยศาสตร์และการบัญชี)'),
         ('political_science', 'Faculty of Political Science (คณะรัฐศาสตร์)'),
