@@ -107,7 +107,8 @@ def create_found_item(request):
 
 # หน้ารวมของที่เจอ
 def found_items_list(request):
-    announcements = Found.objects.all().order_by('-id')  # เรียงตาม id ล่าสุด
+    found_items = Found.objects.all().order_by('-id')  # เรียงตาม id ล่าสุด
+    return render(request, 'found/found_items_list.html' ,{'found_items': found_items})
 
 # โพสของหาย
 def create_lost_item(request):

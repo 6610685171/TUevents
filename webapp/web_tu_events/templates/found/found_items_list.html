@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Lost</title>
+{% endblock %}
+
+{% block content %}
+<div id="top-found">
+    <div class="slogan">
+        <h1 class="goldman-regular">Lost</h1>
+        <h1 class="andfound goldman-regular">&Found</h1>
+        <p class="first-sub goldman-regular">"Find What You’ve Lost, </p>
+        <p class="sub-slogan goldman-regular">Return What You’ve Found"</p>
+    </div>
+</div>
+<div id="bottom-found">
+    <div>
+        <div class="found-menu-bar">
+            <nav class="found-nav noto-sans-thai-about">
+                <a href="{% url 'lost_items_list' %}">Lost</a>
+                <a href="{% url 'found_items_list' %}">Found</a>
+                <div class="animation start-found"></div>
+            </nav>
+        </div>
+        <div class="found-title goldman-regular">
+            <p>Return What You’ve Found</p>
+            <img src="https://lh3.googleusercontent.com/d/1YOAdmUK4oW8o9140Aaa_-onRj3K88eAz" alt="arrow-down"
+                height="20" width="20">
+        </div>
+        <div class="create-post-container">
+            <a href="">
+                <button class="post-button">
+                    <img src="https://lh3.googleusercontent.com/d/1492Nk4BpFRbKBH7KRyEuO-IMKZX91fDq" alt="add_logo"
+                        height="20" width="20">
+                    <p class="noto-sans-thai-about">CREATE POST</p>
+                </button>
+            </a>
+        </div>
+
+        <!-- <ul>
+            {% for item in lost_items %}
+            <li>
+                <h3>{{ item.items_name }}</h3>
+                {% if item.image %}
+                <img src="{{ item.image.url }}" alt="Item Image" style="max-height: 100px;">
+                {% endif %}
+                <p>Description: {{ item.description }}</p>
+                <p>Lost at: {{ item.lost_at }}</p>
+                <p>Contact: {{ item.contact }}</p>
+                <p>Status: {{ item.founded_status|yesno:"Found,Not Found" }}</p>
+            </li>
+            {% endfor %}
+        </ul> -->
+        <hr>
+    </div>
+</div>
+{% endblock %}
