@@ -26,7 +26,14 @@ body>.mb-5 {
 .logo {
     text-align: right;
     margin-top: -7px;
+    transform: scale(1);
+    transition: transform 0.3s ease;
 }
+
+.logo:hover {
+    transform: scale(1.04);
+}
+
 
 /* // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 300 to 900 */
@@ -55,9 +62,15 @@ body>.mb-5 {
     margin-top: 15px;
 }
 
+.nav-item {
+    transform: scale(1);
+    transition: transform 0.4s ease;
+}
+
 .nav-item:hover {
-    color: black;
-    opacity: 50%;
+    color: rgb(227, 44, 44);
+    font-weight: 500;
+    transform: scale(1.07);
 }
 
 .login-button {
@@ -66,12 +79,16 @@ body>.mb-5 {
     border-color: rgb(172, 0, 0);
     font-size: 20px;
     color: white;
+    transform: scale(1);
+    transition: transform 0.4s ease;
+
 }
 
 .login-button:hover {
     background-color: rgb(255, 221, 49);
     border-color: rgb(255, 234, 101);
     color: grey;
+    transform: scale(1.07);
 }
 
 .logout-button {
@@ -79,11 +96,22 @@ body>.mb-5 {
     align-items: center;
 }
 
+.logout-button>a {
+    text-decoration: none;
+}
+
 .logout-content {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
+    transform: scale(1);
+    transition: transform 0.4s ease;
+}
+
+.logout-content:hover {
+    font-weight: 500;
+    transform: scale(1.07);
 }
 
 .logout {
