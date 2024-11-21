@@ -8,7 +8,7 @@
 <div id="body-events">
     <div>
         <div>
-            <div class="all-events">
+            <div class="all-events goldman-regular">
                 <h2>All Events</h2>
             </div>
             <div class="btn-group category">
@@ -17,6 +17,10 @@
                     Category
                 </button>
                 <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'all_events' %}">All</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" href="{% url 'category_events' 'cultural' %}">Cultural</a></li>
                     <li>
                         <hr class="dropdown-divider">

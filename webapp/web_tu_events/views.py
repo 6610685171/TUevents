@@ -1,3 +1,4 @@
+
 from .models import Announcement
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -9,6 +10,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from .models import Found
 from .forms import FoundForm
+from .models import Announcement,Lost,Found,Club
 
 # Create your views here.
 
@@ -39,6 +41,7 @@ def event_detail(request, announcement_id):
 
 def category_events(request, category):
     announcement = Announcement.objects.filter(categories=category)
+
     return render(
         request,
         "events/category_events.html",
@@ -111,3 +114,7 @@ def create_found_announcement(request):
 def found_announcement_list(request):
     announcements = Found.objects.all().order_by('-id')  # เรียงตาม id ล่าสุด
     return render(request, 'found/announcement_list.html', {'announcements': announcements})
+
+def lost(request):
+    all_lost = Lost.objects.all()
+    return render(request, "lost&found/lost.html", {"all_lost": all_lost})

@@ -139,3 +139,7 @@
 .back-event>a {
     text-decoration: none;
 }
+
+.back-event>a:hover {
+    color: rgb(227, 44, 44);
+}
