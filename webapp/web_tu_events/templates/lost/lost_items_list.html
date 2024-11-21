@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lost Items</title>
+</head>
+<body>
+    <h1>Lost Items</h1>
+    <ul>
+        {% for item in lost_items %}
+            <li>
+                <h3>{{ item.items_name }}</h3>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="Item Image" style="max-height: 100px;">
+                {% endif %}
+                <p>Description: {{ item.description }}</p>
+                <p>Lost at: {{ item.lost_at }}</p>
+                <p>Contact: {{ item.contact }}</p>
+                <p>Status: {{ item.founded_status|yesno:"Found,Not Found" }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

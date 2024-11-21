@@ -1,4 +1,4 @@
-from .models import Announcement
+from .models import Announcement,Found,Lost
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
@@ -7,8 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
-from .models import Found
-from .forms import FoundForm
+from .forms import FoundForm,LostForm
 
 # Create your views here.
 
@@ -96,7 +95,7 @@ def logout_view(request):
     return redirect("login")
 
 # โพสของที่เจอ
-def create_found_announcement(request):
+def create_found_item(request):
     if request.method == 'POST':
         form = FoundForm(request.POST, request.FILES)
         if form.is_valid():
@@ -105,9 +104,26 @@ def create_found_announcement(request):
     else:
         form = FoundForm()
     
-    return render(request, 'found/create_announcement.html', {'form': form})
+    return render(request, 'found/create_found_item.html', {'form': form})
 
 # หน้ารวมของที่เจอ
-def found_announcement_list(request):
+def found_items_list(request):
     announcements = Found.objects.all().order_by('-id')  # เรียงตาม id ล่าสุด
-    return render(request, 'found/announcement_list.html', {'announcements': announcements})
+    return render(request, 'found/found_items_list.html', {'announcements': announcements})
+
+# โพสของหาย
+def create_lost_item(request):
+    if request.method == 'POST':
+        form = LostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('lost_item_list')
+    else:
+        form = LostForm()
+    
+    return render(request, 'lost/create_lost_item.html', {'form': form})
+
+# หน้ารวมของหาย
+def lost_items_list(request):
+    lost_items = Lost.objects.filter(founded_status=False).order_by('-id')
+    return render(request, 'lost/lost_items_list.html', {'lost_items': lost_items})

@@ -9,6 +9,8 @@ urlpatterns = [
     path("events/all_events.html", views.all_events, name="all_events"),
     path("events/<int:announcement_id>/", views.event_detail, name="event-detail"),
     path("events/<str:category>/", views.category_events, name="category_events"),
-    path('found/create/', views.create_found_announcement, name='create_found_announcement'),
-    path('found/list/', views.found_announcement_list, name='found_announcement_list'),    
+    path('found/create/', views.create_found_item, name='create_found_item'),
+    path('found/list/', views.found_items_list, name='found_items_list'),  
+    path('lost/create/', views.create_lost_item, name='create_lost_item'),
+    path('lost/list/', views.lost_items_list, name='lost_items_list'),      
 ]
