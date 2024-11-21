@@ -12,5 +12,5 @@ urlpatterns = [
     path('found/create/', views.create_found_item, name='create_found_item'),
     path('found/list/', views.found_items_list, name='found_items_list'), 
     path('lost/create/', views.create_lost_item, name='create_lost_item'),
-    path('lost/list/', views.lost_items_list, name='lost_items_list'),     
+    path('lost/list/', views.lost_items_list, name='lost_items_list')     
 ]
