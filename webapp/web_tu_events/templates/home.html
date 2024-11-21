@@ -6,12 +6,21 @@
 
 {% block content %}
 <div id="body">
+    <!-- Display Messages -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Main Content -->
     <div class="img-home">
-        <img src="https://lh3.googleusercontent.com/d/15dWEpvyw6XcbV522fW-ucRpvYZOZ86Js" alt="home_photo">
+        <img src="https://lh3.googleusercontent.com/d/15dWEpvyw6XcbV522fW-ucRpvYZOZ86Js" alt="home_photo" class="home-photo">
         <div class="welcome-text">
             Welcome to TU Events
         </div>
     </div>
 </div>
-
 {% endblock %}
