@@ -57,29 +57,29 @@ def login_view(request):
                 messages.error(request, "Invalid username.")
                 return render(request, "login.html", {"form": form})
 
-            # Check password validity
+            
             user = authenticate(request, username=username, password=password)
             if user is None:
                 messages.error(request, "Invalid password.")
                 return render(request, "login.html", {"form": form})
 
-            # Login successful, determine user type
+            
             login(request, user)
 
             if user.is_superuser:
-                # Admin user: Redirect to admin panel
+                
                 messages.success(
                     request, "Welcome, Admin! Redirecting to the admin panel."
                 )
                 return redirect(reverse("admin:index"))
             elif username.isnumeric():
-                # Student user: No redirect, just log in
+                
                 messages.success(request, "Welcome, Student!")
-                return render(request, "home.html")  # Keep them on the same page
+                return render(request, "home.html")  
             else:
-                # Club user: Just remember they are a club account
+                
                 messages.success(request, "Welcome, Club Account!")
-                return render(request, "home.html")  # Keep them on the same page
+                return render(request, "home.html") 
         else:
             messages.error(request, "Both fields are required.")
     else:
@@ -149,3 +149,7 @@ def club_create_announcement(request):
 def all_club_announcement_list(request):
     all_club_announcements = Announcement.objects.filter(categories='clubs').order_by('-date')
     return render(request, 'club/club_announcement_list.html', {'announcements': all_club_announcements})
+
+def lost_detail(request, lost_id):
+    lost = get_object_or_404(Lost, id=lost_id)
+    return render(request, "lost/lost_detail.html", {"lost": lost})

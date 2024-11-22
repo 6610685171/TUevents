@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from datetime import datetime
 
 # Create your models here.
 
@@ -78,6 +79,8 @@ class Lost(models.Model):
     lost_at = models.CharField(max_length=100)
     contact = models.CharField(max_length=100)
     founded_status = models.BooleanField(default=False)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
     
     def __str__(self):
         return self.items_name    
@@ -89,6 +92,8 @@ class Found(models.Model):
     found_at = models.CharField(max_length=100)
     contact = models.CharField(max_length=100)
     founded_status = models.BooleanField(default=False)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return self.items_name  
