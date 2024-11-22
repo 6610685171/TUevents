@@ -37,7 +37,53 @@
             </a>
         </div>
 
-        <ul>
+        <hr>
+        <div class="lost-contents">
+            {% for item in lost_items %}
+            <div class="lost-box noto-sans-thai-about">
+                <div>
+                    <a href="{{ info.get_absolute_url }}">
+                        <div class="lost-image">
+                            {% if item.image %}
+                            <div class="image-frame">
+                                <img src="{{ item.image.url }}" alt="{{ item.items_name }}" width="100%" height="100%">
+                                {% else %}
+                                <p>No image available.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="lost-item-name-box">
+                            <div class="item-name-tag">
+                                <img src="https://lh3.googleusercontent.com/d/1lL42uhP0R1Wfw-zyXQzDgLKdPXr1bBAK"
+                                    alt="tag-icon" height="15" width="15">
+                                <div class="lost-item-name">{{ item.items_name }}</div>
+                            </div>
+                            <div class="edit-button">
+                                <a href="#">
+                                    <img src="https://lh3.googleusercontent.com/d/10Fb8lkKs8U4tKrhWNAhS4CtsjfkdFGXn"
+                                        alt="edit_logo" height="15" width="auto">
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="post-time-box">
+                            <div class="noto-sans-thai-about">{{ item.date }}</div>
+                            <div class="noto-sans-thai-about">{{ item.time}}</div>
+                        </div>
+                        <div class="lost-at-box">
+                            <div>Lost at: {{ item.lost_at }}</div>
+                        </div>
+                        <div class="contact-box">
+                            <img src="https://lh3.googleusercontent.com/d/1N-nmp3vUyqkM1va3Ae0ipDnKyAGGk1J3"
+                                alt="contact_logo" height="15" width="auto">
+                            <div class="contact">{{ item.contact }}</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- <ul>
             {% for item in lost_items %}
             <li>
                 <h3>{{ item.items_name }}</h3>
@@ -50,8 +96,7 @@
                 <p>Status: {{ item.founded_status|yesno:"Found,Not Found" }}</p>
             </li>
             {% endfor %}
-        </ul>
-        <hr>
+        </ul> -->
     </div>
 </div>
 {% endblock %}

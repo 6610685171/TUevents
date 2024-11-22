@@ -66,16 +66,19 @@ def login_view(request):
             login(request, user)
 
             if user.is_superuser:
+
                 messages.success(
                     request, "Welcome, Admin! Redirecting to the admin panel."
                 )
                 return redirect(reverse("admin:index"))
             elif username.isnumeric():
+
                 messages.success(request, "Welcome, Student!")
-                return redirect("home")
+                return render(request, "home.html")
             else:
+
                 messages.success(request, "Welcome, Club Account!")
-                return redirect("home")
+                return render(request, "home.html")
         else:
             messages.error(request, "Both fields are required.")
             return redirect("login")
@@ -154,7 +157,6 @@ def all_club_announcement_list(request):
     )
 
 
-def logout_view(request):
-    logout(request)
-    messages.success(request, "Logout successful")
-    return redirect("home")
+def lost_detail(request, lost_id):
+    lost = get_object_or_404(Lost, id=lost_id)
+    return render(request, "lost/lost_detail.html", {"lost": lost})
