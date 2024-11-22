@@ -95,3 +95,9 @@
         width: 250px;
     }
 }
+
+@media (max-width: 1980px) {
+    .login-bg {
+        height: 950px;
+    }
+}
