@@ -160,3 +160,9 @@ def all_club_announcement_list(request):
 def lost_detail(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
     return render(request, "lost/lost_detail.html", {"lost": lost})
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect("home")
