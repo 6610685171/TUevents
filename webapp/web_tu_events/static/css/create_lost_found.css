@@ -1,0 +1,95 @@
+#top-create {
+    margin-top: -5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    background-color: #d7cdc5;
+    background-size: cover;
+    background-position: center;
+    height: 85vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.create-flex {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-andfound {
+    margin-top: -40px;
+}
+
+.create-sub-slogan {
+    margin-top: -20px;
+    margin-left: 10px;
+}
+
+.create-slogan {
+    transform: scale(1);
+    transition: transform 0.4s ease;
+}
+
+.create-slogan:hover {
+    transform: scale(1.07);
+}
+
+.create-slogan>h1 {
+    font-size: 80px;
+}
+
+.create-first-sub {
+    margin-top: -20px;
+    margin-left: 5px;
+}
+
+.create-type {
+    font-size: 12px;
+    background-color: rgb(253 167 2);
+}
+
+.lost-form>button {
+    background-color: #e52d27;
+    border-color: #9c211d;
+    border-radius: 20px;
+}
+
+.create-flex .form-group {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.create-type-found {
+    font-size: 12px;
+    background-color: #e52d27;
+    color: aliceblue;
+}
+
+@media (min-width:1980px) {
+    #top-create {
+        height: 89vh;
+    }
+
+    .create-slogan>h1 {
+        font-size: 120px;
+    }
+
+    .create-first-sub {
+        font-size: 30px;
+    }
+
+    .create-sub-slogan {
+        font-size: 30px;
+    }
+
+    .create-type {
+        font-size: 20px;
+        background-color: rgb(253 167 2);
+    }
+
+    .create-flex .form-group {
+        font-size: 18px;
+        font-weight: 600;
+    }
+}

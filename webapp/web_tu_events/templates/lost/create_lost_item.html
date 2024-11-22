@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Create Lost Item</title>
+{% endblock %}
+
+{% block content %}
+<div id="top-create">
+    <div class="create-flex">
+        <div class="create-slogan">
+            <h1 class="goldman-regular">Lost</h1>
+            <h1 class="create-andfound goldman-regular">&Found</h1>
+            <p class="create-first-sub goldman-regular">"Find What You’ve Lost, </p>
+            <p class="create-sub-slogan goldman-regular">Return What You’ve Found"</p>
+        </div>
+        <div class="create-type goldman-regular">CREATE LOST POST</div>
+    </div>
+    <div class="create-flex">
+        <form class="lost-form noto-sans-thai-about" method="post" enctype="multipart/form-data"
+            action="{% url 'create_lost_item' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="item-name">Item's Name</label>
+                <input type="text" class="form-control" name="items_name" id="item-name" " required>
+            </div>
+            <div class=" form-group">
+                <label for="image-file">Item's Image</label>
+                <input type="file" class="form-control-file" name="image" id="image-file" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="description" id="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="lost-at">Lost at</label>
+                <input type="text" class="form-control" name="lost_at" id="lost-at"
+                    placeholder="Where did you lose your item?" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact</label>
+                <input type="text" class="form-control" name="contact" id="contact" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+
+    </div>
+</div>
+</div>
+{% endblock %}

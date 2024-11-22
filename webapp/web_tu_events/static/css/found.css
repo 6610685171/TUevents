@@ -13,7 +13,6 @@
 }
 
 #bottom-found {
-    margin-top: 40px;
     margin-left: 15px;
     margin-right: 15px;
     background-color: #f3f3f3;
@@ -178,10 +177,10 @@
 }
 
 .found-contents {
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: 134px;
+    margin-right: 134px;
     display: flex;
-    gap: 50px;
+    gap: 15px;
     justify-items: center;
     align-items: center;
     flex-wrap: wrap;
@@ -194,6 +193,11 @@
     background-color: white;
     box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
     border-radius: 15px;
+    transition: all 0.1s ease-in-out;
+}
+
+.found-box:hover {
+    transform: scale(1.03);
 }
 
 .image-frame {
@@ -285,5 +289,6 @@
     .lost-contents {
         margin-left: 300px;
         margin-right: 300px;
+        gap: 37px;
     }
 }

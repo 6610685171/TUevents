@@ -81,6 +81,10 @@ class Lost(models.Model):
     founded_status = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse('lost_detail', kwargs={'lost_id': self.id})
+
     
     def __str__(self):
         return self.items_name    
@@ -94,6 +98,9 @@ class Found(models.Model):
     founded_status = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse('found_detail', kwargs={'found_id': self.id})
 
     def __str__(self):
         return self.items_name  
