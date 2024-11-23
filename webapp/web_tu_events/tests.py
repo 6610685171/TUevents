@@ -5,6 +5,9 @@ from .models import Student, Announcement, Club, Lost, Found
 from .admin import StudentAdmin, AnnouncementAdmin, ClubAdmin, LostAdmin, FoundAdmin
 from django.core.exceptions import ValidationError
 from datetime import datetime
+from django.urls import reverse
+from django.contrib.messages import get_messages
+from django.utils.timezone import make_aware
 
 # Create your tests here.
 
@@ -51,12 +54,12 @@ class AdminTest(TestCase):
             contact="9876543210",
             founded_status=True,
         )
-
         self.student_admin = StudentAdmin(Student, site)
         self.announcement_admin = AnnouncementAdmin(Announcement, AdminSite())
         self.club_admin = ClubAdmin(Club, site)
         self.lost_admin = LostAdmin(Lost, AdminSite())
         self.found_admin = FoundAdmin(Found, AdminSite())
+        
 
     def test_student_admin_list_display(self):
         self.assertEqual(
@@ -207,3 +210,6 @@ class AdminTest(TestCase):
         )
         with self.assertRaises(ValidationError):
             announcement.full_clean() 
+
+
+            

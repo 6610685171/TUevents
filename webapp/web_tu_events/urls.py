@@ -17,8 +17,10 @@ urlpatterns = [
     path('clubs/club_announcement_list/', views.all_club_announcement_list, name='clubs_announcement_list'),
     path('lost/<int:lost_id>/', views.lost_detail, name='lost_detail'),
     path('found/<int:found_id>/', views.found_detail, name='found_detail'),
-    path('lost/edit_lost_item/<lost_id>', views.lost_edit, name="lost_edit"),
-    path('found/edit_found_item/<found_id>', views.found_edit, name="found_edit"),
+    path('lost/edit_lost_item/<int:lost_id>/', views.lost_edit, name='lost_edit'),
+    path('lost/delete/<int:lost_id>/', views.lost_delete, name='lost_delete'),    
+    path('found/edit_found_item/<int:found_id>', views.found_edit, name="found_edit"),
     path('clubs/tu_clubs', views.tu_clubs_list, name="tu_clubs"),
-    path('clubs/club_detail/<club_id>', views.club_detail , name="club_detail")
+    path('clubs/club_detail/<club_id>', views.club_detail , name="club_detail"),
+    path('found/delete/<int:found_id>/', views.found_delete, name='found_delete'),        
 ]
