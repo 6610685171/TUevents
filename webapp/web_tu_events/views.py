@@ -94,7 +94,7 @@ def create_found_item(request):
         form = FoundForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('found_items_list')
+            return redirect("found_items_list")
     else:
         form = FoundForm()
 
@@ -113,7 +113,7 @@ def create_lost_item(request):
         form = LostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('lost_items_list')
+            return redirect("lost_items_list")
     else:
         form = LostForm()
 
@@ -159,23 +159,15 @@ def all_club_announcement_list(request):
 
 def lost_detail(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
-<<<<<<< HEAD
-    return render(request, "lost/lost_detail.html", {"lost": lost})
-
-
-def logout_view(request):
-    logout(request)
-    messages.success(request, "You have been logged out successfully.")
-    return redirect("home")
-=======
     return render(request, "lost/lost_item_detail.html", {"lost": lost})
+
 
 def found_detail(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     return render(request, "found/found_item_detail.html", {"found": found})
 
+
 def logout_view(request):
     logout(request)
     messages.success(request, "Logout successful")
     return redirect("home")
->>>>>>> 1f93c4d7e0da8b3fa5e3e9b61076ac7977b368c4
