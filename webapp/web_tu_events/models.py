@@ -81,9 +81,13 @@ class Lost(models.Model):
     founded_status = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('lost_detail', kwargs={'lost_id': self.id})
+
+    def get_absolute_url_edit(self):
+        return reverse('lost_edit', kwargs={'lost_id': self.id})
 
     
     def __str__(self):
@@ -98,9 +102,13 @@ class Found(models.Model):
     founded_status = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('found_detail', kwargs={'found_id': self.id})
+
+    def get_absolute_url_edit(self):
+        return reverse('found_edit', kwargs={'found_id': self.id})
 
     def __str__(self):
         return self.items_name  

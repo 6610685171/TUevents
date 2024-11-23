@@ -19,7 +19,9 @@
         <div class="lost-detail-box">
             {% if found.image %}
             <div class="lost-detail-bg">
-                <img src="{{ found.image.url }}" alt="{{ found.items_name }}">
+                <div class="lost-image-box">
+                    <img src="{{ found.image.url }}" alt="{{ found.items_name }}">
+                </div>
                 {% else %}
                 <p>No image available.</p>
             </div>

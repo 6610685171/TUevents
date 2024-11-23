@@ -21,11 +21,17 @@
     gap: 60px;
 }
 
-.lost-detail-bg>img {
+.lost-detail-bg img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 20px;
+}
+
+.lost-image-box {
+    display: flex;
+    width: 400px;
+    height: 500px;
 }
 
 .detail-name {
@@ -41,7 +47,6 @@
 }
 
 .detail-description {
-    text-indent: 40px;
     margin-bottom: 25px;
 }
 
@@ -58,4 +63,10 @@
 
 .detail-status {
     margin-top: 12px;
+}
+
+@media(min-width:1980px) {
+    .lost-detail-bg {
+        margin-top: 150px;
+    }
 }
