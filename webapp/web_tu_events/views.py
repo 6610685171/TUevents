@@ -172,6 +172,7 @@ def lost_detail(request, lost_id):
     return render(request, "lost/lost_item_detail.html", {"lost": lost})
 
 
+
 def found_detail(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     return render(request, "found/found_item_detail.html", {"found": found})
@@ -179,8 +180,8 @@ def found_detail(request, found_id):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, "Logout successful")
-    return redirect("home")
+    messages.success(request, "Successfully logged out")
+    return redirect("login")
 
 def lost_edit(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
@@ -190,4 +191,5 @@ def lost_edit(request, lost_id):
 def found_edit(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     return render(request, "found/edit_found_item.html", {"found": found})
+
 
