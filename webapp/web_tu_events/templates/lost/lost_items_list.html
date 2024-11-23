@@ -58,12 +58,16 @@
                                     alt="tag-icon" height="15" width="15">
                                 <div class="lost-item-name">{{ item.items_name }}</div>
                             </div>
+                            {% if item.student == request.user.student %}
                             <div class="edit-button">
-                                <a href="#">
+                                <a href="{{ item.get_absolute_url_edit }}">
                                     <img src="https://lh3.googleusercontent.com/d/10Fb8lkKs8U4tKrhWNAhS4CtsjfkdFGXn"
                                         alt="edit_logo" height="15" width="auto">
                                 </a>
                             </div>
+                            {% else %}
+                            <div></div>
+                            {% endif %}
                         </div>
                     </a>
                     <div class="post-time-box">
@@ -81,11 +85,18 @@
 
                     <div class="user-box">
                         <div class="profile-pic-box">
-                            <img src="https://lh3.googleusercontent.com/d/1kwdfv3hPuSfhfOChDBC7wM-R6sRh0JIp"
+                            {% if item.student and item.student.image %}
+                            <img src="{{ item.student.image.url }}" alt="profile-pic" height="100%" width="100%">
+                            {% else %}
+                            <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN"
                                 alt="profile-pic" height="100%" width="100%">
-
+                            {% endif %}
                         </div>
-                        <div class=" profile-name noto-sans-thai-about">Name----Surname</div>
+                        {% if item.student %}
+                        <div class="profile-name noto-sans-thai-about">{{ item.student.name }}</div>
+                        {% else %}
+                        <div class="profile-name noto-sans-thai-about">Anonymous</div>
+                        {% endif %}
                     </div>
                     {% if item.founded_status == False %}
                     <div class="lost_status">

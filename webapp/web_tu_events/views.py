@@ -93,7 +93,9 @@ def create_found_item(request):
     if request.method == "POST":
         form = FoundForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            found_item = form.save(commit=False)
+            found_item.student = request.user.student
+            found_item.save()
             return redirect("found_items_list")
     else:
         form = FoundForm()
@@ -109,10 +111,20 @@ def found_items_list(request):
 
 # โพสของหาย
 def create_lost_item(request):
+    from django.shortcuts import render, redirect
+
+
+from .forms import LostForm
+from .models import Lost
+
+
+def create_lost_item(request):
     if request.method == "POST":
         form = LostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            lost_item = form.save(commit=False)
+            lost_item.student = request.user.student
+            lost_item.save()
             return redirect("lost_items_list")
     else:
         form = LostForm()
@@ -122,7 +134,7 @@ def create_lost_item(request):
 
 # หน้ารวมของหาย
 def lost_items_list(request):
-    lost_items = Lost.objects.filter(founded_status=False).order_by("-id")
+    lost_items = Lost.objects.filter().order_by("-id")
     return render(request, "lost/lost_items_list.html", {"lost_items": lost_items})
 
 
@@ -169,5 +181,16 @@ def found_detail(request, found_id):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, "Logout successful")
-    return redirect("home")
+    messages.success(request, "Successfully logged out")
+    return redirect("login")
+
+
+def lost_edit(request, lost_id):
+    lost = get_object_or_404(Lost, id=lost_id)
+
+    return render(request, "lost/edit_lost_item.html", {"lost": lost})
+
+
+def found_edit(request, found_id):
+    found = get_object_or_404(Found, id=found_id)
+    return render(request, "found/edit_found_item.html", {"found": found})

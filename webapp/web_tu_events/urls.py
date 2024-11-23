@@ -13,8 +13,10 @@ urlpatterns = [
     path('found/list/', views.found_items_list, name='found_items_list'), 
     path('lost/create/', views.create_lost_item, name='create_lost_item'),
     path('lost/list/', views.lost_items_list, name='lost_items_list'),
-    path('club/club_create_announcement/', views.club_create_announcement, name='club_create_announcement'),
-    path('club/club_announcement_list/', views.all_club_announcement_list, name='club_announcement_list'),
+    path('clubs/club_create_announcement/', views.club_create_announcement, name='clubs_create_announcement'),
+    path('clubs/club_announcement_list/', views.all_club_announcement_list, name='clubs_announcement_list'),
     path('lost/<int:lost_id>/', views.lost_detail, name='lost_detail'),
     path('found/<int:found_id>/', views.found_detail, name='found_detail'),
+    path('lost/edit_lost_item/<lost_id>', views.lost_edit, name="lost_edit"),
+    path('found/edit_found_item/<found_id>', views.found_edit, name="found_edit")
 ]

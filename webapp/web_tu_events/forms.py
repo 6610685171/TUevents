@@ -18,6 +18,10 @@ class LostForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 4}),
             'founded_status': forms.CheckboxInput(),
         }
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            if self.instance and self.instance.image:  # If the instance already has an image
+                self.fields['image'].required = False
 
 class ClubAnnouncementForm(forms.ModelForm):
     class Meta:

@@ -19,13 +19,12 @@ class LoginViewTests(TestCase):
         self.login_url = reverse("login")
 
     def post_login(self, username, password):
-        """Helper function to simulate a login POST request."""
         return self.client.post(
             self.login_url, {"username": username, "password": password}
         )
 
     def test_invalid_username(self):
-        response = self.post_login("nonexistentuser", "password")
+        response = self.post_login("no_user", "password")
         messages = [msg.message for msg in get_messages(response.wsgi_request)]
         self.assertIn("Invalid username.", messages)
         self.assertRedirects(response, self.login_url)
@@ -64,4 +63,4 @@ class LoginViewTests(TestCase):
         self.client.login(username="6610611111", password="studentpassword")
         response = self.client.get(reverse("logout"))
         self.assertNotIn("_auth_user_id", self.client.session)
-        self.assertRedirects(response, reverse("home"))
+        self.assertRedirects(response, reverse("login"))

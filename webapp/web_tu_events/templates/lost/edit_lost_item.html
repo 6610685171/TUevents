@@ -13,7 +13,7 @@
             <p class="create-first-sub goldman-regular">"Find What You’ve Lost, </p>
             <p class="create-sub-slogan goldman-regular">Return What You’ve Found"</p>
         </div>
-        <div class="create-type goldman-regular">CREATE LOST POST</div>
+        <div class="create-type goldman-regular">EDIT LOST POST</div>
     </div>
     <div class="create-flex">
         <form class="lost-form noto-sans-thai-about" method="post" enctype="multipart/form-data"
@@ -21,33 +21,35 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="item-name">Item's Name</label>
-                <input type="text" class="form-control" name="items_name" id="item-name" " required>
+                <input type="text" class="form-control" name="items_name" id="item-name" value="{{ lost.items_name }}"
+                    required>
             </div>
             <div class=" form-group">
                 <label for="image-file">Item's Image</label>
-                <input type="file" class="form-control-file" name="image" id="image-file" required>
+                <input type="file" class="form-control-file" name="image" id="image-file" value="{{ lost.image.url }}"
+                    required>
             </div>
-            <div class="form-group">
+            <div class=" form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" name="description" id="description" rows="4" required></textarea>
+                <textarea class="form-control" name="description" id="description" rows="4"
+                    required>{{ lost.description }}</textarea>
             </div>
-            <div class="form-group">
+            <div class=" form-group">
                 <label for="lost-at">Lost at</label>
                 <input type="text" class="form-control" name="lost_at" id="lost-at"
-                    placeholder="Where did you lose your item?" required>
+                    placeholder="Where did you lose your item?" value="{{ lost.lost_at }}" required>
             </div>
             <div class="form-group">
                 <label for="contact">Contact</label>
-                <input type="text" class="form-control" name="contact" id="contact" required>
+                <input type="text" class="form-control" name="contact" id="contact" value="{{ lost.contact }}" required>
             </div>
             <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" name="founded_status" id="founded_status">
+                <input type="checkbox" class="form-check-input" name="founded_status" id="founded_status"
+                    value="{{ lost.founded_status }}">
                 <label class="form-check-label" for="founded_status">Is this item found?</label>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
         </form>
-
-
     </div>
 </div>
 </div>
