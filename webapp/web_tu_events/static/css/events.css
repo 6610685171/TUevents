@@ -10,6 +10,7 @@
 .all-events>h2 {
     padding-top: 40px;
     margin-left: 150px;
+    margin-bottom: -10px;
 }
 
 .category {
@@ -21,7 +22,6 @@
 }
 
 .btn-group {
-    /* margin-top: 5px; */
     margin-left: 150px;
     margin-bottom: 30px;
 }

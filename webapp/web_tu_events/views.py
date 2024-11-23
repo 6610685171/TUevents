@@ -1,4 +1,4 @@
-from .models import Announcement, Found, Lost
+from .models import Announcement, Found, Lost, Club
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
@@ -160,10 +160,11 @@ def all_club_announcement_list(request):
     all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
         "-date"
     )
+    clubs_info = Club.objects.filter().order_by("-id")
     return render(
         request,
-        "club/club_announcement_list.html",
-        {"announcements": all_club_announcements},
+        "clubs/clubs_announcement_list.html",
+        {"announcements": all_club_announcements, "clubs": clubs_info},
     )
 
 
@@ -192,4 +193,10 @@ def found_edit(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     return render(request, "found/edit_found_item.html", {"found": found})
 
+def tu_clubs_list(request):
+    clubs = Club.objects.filter(origin="tu")
+    return render(request, "clubs/tu_clubs.html", {"clubs": clubs})
 
+def club_detail(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    return render(request, "clubs/club_detail.html", {"club": club})

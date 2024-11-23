@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>TU Clubs</title>
+{% endblock %}
+
+{% block content %}
+<div id="body-events">
+    <div class="clubs-banner goldman-regular">
+        <div class="club-view-all-box">
+            <h1 class="clubs-title">Faculty of Engineering Clubs</h1>
+        </div>
+        <hr>
+    </div>
+    <div class="club-content">
+        {% for info in clubs|slice:":6" %}
+        <div class="club-box">
+            <a href="{{ info.get_absolute_url }}">
+                <div class="club-img-frame">
+                    {% if info.image %}
+                    <img src="{{ info.image.url }}" alt="{{ info.title }}" width="150" height="150">
+                    {% else %}
+                    <p>No image available.</p>
+                    {% endif %}
+                </div>
+                <div class="club-name noto-sans-thai-about">{{ info.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="club-section-bar">
+    </div>
+</div>
