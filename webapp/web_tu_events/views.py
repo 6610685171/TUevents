@@ -93,9 +93,9 @@ def create_found_item(request):
         form = FoundForm(request.POST, request.FILES)
         if form.is_valid():
             found_item = form.save(commit=False)
-            found_item.student = request.user.student 
+            found_item.student = request.user.student
             found_item.save()
-            return redirect('found_items_list')
+            return redirect("found_items_list")
     else:
         form = FoundForm()
 
@@ -114,14 +114,13 @@ def create_lost_item(request):
         form = LostForm(request.POST, request.FILES)
         if form.is_valid():
             lost_item = form.save(commit=False)
-            lost_item.student = request.user.student 
+            lost_item.student = request.user.student
             lost_item.save()
-            return redirect('lost_items_list')
+            return redirect("lost_items_list")
     else:
         form = LostForm()
 
     return render(request, "lost/create_lost_item.html", {"form": form})
-
 
 
 # หน้ารวมของหาย
@@ -166,7 +165,6 @@ def lost_detail(request, lost_id):
     return render(request, "lost/lost_item_detail.html", {"lost": lost})
 
 
-
 def found_detail(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     return render(request, "found/found_item_detail.html", {"found": found})
@@ -176,6 +174,7 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Successfully logged out", extra_tags='success')
     return redirect("login")
+
 
 def lost_edit(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
@@ -201,6 +200,7 @@ def lost_delete(request, lost_id):
     else:
         return redirect('lost_items_list')
 
+
 def found_edit(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     if request.method == 'POST':
@@ -219,4 +219,6 @@ def found_delete(request, found_id):
         found_item.delete()
         return redirect('found_items_list')
     else:
-        return redirect('found_items_list')
+        return redirect('found_items_list')    
+
+

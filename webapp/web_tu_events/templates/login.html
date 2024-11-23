@@ -18,15 +18,39 @@
             <p class="login-title">TU Events Login</p>
             <form method="post" action="{% url 'login' %}" class="login-form">
                 {% csrf_token %}
+                {% if messages %}
+                    <div class="alerts-container">
+                        {% for message in messages %}
+                            {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="mb-3">
                     <label for="username-input" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="username-input" placeholder="Student ID"
-                        required />
+                    <input
+                        type="text"
+                        name="username"
+                        class="form-control"
+                        id="username-input"
+                        placeholder="Student ID"
+                        required
+                    />
                 </div>
                 <div class="mb-3">
                     <label for="password-input" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="password-input"
-                        aria-describedby="passwordHelpBlock" required />
+                    <input
+                        type="password"
+                        name="password"
+                        class="form-control"
+                        id="password-input"
+                        aria-describedby="passwordHelpBlock"
+                        required
+                    />
                 </div>
                 <div class="login-btn">
                     <button type="submit" class="btn btn-primary">Login</button>
