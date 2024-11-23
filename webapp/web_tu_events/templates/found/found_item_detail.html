@@ -27,6 +27,17 @@
             </div>
             {% endif %}
             <div class="lost-text-box noto-sans-thai-about">
+                {% if found.student == request.user.student %}
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://lh3.googleusercontent.com/d/10Fb8lkKs8U4tKrhWNAhS4CtsjfkdFGXn" alt="edit_logo" height="20" width="20">
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{% url 'found_edit' found_id=found.id %}">Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'found_delete' found_id=found.id %}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></li>
+                    </ul>
+                </div>
+                {% endif %}
                 <div class="detail-name">
                     <img src="https://lh3.googleusercontent.com/d/1lL42uhP0R1Wfw-zyXQzDgLKdPXr1bBAK" alt="tag-icon"
                         height="30" width="30">
