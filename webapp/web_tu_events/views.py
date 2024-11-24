@@ -8,9 +8,6 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from .forms import FoundForm, LostForm, ClubAnnouncementForm
-from django.shortcuts import render, redirect
-from .forms import LostForm
-from .models import Lost
 
 
 # Create your views here.
@@ -20,6 +17,10 @@ def home(request):
 
 def about(request):
     return render(request, "about.html")
+
+
+# def login(request):
+#     return render(request, "login.html")
 
 
 def all_events(request):
@@ -87,12 +88,6 @@ def login_view(request):
     return render(request, "login.html", {"form": form})
 
 
-def logout_view(request):
-    logout(request)
-    messages.success(request, "Successfully logged out")
-    return redirect("login")
-
-
 # โพสของที่เจอ
 def create_found_item(request):
     if request.method == "POST":
@@ -110,7 +105,7 @@ def create_found_item(request):
 
 # หน้ารวมของที่เจอ
 def found_items_list(request):
-    found_items = Found.objects.all().order_by("-id")  # เรียงตาม id ล่าสุด
+    found_items = Found.objects.all().order_by('founded_status','-id')
     return render(request, "found/found_items_list.html", {"found_items": found_items})
 
 
@@ -131,7 +126,7 @@ def create_lost_item(request):
 
 # หน้ารวมของหาย
 def lost_items_list(request):
-    lost_items = Lost.objects.filter().order_by("-id")
+    lost_items = Lost.objects.filter().order_by('founded_status','-id')
     return render(request, "lost/lost_items_list.html", {"lost_items": lost_items})
 
 
@@ -176,12 +171,55 @@ def found_detail(request, found_id):
     return render(request, "found/found_item_detail.html", {"found": found})
 
 
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Successfully logged out", extra_tags='success')
+    return redirect("login")
+
+
 def lost_edit(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
 
-    return render(request, "lost/edit_lost_item.html", {"lost": lost})
+    if request.method == "POST":
+        form = LostForm(request.POST, request.FILES, instance=lost)
+        if form.is_valid():
+            if not request.FILES.get('image'):
+                form.instance.image = lost.image            
+            form.save()
+            return redirect('lost_detail',lost_id=lost_id) 
+    else:
+        form = LostForm(instance=lost)
+        
+    return render(request, "lost/edit_lost_item.html", {"form": form, "lost": lost})
+
+def lost_delete(request, lost_id):
+    lost_item = get_object_or_404(Lost, id=lost_id)
+    
+    if lost_item.student == request.user.student:
+        lost_item.delete()
+        return redirect('lost_items_list')
+    else:
+        return redirect('lost_items_list')
 
 
 def found_edit(request, found_id):
     found = get_object_or_404(Found, id=found_id)
-    return render(request, "found/edit_found_item.html", {"found": found})
+    if request.method == 'POST':
+        form = FoundForm(request.POST, request.FILES, instance=found)
+        if form.is_valid():
+            form.save()
+            return redirect('found_detail', found_id=found_id)
+    else:
+        form = FoundForm(instance=found)    
+    return render(request, "found/edit_found_item.html", {"form": form,"found": found})
+
+def found_delete(request, found_id):
+    found_item = get_object_or_404(Found, id=found_id)
+    
+    if found_item.student == request.user.student:
+        found_item.delete()
+        return redirect('found_items_list')
+    else:
+        return redirect('found_items_list')    
+
+
