@@ -44,13 +44,13 @@ class LostAndFoundTests(TestCase):
 
     
     def test_create_found_item_get(self):
-        """Test GET request to create_found_item view."""
+
         response = self.client.get(reverse("create_found_item"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "found/create_found_item.html")
 
     def test_create_found_item_post_valid(self):
-        """Test POST request with valid data to create a found item."""
+
         data = {
             "items_name": "Found Phone",
             "description": "Black smartphone found near the library.",
@@ -69,7 +69,7 @@ class LostAndFoundTests(TestCase):
         )
 
     def test_create_found_item_post_invalid_data(self):
-        """Test POST request to create_found_item with invalid data."""
+  
         data = {
             "items_name": "",  
             "description": "Black smartphone found near the library.",
@@ -82,14 +82,14 @@ class LostAndFoundTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_found_items_list_with_data(self):
-        """Test found_items_list view with data."""
+  
         response = self.client.get(reverse("found_items_list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "found/found_items_list.html")
         self.assertContains(response, "Found Phone")
 
     def test_found_item_redirects_to_detail(self):
-        """Test that clicking a Found item redirects to the detail page."""
+        
         response = self.client.get(
             reverse("found_detail", kwargs={"found_id": self.found_item.id})
         )
@@ -100,7 +100,7 @@ class LostAndFoundTests(TestCase):
         self.assertContains(response, self.found_item.found_at)
 
     def test_found_edit_view(self):
-        """Test that the found_edit view works correctly for the owner."""
+        
         response = self.client.get(
             reverse("found_edit", kwargs={"found_id": self.found_item.id})
         )
@@ -110,13 +110,13 @@ class LostAndFoundTests(TestCase):
 
     
     def test_create_lost_item_get(self):
-        """Test GET request to create_lost_item view."""
+        
         response = self.client.get(reverse("create_lost_item"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "lost/create_lost_item.html")
 
     def test_create_lost_item_post_valid(self):
-        """Test POST request with valid data to create a lost item."""
+        
         data = {
             "items_name": "Lost Wallet",
             "description": "Brown leather wallet lost in the cafeteria.",
@@ -134,7 +134,7 @@ class LostAndFoundTests(TestCase):
                          "Brown leather wallet lost in the cafeteria.")
 
     def test_create_lost_item_post_invalid_data(self):
-        """Test POST request to create_found_item with invalid data."""
+        
         data = {
             "items_name": "",  
             "description": "Brown leather wallet lost in the cafeteria.",
@@ -147,14 +147,14 @@ class LostAndFoundTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_lost_items_list_with_data(self):
-        """Test lost_items_list view with data."""
+        
         response = self.client.get(reverse("lost_items_list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "lost/lost_items_list.html")
         self.assertContains(response, "Lost Wallet")
 
     def test_lost_item_redirects_to_detail(self):
-        """Test that clicking a Lost item redirects to the detail page."""
+        
         response = self.client.get(
             reverse("lost_detail", kwargs={"lost_id": self.lost_item.id})
         )
@@ -165,7 +165,7 @@ class LostAndFoundTests(TestCase):
         self.assertContains(response, self.lost_item.lost_at)
 
     def test_lost_edit_view(self):
-        """Test that the lost_edit view works correctly for the owner."""
+        
         response = self.client.get(
             reverse("lost_edit", kwargs={"lost_id": self.lost_item.id})
         )
@@ -175,7 +175,7 @@ class LostAndFoundTests(TestCase):
 
     
     def test_owner_can_delete_lost_item(self):
-        """Test that the owner can delete a Lost item."""
+        
         response = self.client.post(
             reverse("lost_delete", kwargs={"lost_id": self.lost_item.id})
         )
@@ -183,7 +183,7 @@ class LostAndFoundTests(TestCase):
         self.assertEqual(Lost.objects.count(), 0)
 
     def test_non_owner_cannot_edit_lost_item(self):
-        """Test that a non-owner cannot access the edit page for a Lost item."""
+        
         self.client.login(username="6610612222", password="password")
         response = self.client.get(
             reverse("lost_edit", kwargs={"lost_id": self.lost_item.id})
@@ -191,7 +191,7 @@ class LostAndFoundTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_non_owner_cannot_delete_lost_item(self):
-        """Test that a non-owner cannot delete a Lost item."""
+        
         response = self.client.post(
             reverse("lost_delete", kwargs={"lost_id": self.lost_item.id})
         )
