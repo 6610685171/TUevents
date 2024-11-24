@@ -7,7 +7,7 @@ from .models import Lost, Found, Student
 
 class LostAndFoundTests(TestCase):
     def setUp(self):
-        # Create test users with numeric usernames and a student instance
+        
         self.owner_user = User.objects.create_user(
             username="6610611111", password="password"
         )
@@ -19,12 +19,12 @@ class LostAndFoundTests(TestCase):
         self.client = Client()
         self.client.login(username="6610611111", password="password")
 
-        # Mock image
+        
         self.mock_image = SimpleUploadedFile(
             "test_image.jpg", b"file_content", content_type="image/jpeg"
         )
 
-        # Create Lost and Found items
+       
         self.lost_item = Lost.objects.create(
             items_name="Lost Wallet",
             description="Brown leather wallet lost in the cafeteria.",
@@ -42,7 +42,7 @@ class LostAndFoundTests(TestCase):
             student=self.student,
         )
 
-    ### Found Item Tests ###
+    
     def test_create_found_item_get(self):
         """Test GET request to create_found_item view."""
         response = self.client.get(reverse("create_found_item"))
@@ -71,7 +71,7 @@ class LostAndFoundTests(TestCase):
     def test_create_found_item_post_invalid_data(self):
         """Test POST request to create_found_item with invalid data."""
         data = {
-            "items_name": "",  # Missing name
+            "items_name": "",  
             "description": "Black smartphone found near the library.",
             "found_at": "Library",
             "contact": "0123456789",
@@ -108,7 +108,7 @@ class LostAndFoundTests(TestCase):
         self.assertTemplateUsed(response, "found/edit_found_item.html")
         self.assertContains(response, self.found_item.items_name)
 
-    ### Lost Item Tests ###
+    
     def test_create_lost_item_get(self):
         """Test GET request to create_lost_item view."""
         response = self.client.get(reverse("create_lost_item"))
@@ -136,7 +136,7 @@ class LostAndFoundTests(TestCase):
     def test_create_lost_item_post_invalid_data(self):
         """Test POST request to create_found_item with invalid data."""
         data = {
-            "items_name": "",  # Missing name
+            "items_name": "",  
             "description": "Brown leather wallet lost in the cafeteria.",
             "found_at": "Library",
             "contact": "987654321",
@@ -173,7 +173,7 @@ class LostAndFoundTests(TestCase):
         self.assertTemplateUsed(response, "lost/edit_lost_item.html")
         self.assertContains(response, self.lost_item.items_name)
 
-    ### Ownership Tests ###
+    
     def test_owner_can_delete_lost_item(self):
         """Test that the owner can delete a Lost item."""
         response = self.client.post(
