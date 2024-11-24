@@ -19,10 +19,6 @@ def about(request):
     return render(request, "about.html")
 
 
-# def login(request):
-#     return render(request, "login.html")
-
-
 def all_events(request):
     all_announcement = Announcement.objects.all()
     return render(
@@ -86,6 +82,12 @@ def login_view(request):
         form = AuthenticationForm()
 
     return render(request, "login.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Successfully logged out")
+    return redirect("login")
 
 
 # โพสของที่เจอ
@@ -177,12 +179,6 @@ def lost_detail(request, lost_id):
 def found_detail(request, found_id):
     found = get_object_or_404(Found, id=found_id)
     return render(request, "found/found_item_detail.html", {"found": found})
-
-
-def logout_view(request):
-    logout(request)
-    messages.success(request, "Successfully logged out")
-    return redirect("login")
 
 
 def lost_edit(request, lost_id):
