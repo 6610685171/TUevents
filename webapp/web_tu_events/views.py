@@ -156,7 +156,7 @@ def all_club_announcement_list(request):
     )
     return render(
         request,
-        "club/club_announcement_list.html",
+        "clubs/clubs_announcement_list.html",
         {"announcements": all_club_announcements},
     )
 
