@@ -11,6 +11,7 @@
     opacity: 80%;
     border-radius: 5px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -73,6 +74,11 @@
 .login-btn {
     display: block;
     text-align: right;
+}
+
+.alert-dark {
+    width: 300px;
+    margin-left: 37%;
 }
 
 @media (max-width: 600px) {

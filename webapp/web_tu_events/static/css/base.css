@@ -112,11 +112,17 @@ body>.mb-5 {
 .logout-content:hover {
     font-weight: 500;
     transform: scale(1.07);
+    text-decoration: none;
 }
 
 .logout {
     display: block;
     margin-top: 21%;
+    color: black;
+}
+
+.logout:hover {
+    color: rgb(172, 0, 0);
 }
 
 a {

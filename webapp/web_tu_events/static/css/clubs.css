@@ -1,0 +1,130 @@
+/* .clubs-banner {
+    margin-top: -5px;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+        url('https://lh3.googleusercontent.com/d/1dVhknU67LrMv64ZnJEF6kTyVTmR7XRWD') no-repeat center center;
+    background-size: cover;
+    background-position: center;
+    height: 4vh;
+    display: block;
+    opacity: 85%;
+} */
+
+#body-events hr {
+    border-top: 3px solid rgba(0, 0, 0, .4);
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.clubs-title {
+    padding-top: 40px;
+    margin-left: 150px;
+    font-size: 35px;
+}
+
+.club-content {
+    margin-left: 150px;
+    margin-right: 150px;
+    display: flex;
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.club-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 170px;
+    margin-bottom: 30px;
+}
+
+.club-box a {
+    text-decoration: none;
+}
+
+.club-box a:hover {
+    color: #b80a0a;
+}
+
+.club-img-frame {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+
+.club-img-frame img {
+    border-radius: 100%;
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
+    transition: all 0.2s ease-in-out;
+}
+
+.club-img-frame img:hover {
+    transform: scale(0.98);
+    color: #b80a0a;
+}
+
+.club-name {
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.club-name:hover {
+    transform: scale(0.98);
+    color: #b80a0a;
+}
+
+.club-section-bar {
+    background-color: #b80a0a;
+    height: 70px;
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.10);
+    margin-top: 15px;
+}
+
+.club-view-all-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.view-all-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 23px;
+    color: #ff4142;
+    margin-left: 12px;
+    font-weight: 300;
+}
+
+.view-all-box img {
+    margin-left: 3px;
+    margin-bottom: 10px;
+}
+
+.view-all-box a {
+    text-decoration: none;
+}
+
+.view-all-box a:hover {
+    transform: scale(1.02);
+    color: #b80a0a;
+    transition: all 0.1s ease-in-out;
+}
+
+@media (min-width:1980px) {
+    .club-content {
+        margin-left: 300px;
+        margin-right: 300px;
+        gap: 66px;
+    }
+}

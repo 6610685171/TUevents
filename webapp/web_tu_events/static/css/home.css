@@ -33,6 +33,11 @@
     font-size: 60px;
 }
 
+.img-home>.alert-dark {
+    width: 300px;
+    margin-left: 37%;
+}
+
 
 @media (max-width: 600px) {
     .welcome-text {
@@ -43,34 +48,39 @@
 }
 
 .messages {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        list-style-type: none;
-        margin: 10px 0;
-    }
-    .messages li {
-        margin: 5px 0;
-    }
-    .messages .success {
-        color: green;
-    }
-    .messages .error {
-        color: red;
-    }
-    .img-home {
-        position: relative;
-        text-align: center;
-    }
-    .welcome-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 2em;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 10px;
-        border-radius: 5px;
-    }
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    list-style-type: none;
+    margin: 10px 0;
+}
+
+.messages li {
+    margin: 5px 0;
+}
+
+.messages .success {
+    color: green;
+}
+
+.messages .error {
+    color: red;
+}
+
+.img-home {
+    position: relative;
+    text-align: center;
+}
+
+.welcome-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2em;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}

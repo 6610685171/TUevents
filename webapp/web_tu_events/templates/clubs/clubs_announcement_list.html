@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Clubs</title>
+{% endblock %}
+
+{% block content %}
+<div id="body-events">
+    <div class="clubs-banner goldman-regular">
+        <div class="club-view-all-box">
+            <h1 class="clubs-title">Faculty of Engineering Clubs</h1>
+            <div class="view-all-box">
+                <a href="#">
+                    <div class="view-all-box">
+                        <div>
+                            <h6 class="noto-sans-thai-about">view all</h6>
+                        </div>
+                        <div>
+                            <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
+                                alt="view all" height="15" width="auto">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <hr>
+    </div>
+    <div class="club-content">
+        {% for info in clubs|slice:":6" %}
+        <div class="club-box">
+            <a href="{{ info.get_absolute_url }}">
+                <div class="club-img-frame">
+                    {% if info.image %}
+                    <img src="{{ info.image.url }}" alt="{{ info.title }}" width="150" height="150">
+                    {% else %}
+                    <p>No image available.</p>
+                    {% endif %}
+                </div>
+                <div class="club-name noto-sans-thai-about">{{ info.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="clubs-banner goldman-regular">
+        <div class="club-view-all-box">
+            <h1 class="clubs-title">TU Clubs</h1>
+            <div class="view-all-box">
+                <a href="{% url 'tu_clubs' %}">
+                    <div class="view-all-box">
+                        <div>
+                            <h6 class="noto-sans-thai-about">view all</h6>
+                        </div>
+                        <div>
+                            <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
+                                alt="view all" height="15" width="auto">
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <hr>
+    </div>
+    <div class="club-content">
+        {% for info in clubs %}
+        <div class="club-box">
+            <a href="{{ info.get_absolute_url }}">
+                <div class="club-img-frame">
+                    {% if info.image %}
+                    <img src="{{ info.image.url }}" alt="{{ info.title }}" width="150" height="150">
+                    {% else %}
+                    <p>No image available.</p>
+                    {% endif %}
+                </div>
+                <div class="club-name noto-sans-thai-about">{{ info.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
+        {% for info in clubs %}
+        <div class="club-box">
+            <a href="">
+                <div class="club-img-frame">
+                    {% if info.image %}
+                    <img src="{{ info.image.url }}" alt="{{ info.title }}" width="150" height="150">
+                    {% else %}
+                    <p>No image available.</p>
+                    {% endif %}
+                </div>
+                <div class="club-name noto-sans-thai-about">{{ info.title }}</div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="club-section-bar">
+    </div>
+</div>
+
+{% endblock %}

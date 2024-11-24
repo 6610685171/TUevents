@@ -1,0 +1,63 @@
+.back-club {
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 15px;
+    padding-top: 30px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+.club-detail-content {
+    display: flex;
+    width: 100%;
+    height: 67vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.club-detail-image {
+    display: flex;
+    width: 200px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+}
+
+.club-detail-image img {
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.club-detail-name {
+    margin-top: 10px;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.club-detail-description {
+    height: 80px;
+    width: 500px;
+    font-weight: 300;
+    text-indent: 40px;
+    margin-top: 15px;
+}
+
+.origin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    font-weight: 500;
+    margin-top: 40px;
+}
+
+.back-club>a {
+    text-decoration: none;
+}
+
+.back-club a:hover {
+    color: rgb(227, 44, 44);
+}

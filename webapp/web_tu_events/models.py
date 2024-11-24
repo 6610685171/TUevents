@@ -69,6 +69,9 @@ class Club(models.Model):
     enable_to_join = models.BooleanField(default=True)
     origin = models.CharField(max_length=100, choices=ORIGIN_CHOICES)
 
+    def get_absolute_url(self):
+        return reverse('club_detail', kwargs={'club_id': self.id})
+
     def __str__(self):
         return self.title
     

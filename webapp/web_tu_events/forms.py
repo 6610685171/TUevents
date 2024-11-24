@@ -16,12 +16,12 @@ class LostForm(forms.ModelForm):
         fields = ['items_name', 'image', 'description', 'lost_at', 'contact', 'founded_status']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
-            'founded_status': forms.CheckboxInput(),
+            'founded_status': forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': 'founded_status'})
         }
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            if self.instance and self.instance.image:  # If the instance already has an image
-                self.fields['image'].required = False
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.image:  # If the instance already has an image
+            self.fields['image'].required = False
 
 class ClubAnnouncementForm(forms.ModelForm):
     class Meta:

@@ -1,4 +1,4 @@
-from .models import Announcement, Found, Lost
+from .models import Announcement, Found, Lost, Club
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
@@ -51,29 +51,28 @@ def login_view(request):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                messages.error(request, "Invalid username.")
-                return redirect("login")  # Redirect back to login page
+                messages.error(request, "Invalid username.", extra_tags='error')
+                return redirect("login") 
 
             user = authenticate(request, username=username, password=password)
             if user is None:
-                messages.error(request, "Invalid password.")
-                return redirect("login")  # Redirect back to login page
+                messages.error(request, "Invalid password.", extra_tags='error')
+                return redirect("login")  
 
             login(request, user)
 
             if user.is_superuser:
-
                 messages.success(
-                    request, "Welcome, Admin! Redirecting to the admin panel."
+                    request, "Welcome, Admin! Redirecting to the admin panel.", extra_tags='success'
                 )
                 return redirect(reverse("admin:index"))
             elif username.isnumeric():
 
-                messages.success(request, "Welcome, Student!")
+                messages.success(request, "Welcome, Student!", extra_tags='success')
                 return render(request, "home.html")
             else:
 
-                messages.success(request, "Welcome, Club Account!")
+                messages.success(request, "Welcome, Club Account!", extra_tags='success')
                 return render(request, "home.html")
         else:
             messages.error(request, "Both fields are required.")
@@ -107,19 +106,11 @@ def create_found_item(request):
 
 # หน้ารวมของที่เจอ
 def found_items_list(request):
-    found_items = Found.objects.all().order_by("-id")  # เรียงตาม id ล่าสุด
+    found_items = Found.objects.all().order_by('founded_status','-id')
     return render(request, "found/found_items_list.html", {"found_items": found_items})
 
 
 # โพสของหาย
-def create_lost_item(request):
-    from django.shortcuts import render, redirect
-
-
-from .forms import LostForm
-from .models import Lost
-
-
 def create_lost_item(request):
     if request.method == "POST":
         form = LostForm(request.POST, request.FILES)
@@ -136,7 +127,7 @@ def create_lost_item(request):
 
 # หน้ารวมของหาย
 def lost_items_list(request):
-    lost_items = Lost.objects.filter().order_by("-id")
+    lost_items = Lost.objects.filter().order_by('founded_status','-id')
     return render(request, "lost/lost_items_list.html", {"lost_items": lost_items})
 
 
@@ -164,10 +155,11 @@ def all_club_announcement_list(request):
     all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
         "-date"
     )
+    clubs_info = Club.objects.filter().order_by("-id")
     return render(
         request,
-        "club/club_announcement_list.html",
-        {"announcements": all_club_announcements},
+        "clubs/clubs_announcement_list.html",
+        {"announcements": all_club_announcements, "clubs": clubs_info},
     )
 
 
@@ -181,12 +173,64 @@ def found_detail(request, found_id):
     return render(request, "found/found_item_detail.html", {"found": found})
 
 
+<<<<<<< HEAD
+=======
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Successfully logged out", extra_tags='success')
+    return redirect("login")
+
+
+>>>>>>> d265ff024236a21bb22e99f26700c501255d53a6
 def lost_edit(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
 
-    return render(request, "lost/edit_lost_item.html", {"lost": lost})
+    if request.method == "POST":
+        form = LostForm(request.POST, request.FILES, instance=lost)
+        if form.is_valid():
+            if not request.FILES.get('image'):
+                form.instance.image = lost.image            
+            form.save()
+            return redirect('lost_detail',lost_id=lost_id) 
+    else:
+        form = LostForm(instance=lost)
+        
+    return render(request, "lost/edit_lost_item.html", {"form": form, "lost": lost})
+
+def lost_delete(request, lost_id):
+    lost_item = get_object_or_404(Lost, id=lost_id)
+    
+    if lost_item.student == request.user.student:
+        lost_item.delete()
+        return redirect('lost_items_list')
+    else:
+        return redirect('lost_items_list')
 
 
 def found_edit(request, found_id):
     found = get_object_or_404(Found, id=found_id)
-    return render(request, "found/edit_found_item.html", {"found": found})
+    if request.method == 'POST':
+        form = FoundForm(request.POST, request.FILES, instance=found)
+        if form.is_valid():
+            form.save()
+            return redirect('found_detail', found_id=found_id)
+    else:
+        form = FoundForm(instance=found)    
+    return render(request, "found/edit_found_item.html", {"form": form,"found": found})
+
+def found_delete(request, found_id):
+    found_item = get_object_or_404(Found, id=found_id)
+    
+    if found_item.student == request.user.student:
+        found_item.delete()
+        return redirect('found_items_list')
+    else:
+        return redirect('found_items_list')    
+
+def tu_clubs_list(request):
+    clubs = Club.objects.filter(origin="tu")
+    return render(request, "clubs/tu_clubs.html", {"clubs": clubs})
+
+def club_detail(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    return render(request, "clubs/club_detail.html", {"club": club})
