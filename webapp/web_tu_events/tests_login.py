@@ -62,5 +62,7 @@ class LoginViewTests(TestCase):
     def test_logout(self):
         self.client.login(username="6610611111", password="studentpassword")
         response = self.client.get(reverse("logout"))
+        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
+        # self.assertIn("Successfully logged out", messages)
         self.assertNotIn("_auth_user_id", self.client.session)
         self.assertRedirects(response, reverse("login"))

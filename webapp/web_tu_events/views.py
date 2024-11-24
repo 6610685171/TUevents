@@ -89,7 +89,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    # messages.success(request, "Successfully logged out")
+    messages.success(request, "Successfully logged out")
     return redirect("login")
 
 
