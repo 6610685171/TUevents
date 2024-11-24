@@ -131,11 +131,11 @@ class AdminTest(TestCase):
         self.assertEqual(self.announcement.categories, "education")
         self.assertEqual(
             self.announcement.start_date.strftime("%Y-%m-%d %H:%M:%S"),
-            "2024-11-05 10:00:00",
+            "2024-11-05 03:00:00",
         )
         self.assertEqual(
             self.announcement.end_date.strftime("%Y-%m-%d %H:%M:%S"),
-            "2024-11-06 15:00:00",
+            "2024-11-06 08:00:00",
         )
         self.assertEqual(self.announcement.place, "Thammasat school of engineering")
         self.assertEqual(response.status_code, 200)
