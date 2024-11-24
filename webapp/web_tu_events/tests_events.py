@@ -46,7 +46,7 @@ class AnnouncementTests(TestCase):
         self.assertContains(response, "Test Event1")
         self.assertNotContains(response, "Test Event2")
 
-    def test_invalid_category_events(self):
+    def test_nothing_to_show_on_category_events(self):
         response = self.client.get(reverse("category_events", args=["invalid"]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No Result.")
