@@ -29,7 +29,7 @@ class AnnouncementTests(TestCase):
         self.assertContains(response, "Test Event1")
         self.assertContains(response, "Test Event2")
 
-    def test_invalid_event_detail(self):
+    def test_sad_path_event_detail(self):
         response = self.client.get(reverse("event-detail", args=[999]))
         self.assertEqual(response.status_code, 404)
 
