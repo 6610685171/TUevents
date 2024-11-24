@@ -1,24 +1,17 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Login Page</title>
+<title>Login</title>
 {% endblock %}
 
 {% block content %}
 <div id="body-login">
     <div class="login-bg">
-        {% if messages %}
-        <div class="alert alert-dark alert-dismissible fade show" role="alert">
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        </div>
-    {% endif %}
         <div class="login-box">
             <p class="login-title">TU Events Login</p>
             <form method="post" action="{% url 'login' %}" class="login-form">
                 {% csrf_token %}
-                {% if messages %}
+                <!-- {% if messages %}
                     <div class="alerts-container">
                         {% for message in messages %}
                             {% if message.tags == "error" %}
@@ -29,7 +22,7 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-                {% endif %}
+                {% endif %} -->
                 <div class="mb-3">
                     <label for="username-input" class="form-label">Username</label>
                     <input
