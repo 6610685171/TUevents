@@ -28,8 +28,8 @@ urlpatterns = [
     path("lost/edit_lost_item/<int:lost_id>/", views.lost_edit, name="lost_edit"),
     path('lost/delete/<int:lost_id>/', views.lost_delete, name='lost_delete'),
     path("found/edit_found_item/<int:found_id>", views.found_edit, name="found_edit"),
-    # path('clubs/tu_clubs', views.tu_clubs_list, name="tu_clubs"),
-    # path('clubs/club_detail/<club_id>', views.club_detail , name="club_detail"),
+    path('clubs/tu_clubs', views.tu_clubs_list, name="tu_clubs"),
+    path('clubs/club_detail/<club_id>', views.club_detail , name="club_detail"),
     path('found/delete/<int:found_id>/', views.found_delete, name='found_delete'),
     path('announcement/<int:announcement_id>/interest/', views.toggle_interest, name='toggle_interest'),    
 ]

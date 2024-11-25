@@ -181,6 +181,14 @@ def all_club_announcement_list(request):
         {"announcements": all_club_announcements},
     )
 
+def tu_clubs_list(request):
+    clubs = Club.objects.filter(origin="tu")
+    return render(request, "clubs/tu_clubs.html", {"clubs": clubs})
+
+def club_detail(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    return render(request, "clubs/club_detail.html", {"club": club})
+
 
 def lost_detail(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
