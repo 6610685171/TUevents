@@ -31,4 +31,5 @@ urlpatterns = [
     # path('clubs/tu_clubs', views.tu_clubs_list, name="tu_clubs"),
     # path('clubs/club_detail/<club_id>', views.club_detail , name="club_detail"),
     path('found/delete/<int:found_id>/', views.found_delete, name='found_delete'),
+    path('announcement/<int:announcement_id>/interest/', views.toggle_interest, name='toggle_interest'),    
 ]

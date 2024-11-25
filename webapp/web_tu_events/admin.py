@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student,Announcement,Club,Lost,Found
+from .models import Student,Announcement,Club,Lost,Found,Interest
     
 class StudentAdmin(admin.ModelAdmin):
     list_display = ["student_id" ,"name" ,"email", "username"]
@@ -22,6 +22,10 @@ class LostAdmin(admin.ModelAdmin):
 
 class FoundAdmin(admin.ModelAdmin):
     list_display = ["items_name","found_at" ,"contact" , "founded_status"]
+    
+class InterestAdmin(admin.ModelAdmin):
+    list_display = ('user', 'announcement', 'interested_at')
+    search_fields = ('user__username', 'announcement__title')
         
 # Register your models here.     
 admin.site.register(Student, StudentAdmin)
@@ -29,3 +33,4 @@ admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(Club, ClubAdmin)
 admin.site.register(Lost, LostAdmin)
 admin.site.register(Found, FoundAdmin)
+admin.site.register(Interest, InterestAdmin)

@@ -1,4 +1,4 @@
-from .models import Announcement, Found, Lost
+from .models import Announcement, Found, Lost, Interest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from .forms import FoundForm, LostForm, ClubAnnouncementForm
-
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def home(request):
@@ -25,15 +25,36 @@ def about(request):
 
 def all_events(request):
     all_announcement = Announcement.objects.all()
+    
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True)
+    else:
+        interested_events = []
+
     return render(
-        request, "events/all_events.html", {"all_announcement": all_announcement}
+        request,
+        "events/all_events.html",
+        {
+            "all_announcement": all_announcement,
+            "interested_events": interested_events,
+        },
     )
+
 
 
 def event_detail(request, announcement_id):
     announcement = get_object_or_404(Announcement, id=announcement_id)
-    return render(request, "events/event_detail.html", {"announcement": announcement})
+    
+    if request.user.is_authenticated:
+        interested_event_ids = Interest.objects.filter(user=request.user).values_list('announcement__id', flat=True)
+    else:
+        interested_event_ids = []
 
+    return render(request, "events/event_detail.html", {
+        "announcement": announcement,
+        "interested_event_ids": interested_event_ids,
+    })
 
 def category_events(request, category):
     announcement = Announcement.objects.filter(categories=category)
@@ -222,4 +243,21 @@ def found_delete(request, found_id):
     else:
         return redirect('found_items_list')    
 
+# กดสนใจกิจกรรม
+# @login_required
+def toggle_interest(request, announcement_id):
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+    user = request.user
 
+    # ตรวจสอบว่าผู้ใช้งานสนใจอยู่หรือไม่
+    if Interest.objects.filter(user=request.user, announcement=announcement).exists():
+        # ถ้าผู้ใช้งานเคยสนใจกิจกรรมนี้แล้ว ให้ยกเลิก
+        Interest.objects.filter(user=request.user, announcement=announcement).delete()
+        messages.success(request, "คุณได้ยกเลิกการกดสนใจกิจกรรมนี้แล้ว")
+    else:
+        # ถ้าผู้ใช้งานยังไม่สนใจ ให้กดสนใจ
+        Interest.objects.create(user=request.user, announcement=announcement)
+        messages.success(request, "คุณได้กดสนใจกิจกรรมนี้แล้ว")
+    
+    referer = request.META.get('HTTP_REFERER', '/')
+    return HttpResponseRedirect(referer)

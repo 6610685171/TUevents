@@ -115,3 +115,14 @@ class Found(models.Model):
 
     def __str__(self):
         return self.items_name  
+    
+class Interest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="interests")
+    announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE, related_name="interested_users")
+    interested_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'announcement')  # ป้องกันการกดสนใจกิจกรรมเดิมซ้ำ
+
+    def __str__(self):
+        return f"{self.user.username} สนใจกิจกรรม {self.announcement.title}"
