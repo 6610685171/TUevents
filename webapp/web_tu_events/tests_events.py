@@ -38,7 +38,6 @@ class AnnouncementTests(TestCase):
             reverse("event-detail", args=[self.announcement1.id])
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "")
 
     def test_category_events(self):
         response = self.client.get(reverse("category_events", args=["entertainment"]))
