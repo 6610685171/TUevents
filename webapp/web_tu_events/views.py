@@ -28,7 +28,7 @@ def all_events(request):
     
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
-        interested_events = Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True)
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
     else:
         interested_events = []
 
