@@ -65,6 +65,55 @@
     width: 600px;
 }
 
+#home-top {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.772), rgba(0, 0, 0, 0.684)),
+        url('https://lh3.googleusercontent.com/d/14POLMkrnhRV5D8e32x6ElPTON__aMSAc') no-repeat center center;
+    background-size: cover;
+    background-position: center;
+    height: 70vh;
+    display: block;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+}
+
+.welcome-text {
+    color: aliceblue;
+    font-size: 30px;
+}
+
+.section-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-text-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.header,
+.sub-header {
+    font-size: 50px;
+}
+
+.sub-header {
+    margin-top: -20px;
+}
+
+.home-slogan {
+    font-size: 20px;
+}
 
 @media (max-width: 600px) {
     .welcome-text {
@@ -98,16 +147,4 @@
 .img-home {
     position: relative;
     text-align: center;
-}
-
-.welcome-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2em;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
 }

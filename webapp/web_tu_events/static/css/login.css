@@ -52,6 +52,7 @@
     font-style: normal;
     font-size: 15px;
     object-position: center;
+    width: 250px;
 
 }
 
@@ -74,7 +75,9 @@
 .login-btn {
     display: block;
     text-align: right;
+    ;
 }
+
 
 @media (max-width: 600px) {
     .login-bg {

@@ -104,10 +104,12 @@ body>.mb-5 {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
     gap: 5px;
     transform: scale(1);
     transition: transform 0.4s ease;
 }
+
 
 .logout-content:hover {
     font-weight: 500;
