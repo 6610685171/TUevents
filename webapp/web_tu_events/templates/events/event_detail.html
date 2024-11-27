@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-<div id="body-event-detail">
     {% if messages %}
     <ul>
         {% for message in messages %}
@@ -13,7 +12,6 @@
         {% endfor %}
     </ul>
 {% endif %}
-<div>
     <div class="back-event">
         <a href="{% url 'all_events' %}">
             <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
@@ -21,6 +19,7 @@
             <h8>Back to Events</h4>
         </a>
     </div>
+    <div id="body-event-detail">
 
     {% comment %} <div class="event-detail-container"> {% endcomment %}
 
@@ -104,4 +103,6 @@
         </div>
     </div>
 </div>
+<div>
+
 {% endblock %}
