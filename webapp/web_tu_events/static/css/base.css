@@ -54,7 +54,7 @@ body>.mb-5 {
 .nav-menu,
 .nav-button {
     display: flex;
-    justify-items: center;
+    justify-content: center;
     align-items: center;
 }
 

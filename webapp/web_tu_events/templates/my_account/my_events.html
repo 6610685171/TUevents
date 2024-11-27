@@ -1,56 +1,28 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Events</title>
+<title>My Events</title>
 {% endblock %}
 
 {% block content %}
-<div id="body-events">
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li class="alert alert-success">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <div>
-        <div>
-            <div class="all-events goldman-regular">
-                <h2>All Events</h2>
-                <hr>
-            </div>
-            <div class="btn-group category">
-                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Category
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url 'all_events' %}">All</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'category_events' 'cultural' %}">Cultural</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'category_events' 'entertainment' %}">Entertainment</a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'category_events' 'religious' %}">Religious</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'category_events' 'sports' %}">Sports</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'category_events' 'workshops' %}">Workshops</a></li>
-                </ul>
-            </div>
-            <div class="events-content">
-                {% for info in all_announcement %}
+<div id="body-my-account">
+    <div class=my-account-content>
+        <div class="side-bar">
+            <a href="{% url 'my_account' %}">
+                <button class="my-button goldman-regular">Personal Information</button>
+            </a>
+            <a href="{% url 'lost_found_history' %}"><button class="my-button goldman-regular">Lost&Found
+                    history</button>
+            </a>
+            <a href="{% url 'my_events' %}"><button class="my-button goldman-regular">My Events</button>
+            </a>
+        </div>
+        <div class="info-lost">
+            <h1 class="goldman-regular">My Events</h1>
+            <hr>
+            <div class="lost-contents-info">
+                {% for item in interested_events %}
+                {% if item.student == request.user.student %}
                 <div class="event-box">
                     <div>
                         <a href="{{ info.get_absolute_url }}">
@@ -109,12 +81,12 @@
                         </button>
                         {% endif %}
                     </div>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
+
     </div>
 
-</div>
-
-{% endblock %}
+    {% endblock %}

@@ -31,5 +31,8 @@ urlpatterns = [
     path('clubs/tu_clubs', views.tu_clubs_list, name="tu_clubs"),
     path('clubs/club_detail/<club_id>', views.club_detail , name="club_detail"),
     path('found/delete/<int:found_id>/', views.found_delete, name='found_delete'),
-    path('announcement/<int:announcement_id>/interest/', views.toggle_interest, name='toggle_interest'),    
+    path('announcement/<int:announcement_id>/interest/', views.toggle_interest, name='toggle_interest'),
+    path('my_account/personal_info', views.my_account, name='my_account'), 
+    path('my_account/lost_found_history', views.lost_found_history, name='lost_found_history'),
+    path('my_account/my_events.html', views.my_events , name='my_events')
 ]

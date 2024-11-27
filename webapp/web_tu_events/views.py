@@ -269,3 +269,19 @@ def toggle_interest(request, announcement_id):
     
     referer = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(referer)
+
+def my_account(request):
+    if request.user.is_authenticated:
+        student = request.user.student
+        return render(request, "my_account/personal_info.html" ,{"student": student})
+    else:
+        return render(request, "login.html")
+
+def lost_found_history(request):
+    lost_items = Lost.objects.filter().order_by('founded_status','-id')
+    found_items = Found.objects.all().order_by('founded_status','-id')
+    return render(request, "my_account/lost_found_history.html", {'lost_items': lost_items, 'found_items': found_items})
+    
+def my_events(request):
+    interested_events = Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True)
+    return render(request, 'my_account/my_events.html', {'interested_events': interested_events})
