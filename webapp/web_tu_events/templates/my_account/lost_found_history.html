@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Lost Found History</title>
+{% endblock %}
+
+{% block content %}
+<div id="body-my-account">
+    <div class=my-account-content>
+        <div class="side-bar">
+            <a href="{% url 'my_account' %}">
+                <button class="my-button goldman-regular">Personal Information</button>
+            </a>
+            <a href="{% url 'lost_found_history' %}"><button class="my-button goldman-regular">Lost&Found
+                    history</button>
+            </a>
+            <a href="{% url 'my_events' %}"><button class="my-button goldman-regular">My Events</button>
+            </a>
+        </div>
+        <div class="info-lost">
+            <h1 class="goldman-regular">My Lost History</h1>
+            <hr>
+            <div class="lost-contents-info">
+                {% for item in lost_items %}
+                {% if item.student == request.user.student %}
+                <div class="lost-box noto-sans-thai-about">
+                    <div>
+                        <a href="{{ item.get_absolute_url }}">
+                            <div class="lost-image">
+                                {% if item.image %}
+                                <div class="image-frame">
+                                    <img src="{{ item.image.url }}" alt="{{ item.items_name }}" width="100%"
+                                        height="100%">
+                                    {% else %}
+                                    <p>No image available.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="lost-item-name-box">
+                                <div class="item-name-tag">
+                                    <img src="https://lh3.googleusercontent.com/d/1lL42uhP0R1Wfw-zyXQzDgLKdPXr1bBAK"
+                                        alt="tag-icon" height="15" width="15">
+                                    <div class="lost-item-name">{{ item.items_name }}</div>
+                                </div>
+                                {% comment %} {% if item.student == request.user.student %}
+                                <div class="edit-button">
+                                    <a href="{% url 'lost_edit' lost_id=item.id %}">
+                                        <img src="https://lh3.googleusercontent.com/d/10Fb8lkKs8U4tKrhWNAhS4CtsjfkdFGXn"
+                                            alt="edit_logo" height="15" width="auto">
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div></div>
+                                {% endif %} {% endcomment %}
+                            </div>
+                        </a>
+                        <div class="post-time-box">
+                            <div class="noto-sans-thai-about">{{ item.date }}</div>
+                            <div class="time noto-sans-thai-about">{{ item.time}}</div>
+                        </div>
+                        <div class="lost-at-box">
+                            <div>Lost at: {{ item.lost_at }}</div>
+                        </div>
+                        <div class="contact-box">
+                            <img src="https://lh3.googleusercontent.com/d/1N-nmp3vUyqkM1va3Ae0ipDnKyAGGk1J3"
+                                alt="contact_logo" height="15" width="auto">
+                            <div class="contact">{{ item.contact }}</div>
+                        </div>
+
+                        <div class="user-box">
+                            <div class="profile-pic-box">
+                                {% if item.student and item.student.image %}
+                                <img src="{{ item.student.image.url }}" alt="profile-pic" height="100%" width="100%">
+                                {% else %}
+                                <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN"
+                                    alt="profile-pic" height="100%" width="100%">
+                                {% endif %}
+                            </div>
+                            {% if item.student %}
+                            <div class="profile-name noto-sans-thai-about">{{ item.student.name }}</div>
+                            {% else %}
+                            <div class="profile-name noto-sans-thai-about">Anonymous</div>
+                            {% endif %}
+                        </div>
+                        {% if item.founded_status == False %}
+                        <div class="lost_status">
+                            <button class="lost goldman-regular">L O S T</button>
+                        </div>
+                        {% else %}
+                        <div class="found_status">
+                            <button class="found goldman-regular">F O U N D E D</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <h1 class="goldman-regular">My Found History</h1>
+            <hr>
+            <div class="lost-contents-info">
+                {% for item in found_items %}
+                {% if item.student == request.user.student %}
+                <div class="lost-box noto-sans-thai-about">
+                    <div>
+                        <a href="{{ item.get_absolute_url }}">
+                            <div class="lost-image">
+                                {% if item.image %}
+                                <div class="image-frame">
+                                    <img src="{{ item.image.url }}" alt="{{ item.items_name }}" width="100%"
+                                        height="100%">
+                                    {% else %}
+                                    <p>No image available.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="lost-item-name-box">
+                                <div class="item-name-tag">
+                                    <img src="https://lh3.googleusercontent.com/d/1lL42uhP0R1Wfw-zyXQzDgLKdPXr1bBAK"
+                                        alt="tag-icon" height="15" width="15">
+                                    <div class="lost-item-name">{{ item.items_name }}</div>
+                                </div>
+                                {% comment %} {% if item.student == request.user.student %}
+                                <div class="edit-button">
+                                    <a href="{% url 'lost_edit' lost_id=item.id %}">
+                                        <img src="https://lh3.googleusercontent.com/d/10Fb8lkKs8U4tKrhWNAhS4CtsjfkdFGXn"
+                                            alt="edit_logo" height="15" width="auto">
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div></div>
+                                {% endif %} {% endcomment %}
+                            </div>
+                        </a>
+                        <div class="post-time-box">
+                            <div class="noto-sans-thai-about">{{ item.date }}</div>
+                            <div class="time noto-sans-thai-about">{{ item.time}}</div>
+                        </div>
+                        <div class="lost-at-box">
+                            <div>Lost at: {{ item.lost_at }}</div>
+                        </div>
+                        <div class="contact-box">
+                            <img src="https://lh3.googleusercontent.com/d/1N-nmp3vUyqkM1va3Ae0ipDnKyAGGk1J3"
+                                alt="contact_logo" height="15" width="auto">
+                            <div class="contact">{{ item.contact }}</div>
+                        </div>
+
+                        <div class="user-box">
+                            <div class="profile-pic-box">
+                                {% if item.student and item.student.image %}
+                                <img src="{{ item.student.image.url }}" alt="profile-pic" height="100%" width="100%">
+                                {% else %}
+                                <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN"
+                                    alt="profile-pic" height="100%" width="100%">
+                                {% endif %}
+                            </div>
+                            {% if item.student %}
+                            <div class="profile-name noto-sans-thai-about">{{ item.student.name }}</div>
+                            {% else %}
+                            <div class="profile-name noto-sans-thai-about">Anonymous</div>
+                            {% endif %}
+                        </div>
+                        {% if item.founded_status == False %}
+                        <div class="lost_status">
+                            <button class="lost goldman-regular">L O S T</button>
+                        </div>
+                        {% else %}
+                        <div class="found_status">
+                            <button class="found goldman-regular">F O U N D E D</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

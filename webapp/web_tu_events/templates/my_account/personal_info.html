@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>My Account</title>
+{% endblock %}
+
+{% block content %}
+<div id="body-my-account">
+    <div class=my-account-content>
+        <div class="side-bar">
+            <a href="{% url 'my_account' %}">
+                <button class="my-button goldman-regular">Personal Information</button>
+            </a>
+            <a href="{% url 'lost_found_history' %}"><button class="my-button goldman-regular">Lost&Found
+                    history</button>
+            </a>
+            <a href="{% url 'my_events' %}"><button class="my-button goldman-regular">My Events</button>
+            </a>
+        </div>
+        <div class="info-content">
+            <div class="personal-info-box">
+                <img src="https://lh3.googleusercontent.com/d/1Z8BJXX6-1HpizEzKM2e14VIe0fa4dknX" alt="user_logo"
+                    width="30" height="auto">
+                <div class="personal-info goldman-regular">Personal Information</div>
+            </div>
+            <div class="info-box">
+                <div class="image-box">
+                    <img src="{{ student.image.url }}" alt="Profile Picture">
+                </div>
+                <div class="sub-info">
+                    <div class=" form-group">
+                        <label for="image-file"></label>
+                        <input type="file" class="form-control-file" name="image" id="image-file" required>
+                    </div>
+                    <div class="name">
+                        <div class="info-title">Name: </div>
+                        <div class="info">{{ student.name }}</div>
+                    </div>
+                    <div class="student-id">
+                        <div class="info-title">Student ID: </div>
+                        <div class="info">{{ student.student_id }}</div>
+                    </div>
+                    <div class="email">
+                        <div class="info-title">Email: </div>
+                        <div class="info">{{ student.email }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

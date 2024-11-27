@@ -76,11 +76,6 @@
     text-align: right;
 }
 
-.alert-dark {
-    width: 300px;
-    margin-left: 37%;
-}
-
 @media (max-width: 600px) {
     .login-bg {
         height: 850px;
