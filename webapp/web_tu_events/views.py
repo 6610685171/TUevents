@@ -1,4 +1,4 @@
-from .models import Announcement, Found, Lost, Interest
+from .models import Announcement, Found, Lost, Interest, Club
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
@@ -12,7 +12,9 @@ from django.http import HttpResponseRedirect
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+    all_announcement = Announcement.objects.all()
+    clubs = Club.objects.filter(origin="tu")
+    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs})
 
 
 def about(request):
@@ -175,10 +177,11 @@ def all_club_announcement_list(request):
     all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
         "-date"
     )
+    tu_clubs = Club.objects.filter(origin="tu")
     return render(
         request,
         "clubs/clubs_announcement_list.html",
-        {"announcements": all_club_announcements},
+        {"announcements": all_club_announcements, 'tu_clubs': tu_clubs},
     )
 
 def tu_clubs_list(request):

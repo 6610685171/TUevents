@@ -1,15 +1,20 @@
 #body {
-    margin-top: 15px;
+    margin-top: 0px;
     margin-left: 15px;
     margin-right: 15px;
-    background-color: black;
+    background-color: #f3f3f3;
 }
 
-.img-home {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: black;
+#body hr {
+    border-top: 3px solid rgba(0, 0, 0, .4);
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.all-events-home {
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
 }
 
 .img-home>img {
@@ -18,19 +23,46 @@
     opacity: 40%;
 }
 
-.welcome-text {
-    position: absolute;
-    top: 57%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    padding: 10px 20px;
-    text-align: center;
-    font-family: "Red Hat Display", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
-    font-size: 60px;
+/* .view-all-box-home {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #ff4142;
+    margin-left: 12px;
+    font-weight: 300;
+
+}
+
+.view-all-box-home img {
+    margin-left: 5px;
+} */
+
+.all-events-home>h2 {
+    padding-top: 14px;
+    margin-left: 100px;
+    margin-bottom: -10px;
+}
+
+.alert-image {
+    display: flex;
+    background-color: rgb(227, 44, 44);
+    width: 700px;
+    height: 450px;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-image-box {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+
+.carousel {
+    position: relative;
+    width: 600px;
 }
 
 

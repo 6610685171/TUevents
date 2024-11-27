@@ -104,11 +104,13 @@
     color: #ff4142;
     margin-left: 12px;
     font-weight: 300;
+    margin-top: 7px;
 }
 
 .view-all-box img {
     margin-left: 3px;
     margin-bottom: 10px;
+    margin-top: 7px;
 }
 
 .view-all-box a {
