@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-<div id="body-event-detail">
     {% if messages %}
     <ul>
         {% for message in messages %}
@@ -65,7 +64,7 @@
                                     <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa"
                                         width="10" height="10" alt="star">
                                     <div class="interest-detail">
-                                        {% if info.id in interested_event_ids %}
+                                        {% if announcement.id in interested_event_ids %}
                                         interested
                                         {% else %}
                                         interest
@@ -79,13 +78,7 @@
                             <div class="interest-container-detail">
                                 <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa"
                                     width="10" height="10" alt="star">
-                                <div class="interest-detail">
-                                    {% if info.id in interested_event_ids %}
-                                    interested
-                                    {% else %}
-                                    interest
-                                    {% endif %}
-                                </div>
+                                <div class="interest-detail">interest</div>
                             </div>
                         </button>
                         {% endif %}
@@ -95,6 +88,7 @@
         </div>
     </div>
 </div>
+
 </div>
 </div>
 {% endblock %}
