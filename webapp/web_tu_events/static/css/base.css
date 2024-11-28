@@ -127,9 +127,13 @@ body>.mb-5 {
     color: rgb(172, 0, 0);
 }
 
-a {
-    color: black;
+
+.carousel-item img {
+    margin-top: 50px;
 }
+
+
+
 
 @media (max-width: 600px) {
     .bg-body-tertiary {
