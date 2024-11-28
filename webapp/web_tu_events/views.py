@@ -286,5 +286,11 @@ def lost_found_history(request):
     return render(request, "my_account/lost_found_history.html", {'lost_items': lost_items, 'found_items': found_items})
     
 def my_events(request):
-    interested_events = Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True)
-    return render(request, 'my_account/my_events.html', {'interested_events': interested_events})
+    if request.user.is_authenticated:
+        interested_events = Interest.objects.filter(user=request.user).select_related('announcement')
+    else:
+        interested_events = []
+
+    return render(request, 'my_account/my_events.html', {
+        'interested_events': interested_events
+    })
