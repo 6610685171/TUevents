@@ -133,3 +133,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "web_tu_events/staticfiles")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "web_tu_events/media")
+LOGIN_URL = 'login/'
+LOGIN_REDIRECT_URL = '/'

@@ -83,9 +83,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
+                {% if not user.is_superuser %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'my_account' %}">My Account</a>
                 </li>
+                {% endif %}
             </ul>
         </div>
         {% if user.is_authenticated %}
