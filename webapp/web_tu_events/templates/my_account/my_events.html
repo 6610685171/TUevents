@@ -15,19 +15,40 @@
 <div id="body-my-account">
     <div class="my-account-content">
         <div class="side-bar">
-            <a href="{% url 'my_account' %}">
-                <button class="my-button goldman-regular">Personal Information</button>
-            </a>
-            <a href="{% url 'lost_found_history' %}">
-                <button class="my-button goldman-regular">Lost&Found history</button>
-            </a>
-            <a href="{% url 'my_events' %}">
-                <button class="my-button goldman-regular">My Events</button>
-            </a>
+            <nav aria-label="User settings" class="org-sub-menu">
+                <ul class="ActionListWrap">
+                    <li class="ActionListItem ActionListItem--navActive">
+                        <a href="{% url 'my_account' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-user" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Personal Information</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'lost_found_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-search" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Lost&Found History</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_events' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-star" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Favorites Events</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
         <div class="info-lost">
-            <h1 class="goldman-regular">My Events</h1>
+            <h1 class="goldman-regular">My Favorites Events</h1>
             <hr>
 
             <div class="lost-contents-info">
@@ -55,7 +76,7 @@
                                 <div class="event-place-box">
                                     <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ" alt="location_logo" width="15" height="15">
                                     <div class="event-place noto-sans-thai-about">{{ interest.announcement.place }}</div>
-                                </div>
+                                </div>            
                                 <div class="toggle-interest">
                                     <button class="btn-interest" onclick="confirmToggleInterest({{ interest.announcement.id }})">
                                         <div class="interest-container">
@@ -76,7 +97,7 @@
 </div>
 
 {% block script %}
-    <script type="text/javascript">
+    <script type="text/javascript">        
         function confirmToggleInterest(announcementId) {
             const userConfirmed = confirm("This action will remove your interest in this event. Are you sure to continue?");
             
@@ -84,8 +105,6 @@
                 window.location.href = "{% url 'toggle_interest' announcement_id=0 %}".replace('0', announcementId);
             }
         }
-        
-        
     </script>
 {% endblock %}
 {% endblock %}

@@ -8,14 +8,36 @@
 <div id="body-my-account">
     <div class=my-account-content>
         <div class="side-bar">
-            <a href="{% url 'my_account' %}">
-                <button class="my-button goldman-regular">Personal Information</button>
-            </a>
-            <a href="{% url 'lost_found_history' %}"><button class="my-button goldman-regular">Lost&Found
-                    history</button>
-            </a>
-            <a href="{% url 'my_events' %}"><button class="my-button goldman-regular">My Events</button>
-            </a>
+            <nav aria-label="User settings" class="org-sub-menu">
+                <ul class="ActionListWrap">
+                    <li class="ActionListItem ActionListItem--navActive">
+                        <a href="{% url 'my_account' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-user" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Personal Information</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'lost_found_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-search" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Lost&Found History</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_events' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-star" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Favorites Events</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="info-lost">
             <h1 class="goldman-regular">My Lost History</h1>
