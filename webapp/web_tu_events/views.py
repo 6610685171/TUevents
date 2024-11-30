@@ -7,14 +7,15 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
-from .forms import FoundForm, LostForm, ClubAnnouncementForm
-from django.http import HttpResponseRedirect
+from .forms import FoundForm, LostForm, ClubAnnouncementForm, StudentProfileForm
+from django.http import HttpResponseRedirect,HttpResponse
 
 # Create your views here.
 def home(request):
     all_announcement = Announcement.objects.all()
     clubs = Club.objects.filter(origin="tu")
-    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs})
+    alerts = Announcement.objects.filter(categories="alerts")   
+    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs, 'alerts':alerts })
 
 
 def about(request):
@@ -26,7 +27,7 @@ def about(request):
 
 
 def all_events(request):
-    all_announcement = Announcement.objects.all()
+    all_announcement = Announcement.objects.exclude(categories="clubs").exclude(categories="alerts")
     
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
@@ -67,7 +68,6 @@ def category_events(request, category):
         {"announcement": announcement, "category": category},
     )
 
-
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
@@ -78,38 +78,34 @@ def login_view(request):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                # messages.error(request, "Invalid username.")
+                messages.error(request, "Invalid username.")
                 return redirect("login")
 
             user = authenticate(request, username=username, password=password)
             if user is None:
-                # messages.error(request, "Invalid password.")
+                messages.error(request, "Invalid password.")
                 return redirect("login")
 
             login(request, user)
 
-            if user.is_superuser:
+            # Check if 'next' parameter is present in the URL
+            next_url = request.GET.get('next')
 
-                # messages.success(
-                #     request, "Welcome, Admin! Redirecting to the admin panel."
-                # )
-                return redirect(reverse("admin:index"))
-            elif username.isnumeric():
-
-                # messages.success(request, "Welcome, Student!")
-                return render(request, "home.html")
+            # If 'next' is present, redirect to that page
+            if next_url:
+                return redirect(next_url)
+            # If no 'next' parameter, redirect to the home page
             else:
-
-                # messages.success(request, "Welcome, Club Account!")
-                return render(request, "home.html")
+                return redirect("home")  # Or the page you want as the default
         else:
-            # messages.error(request, "Both fields are required.")
+            messages.error(request, "Both fields are required.")
             return redirect("login")
+    
     else:
         form = AuthenticationForm()
 
+    # This line ensures that an HttpResponse is always returned
     return render(request, "login.html", {"form": form})
-
 
 # โพสของที่เจอ
 def create_found_item(request):
@@ -156,33 +152,68 @@ def lost_items_list(request):
 # สมาชิกชุมนุมโพสประกาศกิจกรรม
 @login_required
 def club_create_announcement(request):
-    if not request.user.username.startswith("tu_"):
-        return redirect("home")  # ถ้าไม่ใช่accountชุมนุมจะกลับไปหน้าhome
+    # if not request.user.username.startswith("tu_"):
+    #     return redirect("home")  # ถ้าไม่ใช่accountชุมนุมจะกลับไปหน้าhome
+    
+    if not request.user.student.club:
+        # messages.error(request, "You must be a member of a club to create an announcement.")
+        return redirect("home")    
 
     if request.method == "POST":
         form = ClubAnnouncementForm(request.POST, request.FILES)
         if form.is_valid():
             announcement = form.save(commit=False)
+            # announcement.student = request.user.student
+            announcement.club = request.user.student.club
             announcement.categories = "clubs"
             announcement.save()
-            return redirect("club_announcement_list")
+            messages.success(request, "Announcement created successfully!")
+            
+            # Redirect ไปที่หน้า club_announcement_list
+            return redirect('clubs_announcement_list')
     else:
         form = ClubAnnouncementForm()
 
-    return render(request, "club/club_create_announcement.html", {"form": form})
+    return render(request, "clubs/create_club_post.html", {"form": form})
 
 
 # รวมโพสจากทุกclub
-def all_club_announcement_list(request):
-    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
-        "-date"
-    )
+def all_club_list(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You need to log in first.")
+        return redirect('login')    
+    
+    student = request.user.student  # ดึง Student object จาก User ที่ล็อกอินอยู่
+
+    # ถ้าเป็น admin ให้แสดงทุก clubs และ dropdown ให้เลือก origin
+    if request.user.is_superuser:
+        # ถ้าเป็น admin ให้เลือกดู clubs ทั้งหมด
+        clubs = Club.objects.all()  # แสดงทุก clubs
+        faculty_name = "All Faculties"  # สำหรับแสดงว่าเป็นทุกคณะ
+    else:
+        student_id = str(student.student_id)  # ดึง student_id
+        faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
+        faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))  
+        clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # กรองตามคณะ
+
+    # กรองประกาศที่เกี่ยวข้องกับ clubs
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by("-date")
+    
+    # กรอง TU clubs โดยใช้ origin="tu"
     tu_clubs = Club.objects.filter(origin="tu")
+    
+    # ส่งข้อมูลไปยังเทมเพลต
     return render(
         request,
         "clubs/clubs_announcement_list.html",
-        {"announcements": all_club_announcements, 'tu_clubs': tu_clubs},
+        {
+            "all_club_announcements": all_club_announcements,
+            "clubs": clubs,          # Clubs ตามคณะ หรือ ทุกคณะสำหรับ admin
+            "tu_clubs": tu_clubs,     # Clubs ของ TU
+            "faculty_name": faculty_name,  # ชื่อคณะ
+        },
     )
+
 
 def tu_clubs_list(request):
     clubs = Club.objects.filter(origin="tu")
@@ -191,6 +222,13 @@ def tu_clubs_list(request):
 def club_detail(request, club_id):
     club = get_object_or_404(Club, id=club_id)
     return render(request, "clubs/club_detail.html", {"club": club})
+
+# def all_club_announcement_list(request):
+#     # ดึงประกาศทั้งหมดที่มี categories = 'clubs' และเรียงตามวันที่ล่าสุด
+#     all_club_announcements = Announcement.objects.filter(categories='clubs').order_by('-date')
+
+#     # ส่งข้อมูลประกาศไปยังเทมเพลต
+#     return render(request, "clubs/club_announcement_list.html", {"announcements": all_club_announcements})
 
 
 def lost_detail(request, lost_id):
@@ -276,14 +314,34 @@ def toggle_interest(request, announcement_id):
 def my_account(request):
     if request.user.is_authenticated:
         student = request.user.student
-        return render(request, "my_account/personal_info.html" ,{"student": student})
+
+        # หากมีการส่งฟอร์ม (POST) ให้บันทึกการเปลี่ยนแปลง
+        if request.method == 'POST':
+            form = StudentProfileForm(request.POST, request.FILES, instance=student)
+            if form.is_valid():
+                form.save()  # บันทึกการเปลี่ยนแปลง
+                return redirect('my_account')  # เมื่อบันทึกเสร็จแล้วให้รีเฟรชหน้า
+
+        else:
+            form = StudentProfileForm(instance=student)
+
+        return render(request, "my_account/personal_info.html", {
+            "student": student,
+            "form": form
+        })
     else:
         return render(request, "login.html")
 
 def lost_found_history(request):
-    lost_items = Lost.objects.filter().order_by('founded_status','-id')
-    found_items = Found.objects.all().order_by('founded_status','-id')
+    if not hasattr(request.user, 'student') or not request.user.student:
+        lost_items = []
+        found_items = []
+    else:
+        lost_items = Lost.objects.filter(student=request.user.student).order_by('founded_status', '-id')
+        found_items = Found.objects.filter(student=request.user.student).order_by('founded_status', '-id')
+
     return render(request, "my_account/lost_found_history.html", {'lost_items': lost_items, 'found_items': found_items})
+
     
 def my_events(request):
     if request.user.is_authenticated:
@@ -294,3 +352,91 @@ def my_events(request):
     return render(request, 'my_account/my_events.html', {
         'interested_events': interested_events
     })
+
+def get_faculty_by_code(faculty_code):
+    faculty_map = {
+        '01': 'law',
+        '02': 'business',
+        '03': 'political_science',
+        '04': 'economics',
+        '05': 'social_administration',
+        '06': 'liberal_arts',
+        '07': 'journalism_mass_comm',
+        '08': 'sociology_anthropology',
+        '09': 'science_technology',
+        '10': 'engineering',
+        '11': 'medicine',
+        '12': 'allied_health',
+        '13': 'dentistry',
+    }
+    return faculty_map.get(faculty_code, 'law')  # ค่าพื้นฐานคือ 'law'
+
+def get_faculty_name(faculty_code):
+    faculties = {
+        'law': 'Faculty of Law (คณะนิติศาสตร์)',
+        'business': 'Faculty of Business (คณะพาณิชยศาสตร์และการบัญชี)',
+        'political_science': 'Faculty of Political Science (คณะรัฐศาสตร์)',
+        'economics': 'Faculty of Economics (คณะเศรษฐศาสตร์)',
+        'social_administration': 'Faculty of Social Administration (คณะสังคมสงเคราะห์ศาสตร์)',
+        'sociology_anthropology': 'Faculty of Sociology and Anthropology (คณะสังคมวิทยาและมานุษยวิทยา)',
+        'liberal_arts': 'Faculty of Liberal Arts (คณะศิลปศาสตร์)',
+        'journalism_mass_comm': 'Faculty of Journalism and Mass Communication (คณะวารสารศาสตร์และสื่อสารมวลชน)',
+        'science_technology': 'Faculty of Science and Technology (คณะวิทยาศาสตร์และเทคโนโลยี)',
+        'engineering': 'Faculty of Engineering (คณะวิศวกรรมศาสตร์)',
+        'architecture_planning': 'Faculty of Architecture and Planning (คณะสถาปัตยกรรมศาสตร์และการผังเมือง)',
+        'medicine': 'Faculty of Medicine (คณะแพทยศาสตร์)',
+        'allied_health': 'Faculty of Allied Health Sciences (คณะสหเวชศาสตร์)',
+        'dentistry': 'Faculty of Dentistry (คณะทันตแพทยศาสตร์)',
+        'nursing': 'Faculty of Nursing (คณะพยาบาลศาสตร์)',
+        'public_health': 'Faculty of Public Health (คณะสาธารณสุขศาสตร์)',
+    }
+    full_name = faculties.get(faculty_code, 'Unknown Faculty')
+    english_name = full_name.split(' (')[0] 
+    return english_name
+
+def clubs_by_faculty(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("You need to log in first.")
+    
+    # ดึง student_id จากผู้ใช้ที่ล็อกอิน
+    student = request.user.student  # ดึง Student object จาก User ที่ล็อกอินอยู่
+    student_id = str(student.student_id)  # แปลง student_id เป็นสตริง
+
+    if not student_id:
+        return HttpResponse("Error: No student ID found in user profile.")
+
+    # ถ้า student_id มีความยาวน้อยกว่า 4 ตัว (กรณีผิดปกติ)
+    if len(student_id) < 4:
+        return HttpResponse("Error: Invalid student ID format.")
+
+    faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
+    faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))    
+    
+    # กรอง Club ตามคณะ
+    clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # ฟังก์ชัน get_faculty_by_code ใช้แปลง `faculty_code` เป็นชื่อคณะ
+    all_club_announcements = Announcement.objects.filter(
+        categories="clubs",
+        club__in=clubs  # กรองประกาศที่เชื่อมโยงกับคลับในคณะนี้
+    ).order_by("-date")  
+    
+    # ส่ง clubs ไปยังเทมเพลตเพื่อแสดง
+    return render(request, 'clubs/faculty_clubs.html', {
+        'clubs': clubs, 
+        'faculty_name': faculty_name,
+        'announcements': all_club_announcements  # ส่งประกาศไปยังเทมเพลต
+    })
+
+@login_required
+def edit_profile(request):
+    # ดึงข้อมูล Student ของ user ที่ล็อกอินอยู่
+    student = request.user.student
+
+    if request.method == 'POST':
+        form = StudentProfileForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()  # บันทึกข้อมูลที่แก้ไขลงในฐานข้อมูล
+            return redirect('my_account/personal_info')  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์ 
+    else:
+        form = StudentProfileForm(instance=student)
+
+    return render(request, 'my_account/edit_profile.html', {'form': form, 'student': student})

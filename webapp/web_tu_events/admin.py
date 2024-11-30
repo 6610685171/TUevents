@@ -3,7 +3,7 @@ from .models import Student,Announcement,Club,Lost,Found,Interest
 from django.db.models import Count
     
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ["student_id" ,"name" ,"email", "username"]
+    list_display = ["username" ,"name" ,"email", "student_id"]
     search_fields = ('name', 'email', 'student_id', 'username')
     readonly_fields = ('password',)
             

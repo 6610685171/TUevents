@@ -20,7 +20,7 @@ urlpatterns = [
     ),
     path(
         "clubs/club_announcement_list/",
-        views.all_club_announcement_list,
+        views.all_club_list,
         name="clubs_announcement_list",
     ),
     path("lost/<int:lost_id>/", views.lost_detail, name="lost_detail"),
@@ -34,5 +34,7 @@ urlpatterns = [
     path('announcement/<int:announcement_id>/interest/', views.toggle_interest, name='toggle_interest'),
     path('my_account/personal_info', views.my_account, name='my_account'), 
     path('my_account/lost_found_history', views.lost_found_history, name='lost_found_history'),
-    path('my_account/my_events.html', views.my_events , name='my_events')
+    path('my_account/my_events.html', views.my_events , name='my_events'),
+    path('clubs/faculty_clubs', views.clubs_by_faculty, name='clubs_by_faculty'),    
+    path('edit_profile/', views.edit_profile, name='edit_profile'),    
 ]

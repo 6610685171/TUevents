@@ -52,10 +52,12 @@
                 {% endif %}
                 
                 <div class="sub-info">
-                    <a href="{% url 'edit_profile' %}" class="btn btn-primary" style="margin-left: 10px; display: inline-flex; align-items: center;">
-                        <i class="fas fa-edit" style="margin-right: 5px;"></i> Edit Profile
-                    </a>
-                </div>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="{% url 'my_account' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
                     <div class="name">
                         <strong>Name:</strong> {{ student.name }}
                     </div>

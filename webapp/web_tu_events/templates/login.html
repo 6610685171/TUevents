@@ -7,22 +7,17 @@
 {% block content %}
 <div id="body-login">
     <div class="login-bg">
+        {% if messages %}
+            <div class="alert alert-warning" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="login-box">
             <p class="login-title">TU Events Login</p>
             <form method="post" action="{% url 'login' %}" class="login-form">
                 {% csrf_token %}
-                {% if messages %}
-                <div class="alerts-container">
-                    {% for message in messages %}
-                    {% if message.tags == "error" %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                {% endif %}
                 <div class="mb-3">
                     <label for="username-input" class="form-label">Username</label>
                     <input type="text" name="username" class="form-control" id="username-input" placeholder="Student ID"

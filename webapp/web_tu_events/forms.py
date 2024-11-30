@@ -1,5 +1,5 @@
 from django import forms
-from .models import Found,Lost,Announcement
+from .models import Found,Lost,Announcement,Student
 
 class FoundForm(forms.ModelForm):
     class Meta:
@@ -31,3 +31,20 @@ class ClubAnnouncementForm(forms.ModelForm):
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
+        
+    categories = forms.ChoiceField(
+        choices=Announcement.CATEGORIES_CHOICES,
+        initial='clubs',  # กำหนดค่าเริ่มต้นเป็น 'clubs'
+        widget=forms.Select(attrs={'readonly': 'readonly'}),  # ป้องกันไม่ให้ผู้ใช้เลือกค่า
+    )
+
+    # ปรับการตั้งค่า readonly ในฟอร์มในกรณีที่คุณไม่ต้องการให้ผู้ใช้แก้ไขค่า
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # ปิดการแก้ไขฟิลด์ categories ที่ผู้ใช้ไม่ต้องกรอก
+        self.fields['categories'].disabled = True        
+        
+class StudentProfileForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['image']

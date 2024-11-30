@@ -15,19 +15,46 @@
             </div>
         </div>
         <div id="carouselExampleIndicators" class="carousel slide">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://lh3.googleusercontent.com/d/1xPLA6h6z_4JVuLqGiY0JOt7f3si_aAcK"
-                        class="d-block w-100" alt="...">
+            <div id="alert-carousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    {% for alert in alerts %}
+                        <button type="button" data-bs-target="#alert-carousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                                class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
                 </div>
+            
+                <!-- Carousel Inner -->
+                <div class="carousel-inner">
+                    {% for alert in alerts %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <a href="{{ alert.get_absolute_url }}">
+                                {% if alert.image %}
+                                    <img src="{{ alert.image.url }}" class="d-block w-100" alt="{{ alert.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="No image available">
+                                {% endif %}
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>{{ alert.title }}</h5>
+                                    <p>{{ alert.description }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            
+                <!-- Carousel Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#alert-carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#alert-carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>            
+            </div>
+            
                 <div class="carousel-item">
                     <img src="..." class="d-block w-100" alt="...">
                 </div>
@@ -35,7 +62,7 @@
                     <img src="..." class="d-block w-100" alt="...">
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            {% comment %} <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                 data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -45,7 +72,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
-        </div>
+        </div> {% endcomment %}
 
 
         <!-- <div id="myCarousel" class="carousel slide section-right" data-ride="carousel">
