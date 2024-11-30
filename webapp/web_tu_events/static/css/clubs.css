@@ -17,7 +17,7 @@
 }
 
 .clubs-title {
-    padding-top: 40px;
+    padding-top: 10px;
     margin-left: 150px;
     font-size: 35px;
 }
@@ -100,7 +100,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding-top: 23px;
+    /* padding-top: 23px; */
     color: #ff4142;
     margin-left: 12px;
     font-weight: 300;

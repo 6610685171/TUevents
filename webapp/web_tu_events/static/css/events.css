@@ -1,5 +1,5 @@
 #body-events {
-    margin-top: -15px;
+    /* margin-top: -15px; */
     margin-left: 15px;
     margin-right: 15px;
     height: auto;
@@ -63,7 +63,7 @@
     margin-bottom: 10px;
     font-weight: 600;
     display: block;
-    height: 40px;
+    height: 20px;
 }
 
 .event-name:hover {
@@ -80,8 +80,8 @@
 .event-place-box {
     display: flex;
     flex-direction: row;
-    margin-top: 2px;
-    height: 45px;
+    margin-bottom: 25px;
+    /* height: 25px; */
 }
 
 .event-duration-box>img {

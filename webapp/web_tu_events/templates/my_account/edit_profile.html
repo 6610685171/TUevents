@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>My Account</title>
+{% endblock %}
+
+{% block content %}
+<div id="body-my-account">
+    <div class="my-account-content">
+        <!-- Sidebar -->
+        <div class="side-bar">
+            <nav aria-label="User settings" class="org-sub-menu">
+                <ul class="ActionListWrap">
+                    <li class="ActionListItem ActionListItem--navActive">
+                        <a href="{% url 'my_account' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-user" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Personal Information</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'lost_found_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-search" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Lost&Found History</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_events' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-star" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Favorites Events</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Content -->
+        <div class="info-content">
+            <h1>Welcome, {{ student.name }}</h1>
+            <div class="info-box">
+                {% if student.image %}
+                <img src="{{ student.image.url }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;">
+                {% else %}
+                <p>No profile picture.</p>
+                {% endif %}
+                
+                <div class="sub-info">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="{% url 'my_account' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                    <div class="name">
+                        <strong>Name:</strong> {{ student.name }}
+                    </div>
+                    <div class="student-id">
+                        <strong>Student ID:</strong> {{ student.student_id }}
+                    </div>
+                    <div class="email">
+                        <strong>Email:</strong> {{ student.email }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

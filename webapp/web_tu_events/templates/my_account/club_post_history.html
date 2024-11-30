@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>My Club Post History</title>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li class="alert alert-success">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div id="body-my-account">
+    <div class="my-account-content">
+        <div class="side-bar">
+            <nav aria-label="User settings" class="org-sub-menu">
+                <ul class="ActionListWrap">
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_account' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-user" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Personal Information</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'lost_found_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-search" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Lost&Found History</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_events' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-star" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Favorites Events</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem ActionListItem--navActive">
+                        <a href="{% url 'my_club_post_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-pencil-alt" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Club Post History</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="info-lost">
+            <h1 class="goldman-regular">My Club Post History</h1>
+            <hr>
+
+            <div class="lost-contents-info">
+                {% if announcements %}
+                    {% for announcement in announcements %}
+                        <div class="event-box">
+                            <div>
+                                <a href="{{ announcement.get_absolute_url }}">
+                                    <div class="event-image">
+                                        {% if announcement.image %}
+                                            <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}" width="100%" height="100%">
+                                        {% else %}
+                                            <p>No image available.</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="event-name noto-sans-thai-about">{{ announcement.title }}</div>
+                                </a>
+                                <div class="event-duration-box">
+                                    <img src="https://lh3.googleusercontent.com/d/1cC59hVdiBcd2xTmRPf0PbXL6l7gB-lAw" alt="clock_logo" width="15" height="15">
+                                    <div class="event-duration noto-sans-thai-about">
+                                        <div>{{ announcement.start_date }}</div>
+                                        <div>{{ announcement.end_date }}</div>
+                                    </div>
+                                </div>
+                                <div class="event-place-box">
+                                    <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ" alt="location_logo" width="15" height="15">
+                                    <div class="event-place noto-sans-thai-about">{{ announcement.place }}</div>
+                                </div>        
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You haven't posted any events in your club yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

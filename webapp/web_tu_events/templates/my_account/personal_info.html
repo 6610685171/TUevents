@@ -6,49 +6,78 @@
 
 {% block content %}
 <div id="body-my-account">
-    <div class=my-account-content>
+    <div class="my-account-content">
+        <!-- Sidebar -->
         <div class="side-bar">
-            <a href="{% url 'my_account' %}">
-                <button class="my-button goldman-regular">Personal Information</button>
-            </a>
-            <a href="{% url 'lost_found_history' %}"><button class="my-button goldman-regular">Lost&Found
-                    history</button>
-            </a>
-            <a href="{% url 'my_events' %}"><button class="my-button goldman-regular">My Events</button>
-            </a>
+            <nav aria-label="User settings" class="org-sub-menu">
+                <ul class="ActionListWrap">
+                    <li class="ActionListItem ActionListItem--navActive">
+                        <a href="{% url 'my_account' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-user" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Personal Information</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'lost_found_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-search" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">Lost&Found History</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_events' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-star" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Favorites Events</span>
+                        </a>
+                    </li>
+
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_club_post_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-pencil-alt" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Club Post History
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+        
+        <!-- Content -->
         <div class="info-content">
-            <div class="personal-info-box">
-                <img src="https://lh3.googleusercontent.com/d/1Z8BJXX6-1HpizEzKM2e14VIe0fa4dknX" alt="user_logo"
-                    width="30" height="auto">
-                <div class="personal-info goldman-regular">Personal Information</div>
-            </div>
+            <h1>Welcome, {{ student.name }}</h1>
             <div class="info-box">
-                <div class="image-box">
-                    <img src="{{ student.image.url }}" alt="Profile Picture">
-                </div>
+                {% if student.image %}
+                <img src="{{ student.image.url }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;">
+                {% else %}
+                <p>No profile picture.</p>
+                {% endif %}
+                
                 <div class="sub-info">
-                    <div class=" form-group">
-                        <label for="image-file"></label>
-                        <input type="file" class="form-control-file" name="image" id="image-file" required>
-                    </div>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary" style="margin-left: 10px; display: inline-flex; align-items: center;">
+                        <i class="fas fa-edit" style="margin-right: 5px;"></i> Edit Profile
+                    </a>
+                </div>
                     <div class="name">
-                        <div class="info-title">Name: </div>
-                        <div class="info">{{ student.name }}</div>
+                        <strong>Name:</strong> {{ student.name }}
                     </div>
                     <div class="student-id">
-                        <div class="info-title">Student ID: </div>
-                        <div class="info">{{ student.student_id }}</div>
+                        <strong>Student ID:</strong> {{ student.student_id }}
                     </div>
                     <div class="email">
-                        <div class="info-title">Email: </div>
-                        <div class="info">{{ student.email }}</div>
+                        <strong>Email:</strong> {{ student.email }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-
 {% endblock %}

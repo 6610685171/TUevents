@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Create Found Item</title>
+<title>Create Post</title>
 {% endblock %}
 
 {% block content %}
@@ -14,39 +14,65 @@
         <div class="create-type-found goldman-regular">CREATE FOUND POST</div>
     </div>
     <div class="create-flex">
-        <form class="lost-form noto-sans-thai-about" method="post" enctype="multipart/form-data"
-            action="{% url 'create_found_item' %}">
+        <!-- Announcement Form -->
+        {% comment %} <h2>Create a New Announcement</h2> {% endcomment %}
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+            
+            <!-- Title Field -->
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" class="form-control" name="title" id="title" required>
             </div>
+
+            <!-- Image Field -->
+            <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" class="form-control-file" name="image" id="image" required>
+            </div>            
+            
+            <!-- Description Field -->
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea class="form-control" name="description" id="description" rows="4" required></textarea>
             </div>
-            <div class=" form-group">
-                <label for="image-file">Item's Image</label>
-                <input type="file" class="form-control-file" name="image" id="image-file" required>
-            </div>
 
+            <!-- Start Date Field -->
             <div class="form-group">
                 <label for="start_date">Start Date</label>
-                <input type="text" class="form-control" name="start_date" id="start_date"
-                    placeholder="Where did you found the item?" required>
+                <input type="datetime-local" class="form-control" name="start_date" id="start_date" required>
             </div>
+
+            <!-- End Date Field -->
             <div class="form-group">
                 <label for="end_date">End Date</label>
-                <input type="text" class="form-control" name="end_date" id="end_date" required>
+                <input type="datetime-local" class="form-control" name="end_date" id="end_date" required>
             </div>
+
+            <!-- Place Field -->
             <div class="form-group">
                 <label for="place">Place</label>
                 <input type="text" class="form-control" name="place" id="place" required>
             </div>
+
+            <!-- Club Field -->
+            <div class="form-group">
+                <label for="club">Club</label>
+                {{ form.club }}  <!-- ฟอร์มที่มีฟิลด์ Club -->
+            </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-
     </div>
-</div>
+    {% if form.errors %}
+    <ul class="form-errors">
+    {% for field in form %}
+        {% for error in field.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    {% endfor %}
+    </ul>
+{% endif %}
+
 </div>
 {% endblock %}
