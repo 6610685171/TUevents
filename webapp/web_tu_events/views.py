@@ -499,7 +499,7 @@ def edit_profile(request):
         form = StudentProfileForm(request.POST, request.FILES, instance=student)
         if form.is_valid():
             form.save()  # บันทึกข้อมูลที่แก้ไขลงในฐานข้อมูล
-            return redirect('my_account/personal_info')  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์ 
+            return redirect('my_account')  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์ 
     else:
         form = StudentProfileForm(instance=student)
 
