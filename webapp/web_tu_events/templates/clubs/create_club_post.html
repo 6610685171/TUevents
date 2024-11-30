@@ -9,16 +9,15 @@
     <div class="create-flex">
         <div class="create-slogan">
             <h1 class="goldman-regular">Club</h1>
-            <h1 class="create-andfound goldman-regular">Create Post</h1>
+            <h1 class="create-post-club goldman-regular">CREATE POST</h1>
         </div>
-        <div class="create-type-found goldman-regular">CREATE FOUND POST</div>
     </div>
     <div class="create-flex">
         <!-- Announcement Form -->
         {% comment %} <h2>Create a New Announcement</h2> {% endcomment %}
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
+
             <!-- Title Field -->
             <div class="form-group">
                 <label for="title">Title</label>
@@ -29,8 +28,8 @@
             <div class="form-group">
                 <label for="image">Image</label>
                 <input type="file" class="form-control-file" name="image" id="image" required>
-            </div>            
-            
+            </div>
+
             <!-- Description Field -->
             <div class="form-group">
                 <label for="description">Description</label>
@@ -58,7 +57,8 @@
             <!-- Club Field -->
             <div class="form-group">
                 <label for="club">Club</label>
-                {{ form.club }}  <!-- ฟอร์มที่มีฟิลด์ Club -->
+                {{ form.club }}
+                <!-- ฟอร์มที่มีฟิลด์ Club -->
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -66,13 +66,13 @@
     </div>
     {% if form.errors %}
     <ul class="form-errors">
-    {% for field in form %}
+        {% for field in form %}
         {% for error in field.errors %}
-            <li>{{ error }}</li>
+        <li>{{ error }}</li>
         {% endfor %}
-    {% endfor %}
+        {% endfor %}
     </ul>
-{% endif %}
+    {% endif %}
 
 </div>
 {% endblock %}

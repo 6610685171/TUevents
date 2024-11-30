@@ -50,34 +50,35 @@
                 </ul>
             </nav>
         </div>
-        
+
         <!-- Content -->
         <div class="info-content">
             <h1>Welcome, {{ student.name }}</h1>
             <div class="info-box">
                 {% if student.image %}
-                <img src="{{ student.image.url }}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;">
+                <img src="{{ student.image.url }}" alt="Profile Picture">
                 {% else %}
                 <p>No profile picture.</p>
                 {% endif %}
-                
+
                 <div class="sub-info">
-                    <a href="{% url 'edit_profile' %}" class="btn btn-primary" style="margin-left: 10px; display: inline-flex; align-items: center;">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary"
+                        style="margin-left: 10px; display: inline-flex; align-items: center;">
                         <i class="fas fa-edit" style="margin-right: 5px;"></i> Edit Profile
                     </a>
                 </div>
-                    <div class="name">
-                        <strong>Name:</strong> {{ student.name }}
-                    </div>
-                    <div class="student-id">
-                        <strong>Student ID:</strong> {{ student.student_id }}
-                    </div>
-                    <div class="email">
-                        <strong>Email:</strong> {{ student.email }}
-                    </div>
+                <div class="name">
+                    <strong>Name:</strong> {{ student.name }}
+                </div>
+                <div class="student-id">
+                    <strong>Student ID:</strong> {{ student.student_id }}
+                </div>
+                <div class="email">
+                    <strong>Email:</strong> {{ student.email }}
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

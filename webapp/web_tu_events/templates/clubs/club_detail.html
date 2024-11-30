@@ -12,7 +12,7 @@
     {% endfor %}
 </ul>
 {% endif %}
-<div id="body-events">
+<div id="body-clubs">
     <div class="back-club">
         <a href="{% url 'clubs_announcement_list' %}">
             <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
@@ -28,15 +28,26 @@
             <p>No image available.</p>
             {% endif %}
         </div>
-        <div class="club-detail-name noto-sans-thai-about">{{ club.title }}</div>
-        <div class="club-detail-description noto-sans-thai-about">{{ club.description }}</div>
-        <div class="origin">
-            <img src="https://lh3.googleusercontent.com/d/1SUDgsup9hJiSV_RzeOxBXbbqHxyZ747k" alt="location_logo"
-                width="20" height="20">
-            <div class="origin-name">{{ club.get_origin_display }}</div>
+        <div class="club-content-box">
+            <div class="c-box">
+                <div class="club-detail-name noto-sans-thai-about">{{ club.title }}</div>
+                <div class="club-status">enable to join</div>
+                {% if club.enable_to_join == True %}
+                <img src="https://lh3.googleusercontent.com/d/1g22U5mxjcHPBzstklrX68JF4AzbWahFz" alt="status" width="12"
+                    height="auto">
+                {% else %}
+                <img src="https://lh3.googleusercontent.com/d/1D70bPQJq0KT2oIqifzGU64xSIjvVB9CO" alt="status" width="12"
+                    height="auto">
+                {% endif %}
+            </div>
+            <div class="club-detail-description noto-sans-thai-about">{{ club.description }}</div>
+            <div class="origin">
+                <img src="https://lh3.googleusercontent.com/d/1SUDgsup9hJiSV_RzeOxBXbbqHxyZ747k" alt="location_logo"
+                    width="20" height="20">
+                <div class="origin-name">{{ club.get_origin_display }}</div>
+            </div>
         </div>
     </div>
-    <hr>
     <div class="club-section-bar">
     </div>
     <div class="clubs-banner goldman-regular">
@@ -73,12 +84,13 @@
                         width="15" height="15">
                     <div class="event-place noto-sans-thai-about">{{ info.place }}</div>
                 </div>
-                <div class="user-box">
-                    <div class="profile-pic-box">
+                <div class="user-box-clubs">
+                    <div class="profile-pic-box-clubs">
                         {% if info.club and info.club.image %}
                         <img src="{{ info.club.image.url }}" alt="club-pic" height="100%" width="100%">
                         {% else %}
-                        <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN" alt="club-pic" height="100%" width="100%">
+                        <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN" alt="club-pic"
+                            height="100%" width="100%">
                         {% endif %}
                     </div>
                     {% if info.club %}
@@ -117,7 +129,7 @@
         </div>
         {% endfor %}
     </div>
-    
+
 
 </div>
 {% endblock %}

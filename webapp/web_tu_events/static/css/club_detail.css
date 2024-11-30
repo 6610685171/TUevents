@@ -12,10 +12,16 @@
 .club-detail-content {
     display: flex;
     width: 100%;
-    height: 67vh;
+    height: 40vh;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
+}
+
+.club-content-box {
+    display: flex;
     flex-direction: column;
+    margin-left: 15px;
 }
 
 .club-detail-image {
@@ -47,11 +53,8 @@
 
 .origin {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: row;
     font-weight: 500;
-    margin-top: 40px;
 }
 
 .back-club>a {
@@ -60,4 +63,20 @@
 
 .back-club a:hover {
     color: rgb(227, 44, 44);
+}
+
+.c-box {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+}
+
+
+.club-status {
+    padding-top: 12px;
+    margin-left: 12px;
+}
+
+.c-box img {
+    padding-top: 12px;
 }
