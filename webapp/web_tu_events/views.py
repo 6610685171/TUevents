@@ -94,22 +94,26 @@ def login_view(request):
                 messages.error(request, "Invalid username.")
                 return redirect("login")
 
+            # ตรวจสอบรหัสผ่าน
             user = authenticate(request, username=username, password=password)
             if user is None:
                 messages.error(request, "Invalid password.")
                 return redirect("login")
 
+            # เมื่อเข้าสู่ระบบสำเร็จ
             login(request, user)
 
-            # Check if 'next' parameter is present in the URL
-            next_url = request.GET.get('next')
+            # ตรวจสอบว่าเป็น superuser หรือไม่
+            if user.is_superuser:
+                return redirect("admin:index")  # ไปที่หน้า admin ของ Django
 
-            # If 'next' is present, redirect to that page
+            # ถ้าไม่ใช่ superuser, ตรวจสอบว่ามี 'next' หรือไม่
+            next_url = request.GET.get('next')
             if next_url:
                 return redirect(next_url)
-            # If no 'next' parameter, redirect to the home page
             else:
-                return redirect("home")  # Or the page you want as the default
+                return redirect("home")  # หรือหน้าอื่นที่ต้องการให้ผู้ใช้เข้า
+
         else:
             messages.error(request, "Both fields are required.")
             return redirect("login")
@@ -117,8 +121,9 @@ def login_view(request):
     else:
         form = AuthenticationForm()
 
-    # This line ensures that an HttpResponse is always returned
+    # ส่งแบบฟอร์มกลับไปที่เทมเพลต
     return render(request, "login.html", {"form": form})
+
 
 # โพสของที่เจอ
 def create_found_item(request):
