@@ -1,11 +1,11 @@
 #top-create {
-    margin-top: -5px;
+
     margin-left: 15px;
     margin-right: 15px;
     background-color: #d7cdc5;
     background-size: cover;
     background-position: center;
-    height: 85vh;
+    height: 100vh;
     display: flex;
     flex-direction: row;
 }
