@@ -368,11 +368,11 @@ def toggle_interest(request, announcement_id):
     if Interest.objects.filter(user=request.user, announcement=announcement).exists():
         # ถ้าผู้ใช้งานเคยสนใจกิจกรรมนี้แล้ว ให้ยกเลิก
         Interest.objects.filter(user=request.user, announcement=announcement).delete()
-        messages.success(request, "คุณได้ยกเลิกการกดสนใจกิจกรรมนี้แล้ว")
+        messages.success(request, "You have unmarked this event as interested.")
     else:
         # ถ้าผู้ใช้งานยังไม่สนใจ ให้กดสนใจ
         Interest.objects.create(user=request.user, announcement=announcement)
-        messages.success(request, "คุณได้กดสนใจกิจกรรมนี้แล้ว")
+        messages.success(request, "You have marked this event as interested.")
     
     referer = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(referer)
