@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>My Events</title>
+<title>My Club Post History</title>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
         <div class="side-bar">
             <nav aria-label="User settings" class="org-sub-menu">
                 <ul class="ActionListWrap">
-                    <li class="ActionListItem ActionListItem--navActive">
+                    <li class="ActionListItem">
                         <a href="{% url 'my_account' %}" class="ActionListContent">
                             <span class="ActionListItem-visual ActionListItem-visual--leading">
                                 <i class="fas fa-user" style="font-size: 14px;"></i>
@@ -44,13 +44,12 @@
                         </a>
                     </li>
 
-                    <li class="ActionListItem">
+                    <li class="ActionListItem ActionListItem--navActive">
                         <a href="{% url 'my_club_post_history' %}" class="ActionListContent">
                             <span class="ActionListItem-visual ActionListItem-visual--leading">
                                 <i class="fas fa-pencil-alt" style="font-size: 14px;"></i>
                             </span>
-                            <span class="ActionListItem-label">My Club Post History
-                            </span>
+                            <span class="ActionListItem-label">My Club Post History</span>
                         </a>
                     </li>
                 </ul>
@@ -58,63 +57,43 @@
         </div>
 
         <div class="info-lost">
-            <h1 class="goldman-regular">My Favorites Events</h1>
+            <h1 class="goldman-regular">My Club Post History</h1>
             <hr>
 
             <div class="lost-contents-info">
-                {% if interested_events %}
-                    {% for interest in interested_events %}
+                {% if announcements %}
+                    {% for announcement in announcements %}
                         <div class="event-box">
                             <div>
-                                <a href="{{ interest.announcement.get_absolute_url }}">
+                                <a href="{{ announcement.get_absolute_url }}">
                                     <div class="event-image">
-                                        {% if interest.announcement.image %}
-                                            <img src="{{ interest.announcement.image.url }}" alt="{{ interest.announcement.title }}" width="100%" height="100%">
+                                        {% if announcement.image %}
+                                            <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}" width="100%" height="100%">
                                         {% else %}
                                             <p>No image available.</p>
                                         {% endif %}
                                     </div>
-                                    <div class="event-name noto-sans-thai-about">{{ interest.announcement.title }}</div>
+                                    <div class="event-name noto-sans-thai-about">{{ announcement.title }}</div>
                                 </a>
                                 <div class="event-duration-box">
                                     <img src="https://lh3.googleusercontent.com/d/1cC59hVdiBcd2xTmRPf0PbXL6l7gB-lAw" alt="clock_logo" width="15" height="15">
                                     <div class="event-duration noto-sans-thai-about">
-                                        <div>{{ interest.announcement.start_date }}</div>
-                                        <div>{{ interest.announcement.end_date }}</div>
+                                        <div>{{ announcement.start_date }}</div>
+                                        <div>{{ announcement.end_date }}</div>
                                     </div>
                                 </div>
                                 <div class="event-place-box">
                                     <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ" alt="location_logo" width="15" height="15">
-                                    <div class="event-place noto-sans-thai-about">{{ interest.announcement.place }}</div>
-                                </div>            
-                                <div class="toggle-interest">
-                                    <button class="btn-interest" onclick="confirmToggleInterest({{ interest.announcement.id }})">
-                                        <div class="interest-container">
-                                            <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa" width="10" height="10" alt="star">
-                                            <div class="interest">Interested</div>
-                                        </div>
-                                    </button>
-                                </div>
+                                    <div class="event-place noto-sans-thai-about">{{ announcement.place }}</div>
+                                </div>        
                             </div>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p>You haven't shown interest in any events yet.</p>
+                    <p>You haven't posted any events in your club yet.</p>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
-
-{% block script %}
-    <script type="text/javascript">        
-        function confirmToggleInterest(announcementId) {
-            const userConfirmed = confirm("This action will remove your interest in this event. Are you sure to continue?");
-            
-            if (userConfirmed) {
-                window.location.href = "{% url 'toggle_interest' announcement_id=0 %}".replace('0', announcementId);
-            }
-        }
-    </script>
-{% endblock %}
 {% endblock %}

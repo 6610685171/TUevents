@@ -12,10 +12,12 @@ from django.http import HttpResponseRedirect,HttpResponse
 
 # Create your views here.
 def home(request):
-    all_announcement = Announcement.objects.all()
+    all_announcement = Announcement.objects.exclude(categories="clubs").exclude(categories="alerts")
     clubs = Club.objects.filter(origin="tu")
-    alerts = Announcement.objects.filter(categories="alerts")   
-    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs, 'alerts':alerts })
+    alerts = Announcement.objects.filter(categories="alerts")  
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by("-date")
+     
+    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs, 'alerts':alerts, 'all_club_announcements' : all_club_announcements })
 
 
 def about(request):
@@ -47,8 +49,18 @@ def all_events(request):
 
 
 def event_detail(request, announcement_id):
+    # ดึงประกาศจากฐานข้อมูล
     announcement = get_object_or_404(Announcement, id=announcement_id)
-    
+
+    # ตรวจสอบว่า announcement.student เชื่อมโยงกับ request.user.student หรือไม่
+    if hasattr(announcement, 'student') and hasattr(request.user, 'student'):
+        print(f"Announcement student: {announcement.student}")
+        print(f"Logged-in user student: {request.user.student}")
+
+        # เปรียบเทียบว่าเป็นคนเดียวกันหรือไม่
+        if announcement.student == request.user.student:
+            print("This is the student's announcement!")
+
     if request.user.is_authenticated:
         interested_event_ids = Interest.objects.filter(user=request.user).values_list('announcement__id', flat=True)
     else:
@@ -58,6 +70,7 @@ def event_detail(request, announcement_id):
         "announcement": announcement,
         "interested_event_ids": interested_event_ids,
     })
+
 
 def category_events(request, category):
     announcement = Announcement.objects.filter(categories=category)
@@ -163,14 +176,14 @@ def club_create_announcement(request):
         form = ClubAnnouncementForm(request.POST, request.FILES)
         if form.is_valid():
             announcement = form.save(commit=False)
-            # announcement.student = request.user.student
-            announcement.club = request.user.student.club
+            announcement.student = request.user.student
+            # announcement.club = request.user.student.club
             announcement.categories = "clubs"
             announcement.save()
             messages.success(request, "Announcement created successfully!")
             
             # Redirect ไปที่หน้า club_announcement_list
-            return redirect('clubs_announcement_list')
+            return redirect('event-detail', announcement_id=announcement.id)
     else:
         form = ClubAnnouncementForm()
 
@@ -201,35 +214,71 @@ def all_club_list(request):
     
     # กรอง TU clubs โดยใช้ origin="tu"
     tu_clubs = Club.objects.filter(origin="tu")
+    tu_club_announcements = all_club_announcements.filter(club__in=tu_clubs)
     
+    faculty_club_announcements = all_club_announcements.filter(club__in=clubs)
+    
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []
+            
     # ส่งข้อมูลไปยังเทมเพลต
     return render(
         request,
         "clubs/clubs_announcement_list.html",
         {
             "all_club_announcements": all_club_announcements,
+            "tu_club_announcements": tu_club_announcements,
+            "faculty_club_announcements": faculty_club_announcements,
             "clubs": clubs,          # Clubs ตามคณะ หรือ ทุกคณะสำหรับ admin
             "tu_clubs": tu_clubs,     # Clubs ของ TU
             "faculty_name": faculty_name,  # ชื่อคณะ
+            "interested_events": interested_events,            
         },
     )
 
 
 def tu_clubs_list(request):
+    # ดึงข้อมูล Club ที่มี origin="tu"
     clubs = Club.objects.filter(origin="tu")
-    return render(request, "clubs/tu_clubs.html", {"clubs": clubs})
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by("-date")
+    
+    tu_club_announcements = all_club_announcements.filter(club__in=clubs)
+
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []
+        
+    # ส่งข้อมูล Club ไปยังเทมเพลต
+    return render(request, "clubs/tu_clubs.html", {
+        "clubs": clubs,
+        "tu_club_announcements": tu_club_announcements,
+        "interested_events": interested_events,                    
+    })
 
 def club_detail(request, club_id):
+    # ดึงข้อมูล Club ตาม club_id
     club = get_object_or_404(Club, id=club_id)
-    return render(request, "clubs/club_detail.html", {"club": club})
 
-# def all_club_announcement_list(request):
-#     # ดึงประกาศทั้งหมดที่มี categories = 'clubs' และเรียงตามวันที่ล่าสุด
-#     all_club_announcements = Announcement.objects.filter(categories='clubs').order_by('-date')
+    # ดึงข้อมูล Announcement ที่มีการเชื่อมโยงกับ Club นี้
+    announcements = Announcement.objects.filter(club=club)
 
-#     # ส่งข้อมูลประกาศไปยังเทมเพลต
-#     return render(request, "clubs/club_announcement_list.html", {"announcements": all_club_announcements})
-
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []
+        
+    # ส่งข้อมูล Club และ Announcement ไปยังเทมเพลต
+    return render(request, "clubs/club_detail.html", {
+        "club": club,
+        "announcements": announcements,
+        "interested_events": interested_events,                                
+    })
 
 def lost_detail(request, lost_id):
     lost = get_object_or_404(Lost, id=lost_id)
@@ -395,6 +444,7 @@ def get_faculty_name(faculty_code):
     return english_name
 
 def clubs_by_faculty(request):
+    # ตรวจสอบว่าผู้ใช้เข้าสู่ระบบแล้วหรือยัง
     if not request.user.is_authenticated:
         return HttpResponse("You need to log in first.")
     
@@ -410,20 +460,29 @@ def clubs_by_faculty(request):
         return HttpResponse("Error: Invalid student ID format.")
 
     faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
-    faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))    
-    
+    faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))  # ฟังก์ชันแปลง faculty_code เป็นชื่อคณะ
+
     # กรอง Club ตามคณะ
-    clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # ฟังก์ชัน get_faculty_by_code ใช้แปลง `faculty_code` เป็นชื่อคณะ
+    clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # ฟังก์ชัน `get_faculty_by_code` ใช้แปลง `faculty_code` เป็นชื่อคณะ
+
+    # ดึงประกาศที่เกี่ยวข้องกับคลับในคณะนี้
     all_club_announcements = Announcement.objects.filter(
         categories="clubs",
         club__in=clubs  # กรองประกาศที่เชื่อมโยงกับคลับในคณะนี้
-    ).order_by("-date")  
+    ).order_by("-date")
     
-    # ส่ง clubs ไปยังเทมเพลตเพื่อแสดง
-    return render(request, 'clubs/faculty_clubs.html', {
-        'clubs': clubs, 
-        'faculty_name': faculty_name,
-        'announcements': all_club_announcements  # ส่งประกาศไปยังเทมเพลต
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []    
+
+    # ส่งข้อมูลไปยังเทมเพลต
+    return render(request, "clubs/faculty_clubs.html", {
+        "clubs": clubs,
+        "faculty_name": faculty_name,
+        "announcements": all_club_announcements,  # ส่งประกาศไปยังเทมเพลต
+        "interested_events": interested_events,                    
     })
 
 @login_required
@@ -440,3 +499,49 @@ def edit_profile(request):
         form = StudentProfileForm(instance=student)
 
     return render(request, 'my_account/edit_profile.html', {'form': form, 'student': student})
+
+def event_edit(request, announcement_id):
+    # ดึงประกาศที่ต้องการแก้ไขจากฐานข้อมูล
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+
+    # ตรวจสอบสิทธิ์ของผู้ใช้ว่าเป็นเจ้าของประกาศ
+    if announcement.student != request.user.student:
+        return redirect('event-detail', announcement_id=announcement_id)  # ถ้าไม่ใช่เจ้าของประกาศจะไม่สามารถแก้ไขได้
+    
+    # หากรับการร้องขอแบบ POST ให้บันทึกข้อมูลที่แก้ไข
+    if request.method == 'POST':
+        form = ClubAnnouncementForm(request.POST, request.FILES, instance=announcement)
+        if form.is_valid():
+            form.save()  # บันทึกข้อมูลที่แก้ไข
+            return redirect('event-detail', announcement_id=announcement.id)  # กลับไปที่หน้ารายละเอียดของประกาศที่แก้ไข
+    else:
+        # กรณีที่แสดงฟอร์มให้กรอกข้อมูลใหม่
+        form = ClubAnnouncementForm(instance=announcement)
+
+    # ส่งฟอร์มและประกาศไปที่เทมเพลต
+    return render(request, "events/edit_event.html", {
+        "form": form,
+        "announcement": announcement,
+    })
+    
+def event_delete(request, announcement_id):
+    # ดึงประกาศที่ต้องการลบ
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+    
+    # ตรวจสอบว่าเป็นผู้สร้างประกาศนี้หรือไม่
+    if announcement.student == request.user.student:
+        announcement.delete()  # ลบประกาศจากฐานข้อมูล
+        messages.success(request, "Announcement deleted successfully!")
+        return redirect('clubs_announcement_list')    
+    return redirect('clubs_announcement_list')
+
+def club_post_history(request):
+    # ตรวจสอบว่า user มี student หรือไม่
+    if not hasattr(request.user, 'student') or not request.user.student:
+        announcements = []  # ถ้าไม่มี student ให้ return list ว่าง
+    else:
+        # ดึงประกาศทั้งหมดที่ผู้ใช้โพสต์โดยใช้ student ของผู้ใช้
+        announcements = Announcement.objects.filter(student=request.user.student).order_by('-date')  # กรองโดย student ของผู้ใช้
+
+    # ส่งข้อมูลไปยัง template
+    return render(request, "my_account/club_post_history.html", {'announcements': announcements})

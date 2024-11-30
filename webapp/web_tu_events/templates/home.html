@@ -109,12 +109,10 @@
         </div> -->
     </div>
 
-
-    <div class="club-section-bar">
-    </div>
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">Events</h1>
+            <hr>
             <div class="view-all-box">
                 <a href="{% url 'all_events' %}">
                     <div class="view-all-box">
@@ -195,13 +193,12 @@
         {% endfor %}
     </div>
 
-    <div class="club-section-bar">
-    </div>
     <div class="clubs-banner goldman-regular">
+        <hr>
         <div class="club-view-all-box">
-            <h1 class="clubs-title">TU Clubs</h1>
+            <h1 class="clubs-title">Announcement From all Clubs</h1>
             <div class="view-all-box">
-                <a href="{% url 'tu_clubs' %}">
+                <a href="{% url 'clubs_announcement_list' %}">
                     <div class="view-all-box">
                         <div>
                             <h6 class="noto-sans-thai-about">view all</h6>
@@ -217,24 +214,80 @@
         <hr>
     </div>
 
-    <div class="club-content">
-        {% for info in clubs %}
-        <div class="club-box">
-            <a href="{{ info.get_absolute_url }}">
-                <div class="club-img-frame">
-                    {% if info.image %}
-                    <img src="{{ info.image.url }}" alt="{{ info.title }}" width="150" height="150">
+    <div class="events-content">
+        {% for info in all_club_announcements %}
+        <div class="event-box">
+            <div>
+                <a href="{{ info.get_absolute_url }}">
+                    <div class="event-image">
+                        {% if info.image %}
+                        <img src="{{ info.image.url }}" alt="{{ info.title }}" width="100%" height="100%">
+                        {% else %}
+                        <p>No image available.</p>
+                        {% endif %}
+                    </div>
+                    <div class="event-name noto-sans-thai-about">{{ info.title }}</div>
+                </a>
+                <div class="event-duration-box">
+                    <img src="https://lh3.googleusercontent.com/d/1cC59hVdiBcd2xTmRPf0PbXL6l7gB-lAw" alt="clock_logo"
+                        width="15" height="15">
+                    <div class="event-duration noto-sans-thai-about">
+                        <div>{{ info.start_date }}</div>
+                        <div>{{ info.end_date }}</div>
+                    </div>
+                </div>
+                <div class="event-place-box">
+                    <img src="https://lh3.googleusercontent.com/d/1WkrPHsZX7RKwxG5pMan-HIgGVvE0msOZ" alt="location_logo"
+                        width="15" height="15">
+                    <div class="event-place noto-sans-thai-about">{{ info.place }}</div>
+                </div>
+                <div class="user-box">
+                    <div class="profile-pic-box">
+                        {% if info.club and info.club.image %}
+                        <!-- ถ้ามีรูปภาพของ club -->
+                        <img src="{{ info.club.image.url }}" alt="club-pic" height="100%" width="100%">
+                        {% else %}
+                        <!-- ถ้าไม่มีรูปภาพ -->
+                        <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN" alt="club-pic" height="100%" width="100%">
+                        {% endif %}
+                    </div>
+                    {% if info.club %}
+                    <!-- แสดงชื่อของคลับที่นักศึกษาผู้โพสต์สังกัด -->
+                    <div class="profile-name noto-sans-thai-about">{{ info.club.title }}</div>
                     {% else %}
-                    <p>No image available.</p>
+                    <div class="profile-name noto-sans-thai-about">No Club</div>
                     {% endif %}
                 </div>
-                <div class="club-name noto-sans-thai-about">{{ info.title }}</div>
-            </a>
+                {% if request.user.is_authenticated %}
+                <form method="post" action="{% url 'toggle_interest' info.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-interest">
+                        <div class="interest-container">
+                            <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa" width="10"
+                                height="10" alt="star">
+                            <div class="interest">
+                                {% if info.id in interested_events %}
+                                Interested
+                                {% else %}
+                                Interest
+                                {% endif %}
+                            </div>
+                        </div>
+                    </button>
+                </form>
+                {% else %}
+                <button class="btn-interest" onclick="alert('Please login to use this feature');">
+                    <div class="interest-container">
+                        <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa" width="10"
+                            height="10" alt="star">
+                        <div class="interest">Interest</div>
+                </button>
+                {% endif %}
+            </div>
         </div>
         {% endfor %}
     </div>
-    <div class="club-section-bar">
-    </div>
+
 </div>
 </div>
 

@@ -26,7 +26,7 @@ class LostForm(forms.ModelForm):
 class ClubAnnouncementForm(forms.ModelForm):
     class Meta:
         model = Announcement
-        fields = ['title', 'description', 'image', 'start_date', 'end_date', 'place']
+        fields = ['title', 'description', 'image', 'start_date', 'end_date', 'place','club']
         widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),

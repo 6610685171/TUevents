@@ -1,58 +1,58 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Create Post</title>
+<title>Edit Event</title>
 {% endblock %}
 
 {% block content %}
 <div id="top-create">
     <div class="create-flex">
         <div class="create-slogan">
-            <h1 class="goldman-regular">Club</h1>
-            <h1 class="create-andfound goldman-regular">Create Post</h1>
+            <h1 class="goldman-regular">Event</h1>
+            <h1 class="create-andfound goldman-regular">Edit Post</h1>
         </div>
-        <div class="create-type-found goldman-regular">CREATE FOUND POST</div>
+        <div class="create-type-found goldman-regular">EDIT EVENT POST</div>
     </div>
     <div class="create-flex">
-        <!-- Announcement Form -->
-        {% comment %} <h2>Create a New Announcement</h2> {% endcomment %}
-        <form method="POST" enctype="multipart/form-data">
+        <form class="lost-form noto-sans-thai-about" method="post" enctype="multipart/form-data" action="{% url 'event-edit' announcement_id=announcement.id %}">
             {% csrf_token %}
             
             <!-- Title Field -->
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" class="form-control" name="title" id="title" required>
+                <input type="text" class="form-control" name="title" id="title" value="{{ announcement.title }}" required>
             </div>
 
             <!-- Image Field -->
             <div class="form-group">
                 <label for="image">Image</label>
-                <input type="file" class="form-control-file" name="image" id="image" required>
+                <div class="custom-image-field">
+                    {{ form.image }} 
+                </div>
             </div>            
             
             <!-- Description Field -->
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" name="description" id="description" rows="4" required></textarea>
+                <textarea class="form-control" name="description" id="description" rows="4" required>{{ announcement.description }}</textarea>
             </div>
 
             <!-- Start Date Field -->
             <div class="form-group">
                 <label for="start_date">Start Date</label>
-                <input type="datetime-local" class="form-control" name="start_date" id="start_date" required>
+                <input type="datetime-local" class="form-control" name="start_date" id="start_date" value="{{ announcement.start_date|date:"Y-m-d\TH:i" }}" required>
             </div>
 
             <!-- End Date Field -->
             <div class="form-group">
                 <label for="end_date">End Date</label>
-                <input type="datetime-local" class="form-control" name="end_date" id="end_date" required>
+                <input type="datetime-local" class="form-control" name="end_date" id="end_date" value="{{ announcement.end_date|date:"Y-m-d\TH:i" }}" required>
             </div>
 
             <!-- Place Field -->
             <div class="form-group">
                 <label for="place">Place</label>
-                <input type="text" class="form-control" name="place" id="place" required>
+                <input type="text" class="form-control" name="place" id="place" value="{{ announcement.place }}" required>
             </div>
 
             <!-- Club Field -->
@@ -61,18 +61,9 @@
                 {{ form.club }}  <!-- ฟอร์มที่มีฟิลด์ Club -->
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{% url 'event-detail' announcement.id %}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
-    {% if form.errors %}
-    <ul class="form-errors">
-    {% for field in form %}
-        {% for error in field.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    {% endfor %}
-    </ul>
-{% endif %}
-
 </div>
 {% endblock %}
