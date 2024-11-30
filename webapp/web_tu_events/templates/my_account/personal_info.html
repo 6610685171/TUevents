@@ -38,6 +38,7 @@
                         </a>
                     </li>
 
+                    {% if request.user.student.club %}
                     <li class="ActionListItem">
                         <a href="{% url 'my_club_post_history' %}" class="ActionListContent">
                             <span class="ActionListItem-visual ActionListItem-visual--leading">
@@ -47,6 +48,7 @@
                             </span>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

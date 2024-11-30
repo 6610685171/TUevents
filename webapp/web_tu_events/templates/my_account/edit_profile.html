@@ -29,6 +29,7 @@
                         </a>
                     </li>
 
+                    {% if request.user.student.club %}
                     <li class="ActionListItem">
                         <a href="{% url 'my_events' %}" class="ActionListContent">
                             <span class="ActionListItem-visual ActionListItem-visual--leading">
@@ -37,6 +38,7 @@
                             <span class="ActionListItem-label">My Favorites Events</span>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
