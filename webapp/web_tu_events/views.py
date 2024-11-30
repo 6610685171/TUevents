@@ -379,7 +379,7 @@ def toggle_interest(request, announcement_id):
 
 def my_account(request):
     if request.user.is_authenticated:
-        student = request.user.student
+        student = request.user.student           
 
         # หากมีการส่งฟอร์ม (POST) ให้บันทึกการเปลี่ยนแปลง
         if request.method == 'POST':
@@ -396,7 +396,8 @@ def my_account(request):
             "form": form
         })
     else:
-        return render(request, "login.html")
+        messages.warning(request, "You need to log in first.")        
+        return redirect('login') 
 
 def lost_found_history(request):
     if not hasattr(request.user, 'student') or not request.user.student:

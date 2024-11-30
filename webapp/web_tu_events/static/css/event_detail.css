@@ -233,7 +233,8 @@
 
 /* ปุ่มที่ใช้ในกรณีปกติ */
 .btn-interest-detail {
-    background-image: linear-gradient(to right, #FFF176 0%, #FBC02D 51%, #FFEB3B 100%);
+    /* background-image: linear-gradient(to right, #FFF176 0%, #FBC02D 51%, #FFEB3B 100%); */
+    background-image: linear-gradient(to right, #74C7E7 0%, #4A90E2 51%, #7CAFFF 100%);
     padding: 5px 230px;
     text-align: center;
     text-transform: uppercase;
@@ -243,7 +244,8 @@
     box-shadow: 0 0 20px #eee;
     border-radius: 65px;
     display: block;
-    border-color: #FBC02D;
+    /* border-color: #FBC02D; */
+    border-color: #74C7E7;
     margin-top: 40px;
 }
 
