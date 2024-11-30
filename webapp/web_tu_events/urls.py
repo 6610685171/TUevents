@@ -34,5 +34,5 @@ urlpatterns = [
     path('announcement/<int:announcement_id>/interest/', views.toggle_interest, name='toggle_interest'),
     path('my_account/personal_info', views.my_account, name='my_account'), 
     path('my_account/lost_found_history', views.lost_found_history, name='lost_found_history'),
-    path('my_account/my_events.html', views.my_events , name='my_events')
+    path('my_account/my_events.html', views.my_events, name='my_events'),
 ]
