@@ -31,11 +31,12 @@
         <div class="club-content-box">
             <div class="c-box">
                 <div class="club-detail-name noto-sans-thai-about">{{ club.title }}</div>
-                <div class="club-status">enable to join</div>
                 {% if club.enable_to_join == True %}
+                <div class="club-status">enable to join</div>
                 <img src="https://lh3.googleusercontent.com/d/1g22U5mxjcHPBzstklrX68JF4AzbWahFz" alt="status" width="12"
                     height="auto">
                 {% else %}
+                <div class="club-status">Unable to join</div>
                 <img src="https://lh3.googleusercontent.com/d/1D70bPQJq0KT2oIqifzGU64xSIjvVB9CO" alt="status" width="12"
                     height="auto">
                 {% endif %}
@@ -48,8 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="club-section-bar">
-    </div>
+
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">{{ club.title }}'s Post</h1>
@@ -102,10 +102,10 @@
                 {% if request.user.is_authenticated %}
                 <form method="post" action="{% url 'toggle_interest' info.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn-interest">
+                    <button type="submit" class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
                         <div class="interest-container">
-                            <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa" width="10"
-                                height="10" alt="star">
+                            <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}" 
+                            class="interest-icon" width="10" height="10" alt="icon"></i>
                             <div class="interest">
                                 {% if info.id in interested_events %}
                                 Interested

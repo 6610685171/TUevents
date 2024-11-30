@@ -17,7 +17,14 @@ def home(request):
     alerts = Announcement.objects.filter(categories="alerts")  
     all_club_announcements = Announcement.objects.filter(categories="clubs").order_by("-date")
      
-    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs, 'alerts':alerts, 'all_club_announcements' : all_club_announcements })
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []
+             
+    return render(request, "home.html", {'all_announcement': all_announcement, 'clubs': clubs, 'alerts':alerts, 'all_club_announcements' : all_club_announcements,             "interested_events": interested_events,
+ })
 
 
 def about(request):
@@ -74,11 +81,16 @@ def event_detail(request, announcement_id):
 
 def category_events(request, category):
     announcement = Announcement.objects.filter(categories=category)
-
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []
     return render(
         request,
         "events/category_events.html",
-        {"announcement": announcement, "category": category},
+        {"announcement": announcement, "category": category, "interested_events": interested_events,
+},
     )
 
 def login_view(request):

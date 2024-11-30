@@ -6,6 +6,14 @@
 
 {% block content %}
 <div id="body-events">
+    <div id="body">
+        {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="back-club">
         <a href="{% url 'clubs_announcement_list' %}">
             <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
@@ -87,10 +95,10 @@
                     {% if request.user.is_authenticated %}
                     <form method="post" action="{% url 'toggle_interest' info.id %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn-interest">
+                        <button type="submit" class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
                             <div class="interest-container">
-                                <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa"
-                                    width="10" height="10" alt="star">
+                                <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}" 
+                                class="interest-icon" width="10" height="10" alt="icon"></i>
                                 <div class="interest">
                                     {% if info.id in interested_events %}
                                     Interested

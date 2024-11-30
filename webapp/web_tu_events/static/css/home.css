@@ -61,7 +61,8 @@
     position: relative;
     width: 100%;
     max-width: 455px;
-    margin: auto;
+    margin-top: -5px;
+    margin-right: 50px;
 }
 
 .carousel-inner img {

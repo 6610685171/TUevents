@@ -84,7 +84,7 @@
     margin-top: 30px;
 }
 
-.btn-interest-detail {
+/* .btn-interest-detail {
     background-image: linear-gradient(to right, #e52d27 0%, rgb(172, 0, 0) 51%, rgb(227, 44, 44) 100%)
 }
 
@@ -100,14 +100,14 @@
     display: block;
     border-color: red;
     margin-top: 40px;
-}
+} */
 
 .interest-detail {
     font-family: "Red Hat Display", sans-serif;
     font-weight: 600;
     font-style: normal;
     font-size: 30px;
-
+    margin-left: 10px;
 }
 
 .btn-interest-detail:hover {
@@ -159,6 +159,7 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 50px;
 }
 
 .event-detail-image {
@@ -216,7 +217,7 @@
     margin-top: 30px;
 }
 
-.btn-interest-detail {
+/* .btn-interest-detail {
     padding: 5px 230px;
     text-align: center;
     text-transform: uppercase;
@@ -228,7 +229,48 @@
     display: block;
     border-color: red;
     margin-top: 40px;
+} */
+
+/* ปุ่มที่ใช้ในกรณีปกติ */
+.btn-interest-detail {
+    background-image: linear-gradient(to right, #FFF176 0%, #FBC02D 51%, #FFEB3B 100%);
+    padding: 5px 230px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 65px;
+    display: block;
+    border-color: #FBC02D;
+    margin-top: 40px;
 }
+
+.btn-interested-detail {
+    background-image: linear-gradient(to right, #a8e063 0%, #7bbf7e 51%, #a8e063 100%);
+    padding: 5px 230px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 65px;
+    display: block;
+    border-color: #218838;
+    margin-top: 40px;
+}
+
+/* Hover effect */
+.btn-interest-detail:hover,
+.btn-interested-detail:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+
 
 .event-detail-buttons {
     width: 100%;

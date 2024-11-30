@@ -110,7 +110,8 @@
 }
 
 .btn-interest {
-    background-image: linear-gradient(to right, #e52d27 0%, rgb(172, 0, 0) 51%, rgb(227, 44, 44) 100%)
+    /* background-image: linear-gradient(to right, #FFEB3B 0%, #F57F17 51%, #FFDA00 100%); */
+    background-image: linear-gradient(to right, #74C7E7 0%, #4A90E2 51%, #7CAFFF 100%);
 }
 
 .btn-interest {
@@ -123,7 +124,28 @@
     box-shadow: 0 0 20px #eee;
     border-radius: 65px;
     display: block;
-    border-color: red;
+    /* border-color: #FFEB3B; */
+    border-color: #74C7E7;
+    margin-top: 10px;
+    width: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-interested {
+    background-image: linear-gradient(to right, #a8e063 0%, #7bbf7e 51%, #a8e063 100%);
+    transform: scale(1.05);
+    padding: 3px 41px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 65px;
+    display: block;
+    border-color: #a8e063;
     margin-top: 10px;
     width: 170px;
     display: flex;
@@ -132,11 +154,11 @@
 }
 
 .interest {
-    font-family: "Red Hat Display", sans-serif;
-    font-weight: 600;
+    font-family: "Poppins", serif;
+    font-weight: 500;
     font-style: normal;
     font-size: 15.5px;
-
+    margin-left: 10px;
 }
 
 .btn-interest:hover {

@@ -72,16 +72,31 @@
                             <div class="event-place noto-sans-thai-about">{{ info.place }}</div>
                         </div>
 
-                        <button class="btn-interest">
+                        {% if request.user.is_authenticated %}
+                        <form method="post" action="{% url 'toggle_interest' info.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
+                                <div class="interest-container">
+                                    <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}" 
+                                    class="interest-icon" width="10" height="10" alt="icon"></i>
+                                    <div class="interest">
+                                        {% if info.id in interested_events %}
+                                        Interested
+                                        {% else %}
+                                        Interest
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </button>
+                        </form>
+                        {% else %}
+                        <button class="btn-interest" onclick="alert('Please login to use this feature');">
                             <div class="interest-container">
                                 <img src="https://lh3.googleusercontent.com/d/1MIIe8PaaZVoXbAa0GV-3Eytt-azq8kJa"
                                     width="10" height="10" alt="star">
-
-                                <div class="interest">
-                                    interest</div>
-                            </div>
-
+                                <div class="interest">Interest</div>
                         </button>
+                        {% endif %}
                     </div>
                 </div>
                 {% empty %}
