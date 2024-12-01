@@ -29,13 +29,23 @@
                         </a>
                     </li>
 
-                    {% if request.user.student.club %}
                     <li class="ActionListItem">
                         <a href="{% url 'my_events' %}" class="ActionListContent">
                             <span class="ActionListItem-visual ActionListItem-visual--leading">
                                 <i class="fas fa-star" style="font-size: 14px;"></i>
                             </span>
-                            <span class="ActionListItem-label">My Favorites Events</span>
+                            <span class="ActionListItem-label">My Favorite Events</span>
+                        </a>
+                    </li>
+
+                    {% if request.user.student.club %}
+                    <li class="ActionListItem">
+                        <a href="{% url 'my_club_post_history' %}" class="ActionListContent">
+                            <span class="ActionListItem-visual ActionListItem-visual--leading">
+                                <i class="fas fa-pencil-alt" style="font-size: 14px;"></i>
+                            </span>
+                            <span class="ActionListItem-label">My Club Post History
+                            </span>
                         </a>
                     </li>
                     {% endif %}

@@ -125,7 +125,7 @@
     font-style: normal;
     display: flex;
     flex-direction: column;
-    width: 120px;
+    /* width: 120px; */
 }
 
 .info-title {
