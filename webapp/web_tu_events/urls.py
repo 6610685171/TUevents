@@ -39,5 +39,11 @@ urlpatterns = [
     path('edit_profile/', views.edit_profile, name='edit_profile'),  
     path('events/<int:announcement_id>/edit/', views.event_edit, name='event-edit'),
     path('events/<int:announcement_id>/delete/', views.event_delete, name='event-delete'),   
-    path('my_account/my_club_post_history/', views.club_post_history, name='my_club_post_history'),       
+    path('my_account/my_club_post_history/', views.club_post_history, name='my_club_post_history'),   
+    path(
+        "clubs/club_announcement_list_admin/",
+        views.all_club_list_admin,
+        name="clubs_announcement_list_admin",
+    ), 
+    path('clubs/faculty_clubs_admin', views.clubs_by_faculty_admin, name='clubs_by_faculty_admin'),               
 ]
