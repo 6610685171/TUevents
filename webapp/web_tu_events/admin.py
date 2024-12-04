@@ -3,7 +3,7 @@ from .models import Student,Announcement,Club,Lost,Found,Interest
 from django.db.models import Count
     
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ["username" ,"name" ,"email", "student_id"]
+    list_display = ["username" ,"name" ,"email", "student_id","club"]
     search_fields = ('name', 'email', 'student_id', 'username')
     readonly_fields = ('password',)
             
@@ -19,7 +19,7 @@ class InterestedUsersViewInline(admin.TabularInline):
     can_delete = False
     
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ["title","categories" ,"date" , "start_date","end_date", "interest_count"]
+    list_display = ["title","categories" ,"club" , "start_date","end_date", "interest_count"]
     inlines = [InterestedUsersViewInline]
     
     def get_queryset(self, request):

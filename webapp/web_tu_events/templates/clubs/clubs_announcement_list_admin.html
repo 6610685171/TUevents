@@ -16,26 +16,12 @@
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">{{faculty_name}} Clubs</h1>
-            <div class="view-all-box">
-                <a href="{% url 'clubs_by_faculty_admin' %}">
-                    <div class="view-all-box">
-                        <div>
-                            <h6 class="noto-sans-thai-about">view all</h6>
-                        </div>
-                        <div>
-                            <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
-                                alt="view all" height="15" width="auto">
-                        </div>
-                    </div>
-                </a>
-            </div>
-
         </div>
         <hr>
     </div>
     <div class="club-content">
         {% if clubs %}
-        {% for club in clubs|slice:":6" %}
+        {% for club in clubs|slice:":5" %}
         <div class="club-box">
             <a href="{{ club.get_absolute_url }}">
                 <div class="club-img-frame">
@@ -54,29 +40,29 @@
         {% else %}
         <p>No clubs found for this faculty.</p>
         {% endif %}
+        <div class="view-all-box">
+            <a href="{% url 'clubs_by_faculty' %}">
+                <div class="view-all-box">
+                    <div>
+                        <h6 class="noto-sans-thai-about">view all</h6>
+                    </div>
+                    <div>
+                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
+                            alt="view all" height="15" width="auto">
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">TU Clubs</h1>
-            <div class="view-all-box">
-                <a href="{% url 'tu_clubs' %}">
-                    <div class="view-all-box">
-                        <div>
-                            <h6 class="noto-sans-thai-about">view all</h6>
-                        </div>
-                        <div>
-                            <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
-                                alt="view all" height="15" width="auto">
-                        </div>
-                    </div>
-                </a>
-            </div>
         </div>
         <hr>
     </div>
     <div class="club-content">
-        {% for info in tu_clubs %}
+        {% for info in tu_clubs|slice:":5" %}
         <div class="club-box">
             <a href="{{ info.get_absolute_url }}">
                 <div class="club-img-frame">
@@ -90,9 +76,21 @@
             </a>
         </div>
         {% endfor %}
+        <div class="view-all-box">
+            <a href="{% url 'tu_clubs' %}">
+                <div class="view-all-box">
+                    <div>
+                        <h6 class="noto-sans-thai-about">view all</h6>
+                    </div>
+                    <div>
+                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
+                            alt="view all" height="15" width="auto">
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
-    {% comment %} <div class="club-section-bar">
-    </div> {% endcomment %}
+
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">Clubs Post</h1>

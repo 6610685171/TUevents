@@ -45,7 +45,7 @@
                             {% endif %}
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>{{ alert.title }}</h5>
-                                <p>{{ alert.description }}</p>
+                                {% comment %} <p>{{ alert.description }}</p> {% endcomment %}
                             </div>
                         </a>
                     </div>
@@ -90,7 +90,7 @@
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">Events</h1>
-            <div class="view-all-box">
+            {% comment %} <div class="view-all-box">
                 <a href="{% url 'all_events' %}">
                     <div class="view-all-box">
                         <div>
@@ -102,12 +102,12 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
     <hr>
     <div class="events-content">
-        {% for info in all_announcement|slice:":6" %}
+        {% for info in all_announcement|slice:":4" %}
         <div class="event-box">
             <div>
                 <a href="{{ info.get_absolute_url }}">
@@ -168,11 +168,24 @@
             </div>
         </div>
         {% endfor %}
+        <div class="view-all-box">
+            <a href="{% url 'all_events' %}">
+                <div class="view-all-box">
+                    <div>
+                        <h6 class="noto-sans-thai-about">view all</h6>
+                    </div>
+                    <div>
+                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
+                            alt="view all" height="15" width="auto">
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
     <div class="clubs-banner goldman-regular">
         <div class="club-view-all-box">
             <h1 class="clubs-title">Announcement From all Clubs</h1>
-            <div class="view-all-box">
+            {% comment %} <div class="view-all-box">
                 <a href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
                     <div class="view-all-box">
                         <div>
@@ -184,13 +197,13 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> {% endcomment %}
         </div>
         <hr>
     </div>
 
     <div class="events-content">
-        {% for info in all_club_announcements %}
+        {% for info in all_club_announcements|slice:":4" %}
         <div class="event-box">
             <div>
                 <a href="{{ info.get_absolute_url }}">
@@ -262,6 +275,19 @@
             </div>
         </div>
         {% endfor %}
+        <div class="view-all-box">
+            <a href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
+                <div class="view-all-box">
+                    <div>
+                        <h6 class="noto-sans-thai-about">view all</h6>
+                    </div>
+                    <div>
+                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
+                            alt="view all" height="15" width="auto">
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 </div>
