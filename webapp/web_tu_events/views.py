@@ -181,10 +181,7 @@ def lost_items_list(request):
 
 # สมาชิกชุมนุมโพสประกาศกิจกรรม
 @login_required
-def club_create_announcement(request):
-    # if not request.user.username.startswith("tu_"):
-    #     return redirect("home")  # ถ้าไม่ใช่accountชุมนุมจะกลับไปหน้าhome
-    
+def club_create_announcement(request):    
     if not request.user.student.club:
         # messages.error(request, "You must be a member of a club to create an announcement.")
         return redirect("home")    
@@ -216,15 +213,15 @@ def all_club_list(request):
     student = request.user.student  # ดึง Student object จาก User ที่ล็อกอินอยู่
 
     # ถ้าเป็น admin ให้แสดงทุก clubs และ dropdown ให้เลือก origin
-    if request.user.is_superuser:
-        # ถ้าเป็น admin ให้เลือกดู clubs ทั้งหมด
-        clubs = Club.objects.all()  # แสดงทุก clubs
-        faculty_name = "All Faculties"  # สำหรับแสดงว่าเป็นทุกคณะ
-    else:
-        student_id = str(student.student_id)  # ดึง student_id
-        faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
-        faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))  
-        clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # กรองตามคณะ
+    # if request.user.is_superuser:
+    #     # ถ้าเป็น admin ให้เลือกดู clubs ทั้งหมด
+    #     clubs = Club.objects.all()  # แสดงทุก clubs
+    #     faculty_name = "All Faculties"  # สำหรับแสดงว่าเป็นทุกคณะ
+    # else:
+    student_id = str(student.student_id)  # ดึง student_id
+    faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
+    faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))  
+    clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # กรองตามคณะ
 
     # กรองประกาศที่เกี่ยวข้องกับ clubs
     all_club_announcements = Announcement.objects.filter(categories="clubs").order_by("-date")
@@ -255,7 +252,6 @@ def all_club_list(request):
             "interested_events": interested_events,            
         },
     )
-
 
 def tu_clubs_list(request):
     # ดึงข้อมูล Club ที่มี origin="tu"
@@ -470,12 +466,12 @@ def clubs_by_faculty(request):
     student = request.user.student  # ดึง Student object จาก User ที่ล็อกอินอยู่
     student_id = str(student.student_id)  # แปลง student_id เป็นสตริง
 
-    if not student_id:
-        return HttpResponse("Error: No student ID found in user profile.")
+    # if not student_id:
+    #     return HttpResponse("Error: No student ID found in user profile.")
 
-    # ถ้า student_id มีความยาวน้อยกว่า 4 ตัว (กรณีผิดปกติ)
-    if len(student_id) < 4:
-        return HttpResponse("Error: Invalid student ID format.")
+    # # ถ้า student_id มีความยาวน้อยกว่า 4 ตัว (กรณีผิดปกติ)
+    # if len(student_id) < 4:
+    #     return HttpResponse("Error: Invalid student ID format.")
 
     faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
     faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))  # ฟังก์ชันแปลง faculty_code เป็นชื่อคณะ
@@ -563,3 +559,67 @@ def club_post_history(request):
 
     # ส่งข้อมูลไปยัง template
     return render(request, "my_account/club_post_history.html", {'announcements': announcements})
+
+def all_club_list_admin(request):
+    if not request.user.is_superuser:
+        return HttpResponse("You do not have permission to view this page.")   
+    
+    clubs = Club.objects.exclude(origin='tu')  # แสดงทุก clubs ยกเว้นของมอ
+    faculty_name = "All Faculties"  # สำหรับแสดงว่าเป็นทุกคณะ
+
+    # กรองประกาศที่เกี่ยวข้องกับ clubs
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by("-date")
+    
+    # กรอง TU clubs โดยใช้ origin="tu"
+    tu_clubs = Club.objects.filter(origin="tu")
+    tu_club_announcements = all_club_announcements.filter(club__in=tu_clubs)
+    
+    faculty_club_announcements = all_club_announcements.filter(club__in=clubs)
+    
+    if request.user.is_authenticated:
+        # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []
+            
+    # ส่งข้อมูลไปยังเทมเพลต
+    return render(
+        request,
+        "clubs/clubs_announcement_list_admin.html",
+        {
+            "all_club_announcements": all_club_announcements,
+            "tu_club_announcements": tu_club_announcements,
+            "faculty_club_announcements": faculty_club_announcements,
+            "clubs": clubs,          # Clubs ตามคณะ หรือ ทุกคณะสำหรับ admin
+            "tu_clubs": tu_clubs,     # Clubs ของ TU
+            "faculty_name": faculty_name,  # ชื่อคณะ
+            "interested_events": interested_events,            
+        },
+    )
+    
+def clubs_by_faculty_admin(request):
+    if not request.user.is_superuser:
+        return HttpResponse("You do not have permission to view this page.")
+    
+    clubs = Club.objects.exclude(origin='tu')  # กรองออกเฉพาะ clubs ที่มี origin เป็น 'tu'
+    faculty_name = "All Faculties"  # สำหรับ admin จะดูข้อมูลทุกคณะ
+
+    # ดึงประกาศทั้งหมดที่เกี่ยวข้องกับคลับ
+    all_club_announcements = Announcement.objects.filter(
+        categories="clubs",
+        club__in=clubs  # กรองประกาศที่เชื่อมโยงกับคลับ
+    ).order_by("-date")
+    
+    # ตรวจสอบกิจกรรมที่ผู้ใช้งานสนใจ
+    if request.user.is_authenticated:
+        interested_events = list(Interest.objects.filter(user=request.user).values_list('announcement_id', flat=True))
+    else:
+        interested_events = []    
+
+    # ส่งข้อมูลไปยังเทมเพลต
+    return render(request, "clubs/faculty_clubs_admin.html", {
+        "clubs": clubs,
+        "faculty_name": faculty_name,
+        "announcements": all_club_announcements,  # ส่งประกาศไปยังเทมเพลต
+        "interested_events": interested_events,                    
+    })    

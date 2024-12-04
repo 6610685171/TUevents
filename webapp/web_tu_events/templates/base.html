@@ -89,11 +89,9 @@
                 <li class="nav-item events">
                     <a class="nav-link" href="{% url 'all_events' %}">Events</a>
                 </li>
-                {% if not user.is_superuser %}
                 <li class="nav-item clubs">
-                    <a class="nav-link" href="{% url 'clubs_announcement_list' %}">Clubs</a>
+                    <a class="nav-link" href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">Clubs</a>
                 </li>
-                {% endif %}
                 <li class="nav-item lost-found">
                     <a class="nav-link" href="{% url 'lost_items_list' %}">Lost&Found</a>
                 </li>

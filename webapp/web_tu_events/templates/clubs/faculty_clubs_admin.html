@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>TU Clubs</title>
+<title>Faculty Clubs</title>
 {% endblock %}
 
 {% block content %}
-<div id="body-events">
+<div id="body-clubs">
     <div id="body">
         {% if messages %}
     <ul>
@@ -15,7 +15,7 @@
     </ul>
     {% endif %}
     <div class="back-club">
-        <a href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
+        <a href="{% url 'clubs_announcement_list_admin' %}">
             <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
                 width="20" height="auto">
             <h8>Back to Clubs</h4>
@@ -23,34 +23,42 @@
     </div>
     <div id="body-clubs">
         <div class="clubs-banner goldman-regular">
-            <h1 class="clubs-title">TU Clubs</h1>
+            <div class="club-view-all-box">
+                <h1 class="clubs-title">{{ faculty_name }} Clubs</h1>
+            </div>
             <hr>
         </div>
         <div class="club-content">
-            {% for info in clubs %}
+            {% if clubs %}
+            {% for club in clubs|slice:":6" %}
             <div class="club-box">
-                <a href="{{ info.get_absolute_url }}">
+                <a href="{{ club.get_absolute_url }}">
                     <div class="club-img-frame">
-                        {% if info.image %}
-                        <img src="{{ info.image.url }}" alt="{{ info.title }}" width="150" height="150">
+                        {% if club.image %}
+                        <img src="{{ club.image.url }}" alt="{{ club.title }}" width="150" height="150">
                         {% else %}
                         <p>No image available.</p>
                         {% endif %}
                     </div>
-                    <div class="club-name noto-sans-thai-about">{{ info.title }}</div>
+                    <div class="club-name noto-sans-thai-about">{{ club.title }}</div>
                 </a>
             </div>
+            {% empty %}
+            <p>No clubs found for your faculty.</p>
             {% endfor %}
+            {% else %}
+            <p>No clubs found for this faculty.</p>
+            {% endif %}
         </div>
 
         <div class="clubs-banner goldman-regular">
             <div class="club-view-all-box">
-                <h1 class="clubs-title">TU Clubs Post</h1>
+                <h1 class="clubs-title">All Posts From {{faculty_name}} Clubs</h1>
             </div>
             <hr>
         </div>
         <div class="events-content">
-            {% for info in tu_club_announcements %}
+            {% for info in announcements %}
             <div class="event-box">
                 <div>
                     <a href="{{ info.get_absolute_url }}">
@@ -79,8 +87,10 @@
                     <div class="user-box-clubs">
                         <div class="profile-pic-box-clubs">
                             {% if info.club and info.club.image %}
+
                             <img src="{{ info.club.image.url }}" alt="club-pic" height="100%" width="100%">
                             {% else %}
+
                             <img src="https://lh3.googleusercontent.com/d/1DFiBeV_CVm0oaIHyX7PVY2HLnNNGqkyN"
                                 alt="club-pic" height="100%" width="100%">
                             {% endif %}
