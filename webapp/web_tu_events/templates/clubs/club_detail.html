@@ -58,6 +58,7 @@
     </div>
 
     <div class="events-content">
+        {% if announcements %}
         {% for info in announcements %}
         <div class="event-box">
             <div>
@@ -128,6 +129,9 @@
             </div>
         </div>
         {% endfor %}
+        {% else %}
+        <p>{{ club.title }} haven't posted anything.</p>
+    {% endif %}
     </div>
 
 
