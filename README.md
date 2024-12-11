@@ -22,7 +22,10 @@
 > [Tracker: Jira](https://webtuevents.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiYmRhMmQ3ZTQ4Yzc5NDkxZmIwZTFmMzE1ZjdiMmJkMDMiLCJwIjoiaiJ9) <img src="https://static-00.iconduck.com/assets.00/jira-icon-2048x2048-hpbijtxj.png" alt="" width="20" height="20" >
 
 ###
-> [TU Events](https://tuevents.pythonanywhere.com/) [<img src="https://cdn.discordapp.com/attachments/1302882286038941696/1303940196995436584/TU_event_logo_with_red_and_yellow_color_font-removebg-preview.png?ex=67357d71&is=67342bf1&hm=302fc9cbd42fa6cf039e314dea68035e9d1f73a22a5a3a6c58f4e08b49535c8d&" alt="" width="25" height="25" >](https://th.bing.com/th/id/OIP.5aysLI8Ayx65nD7UQryV7QHaHa?rs=1&pid=ImgDetMain)
+> [TU Events](https://tuevents.pythonanywhere.com/) <img src="https://lh3.googleusercontent.com/d/13CfuysoEKqjabs7jiXpL8AmNi4HbOMYG" alt="" width="25" height="25" >
 
 ###
 > [Document](https://drive.google.com/file/d/1DUwrXWk0ZCuq9S0JozgZRp7VAPnmgyP-/view) <img src="https://www.freeiconspng.com/uploads/document-icon-24.png" alt="" width="25" height="25" >
+
+###
+> [Interview](https://youtu.be/djXF1hmh3-s?feature=shared) <img src="https://www.freeiconspng.com/uploads/youtube-logo-picture-download-1.png" alt="" width="50" >
