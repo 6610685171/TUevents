@@ -7,12 +7,12 @@
 {% block content %}
 <div id="body">
     {% if messages %}
-<ul>
-    {% for message in messages %}
-    <li class="alert alert-success">{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+    <ul>
+        {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div id="home-top">
         <div class="welcome-text section-left">
             <div class="welcome-text-box">
@@ -136,10 +136,11 @@
                 {% if request.user.is_authenticated %}
                 <form method="post" action="{% url 'toggle_interest' info.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
+                    <button type="submit"
+                        class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
                         <div class="interest-container">
-                            <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}" 
-                            class="interest-icon" width="10" height="10" alt="icon"></i>
+                            <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}"
+                                class="interest-icon" width="10" height="10" alt="icon"></i>
                             <div class="interest">
                                 {% if info.id in interested_events %}
                                 Interested
@@ -151,10 +152,11 @@
                     </button>
                 </form>
                 {% else %}
-                <button type="submit" class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
+                <button type="submit"
+                    class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
                     <div class="interest-container">
-                        <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}" 
-                        class="interest-icon" width="10" height="10" alt="icon"></i>
+                        <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}"
+                            class="interest-icon" width="10" height="10" alt="icon"></i>
                         <div class="interest">
                             {% if info.id in interested_event_ids %}
                             Interested
@@ -175,8 +177,8 @@
                         <h6 class="noto-sans-thai-about">view all</h6>
                     </div>
                     <div>
-                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
-                            alt="view all" height="15" width="auto">
+                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C" alt="view all"
+                            height="15" width="auto">
                     </div>
                 </div>
             </a>
@@ -186,7 +188,8 @@
         <div class="club-view-all-box">
             <h1 class="clubs-title">Announcement From all Clubs</h1>
             {% comment %} <div class="view-all-box">
-                <a href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
+                <a
+                    href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
                     <div class="view-all-box">
                         <div>
                             <h6 class="noto-sans-thai-about">view all</h6>
@@ -251,10 +254,11 @@
                 {% if request.user.is_authenticated %}
                 <form method="post" action="{% url 'toggle_interest' info.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
+                    <button type="submit"
+                        class="btn-interest {% if info.id in interested_events %}btn-interested{% endif %}">
                         <div class="interest-container">
-                            <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}" 
-                            class="interest-icon" width="10" height="10" alt="icon"></i>
+                            <i class="{% if info.id in interested_events %}fas fa-check{% else %}fas fa-star{% endif %}"
+                                class="interest-icon" width="10" height="10" alt="icon"></i>
                             <div class="interest">
                                 {% if info.id in interested_events %}
                                 Interested
@@ -277,14 +281,15 @@
         </div>
         {% endfor %}
         <div class="view-all-box">
-            <a href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
+            <a
+                href="{% if user.is_superuser %}{% url 'clubs_announcement_list_admin' %}{% else %}{% url 'clubs_announcement_list' %}{% endif %}">
                 <div class="view-all-box">
                     <div>
                         <h6 class="noto-sans-thai-about">view all</h6>
                     </div>
                     <div>
-                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C"
-                            alt="view all" height="15" width="auto">
+                        <img src="https://lh3.googleusercontent.com/d/1cmTnTrsBExZUUstb2AGGoXb3eo0B988C" alt="view all"
+                            height="15" width="auto">
                     </div>
                 </div>
             </a>

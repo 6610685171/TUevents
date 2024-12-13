@@ -5,34 +5,34 @@
 {% endblock %}
 
 {% block content %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li class="alert alert-success">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <div>
-        <div class="back-event">
-            <a href="javascript:history.back()">
-                <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
-                    width="20" height="auto">
-                <h8>Back</h4>
-            </a>
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li class="alert alert-success">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div>
+    <div class="back-event">
+        <a href="javascript:history.back()">
+            <img src="https://lh3.googleusercontent.com/d/1wmYhWD6SPbtWfyet517YtiNLqtE4xJaH" alt="back_button"
+                width="20" height="auto">
+            <h8>Back</h4>
+        </a>
+    </div>
+
+    {% comment %} <div class="event-detail-container"> {% endcomment %}
+
+        {% comment %} </div> {% endcomment %}
+    <div class="event-detail-container">
+        <!-- Left side: Image -->
+        <div class="event-detail-image">
+            {% if announcement.image %}
+            <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}">
+            {% else %}
+            <p>No image available.</p>
+            {% endif %}
         </div>
-
-        {% comment %} <div class="event-detail-container"> {% endcomment %}
-
-            {% comment %} </div> {% endcomment %}
-        <div class="event-detail-container">
-            <!-- Left side: Image -->
-            <div class="event-detail-image">
-                {% if announcement.image %}
-                <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}">
-                {% else %}
-                <p>No image available.</p>
-                {% endif %}
-            </div>
 
             <!-- Right side: Event Details -->
             <div class="event-detail-info">
@@ -69,10 +69,11 @@
                         {% if request.user.is_authenticated %}
                         <form method="post" action="{% url 'toggle_interest' announcement.id%}">
                             {% csrf_token %}
-                            <button type="submit" class="{% if announcement.id in interested_event_ids %}btn-interested-detail{% else %} btn-interest-detail{% endif %}">
+                            <button type="submit"
+                                class="{% if announcement.id in interested_event_ids %}btn-interested-detail{% else %} btn-interest-detail{% endif %}">
                                 <div class="interest-container-detail">
-                                    <i class="{% if announcement.id in interested_event_ids %}fas fa-check{% else %}fas fa-star{% endif %}" 
-                                    class="interest-icon" style="font-size: 20px; alt="icon"></i>
+                                    <i class="{% if announcement.id in interested_event_ids %}fas fa-check{% else %}fas fa-star{% endif %}"
+                                        class="interest-icon" style="font-size: 20px; alt=" icon"></i>
                                     <div class="interest-detail">
                                         {% if announcement.id in interested_event_ids %}
                                         interested
