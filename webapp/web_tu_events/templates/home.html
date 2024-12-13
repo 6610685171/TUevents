@@ -203,6 +203,7 @@
     </div>
 
     <div class="events-content">
+        {% if request.user.is_authenticated %}
         {% for info in all_club_announcements|slice:":4" %}
         <div class="event-box">
             <div>
@@ -288,6 +289,9 @@
                 </div>
             </a>
         </div>
+        {% else %}
+        <p>You have to login first to see all the announcements from clubs.</p>
+    {% endif %}
     </div>
 </div>
 </div>
