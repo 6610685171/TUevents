@@ -57,7 +57,7 @@ class AnnouncementTests(TestCase):
 class EventEditTest(TestCase):
 
     def setUp(self):
-        # Create users
+
         self.user1 = get_user_model().objects.create_user(
             username="user1", password="password1"
         )
@@ -65,7 +65,6 @@ class EventEditTest(TestCase):
             username="user2", password="password2"
         )
 
-        # Create a club and announcements for the users
         self.club = Club.objects.create(name="Art Club", origin="liberal_arts")
         self.announcement = Announcement.objects.create(
             title="Art Event",
@@ -75,10 +74,9 @@ class EventEditTest(TestCase):
         )
 
     def test_event_edit_valid(self):
-        # Log in as user1
+
         self.client.login(username="user1", password="password1")
 
-        # Update data for the announcement
         data = {
             "title": "Updated Art Event",
             "categories": "clubs",
@@ -89,34 +87,24 @@ class EventEditTest(TestCase):
             reverse("event_edit", args=[self.announcement.id]), data
         )
 
-        # Check if the redirect occurs to the correct detail page
         self.assertRedirects(
             response, reverse("event-detail", args=[self.announcement.id])
         )
 
-        # Fetch the updated announcement from the database
         self.announcement.refresh_from_db()
 
-        # Assert the title is updated
         self.assertEqual(self.announcement.title, "Updated Art Event")
 
     def test_event_edit_not_owner(self):
-        # Log in as user2 (not the owner)
         self.client.login(username="user2", password="password2")
 
-        # Try to edit the announcement
         response = self.client.get(reverse("event_edit", args=[self.announcement.id]))
-
-        # The user should be redirected to the event-detail page because they aren't the owner
         self.assertRedirects(
             response, reverse("event-detail", args=[self.announcement.id])
         )
 
     def test_event_edit_not_logged_in(self):
-        # Try to access the edit page without logging in
         response = self.client.get(reverse("event_edit", args=[self.announcement.id]))
-
-        # Ensure the user is redirected to the login page
         self.assertRedirects(
             response,
             f"/accounts/login/?next={reverse('event_edit', args=[self.announcement.id])}",
