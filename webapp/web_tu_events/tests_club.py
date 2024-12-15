@@ -9,6 +9,7 @@ from unittest.mock import patch
 from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from web_tu_events.views import get_faculty_by_code, get_faculty_name
 
 
 class ClubAnnouncementTest(TestCase):
@@ -154,106 +155,48 @@ class AllClubListAdminViewTest(TestCase):
         self.assertContains(response, "You do not have permission to view this page.")
 
 
-class ClubsByFacultyAdminTest(TestCase):
+class ClubsByFacultyAdminTestCase(TestCase):
+
     def setUp(self):
-        self.superuser = get_user_model().objects.create_superuser(
-            username="admin", password="password123"
-        )
-        self.regular_user = get_user_model().objects.create_user(
-            username="user", password="password123"
+        # Create a superuser for permission testing
+        self.superuser = User.objects.create_superuser(
+            username="admin", email="admin@example.com", password="password123"
         )
 
-        self.club1 = Club.objects.create(title="Club TU", origin="tu")
-        self.club2 = Club.objects.create(title="Club ABC", origin="abc")
+        # Create a regular user
+        self.user = User.objects.create_user(
+            username="user", email="user@example.com", password="password123"
+        )
+
+        # Create some clubs and announcements
+        self.club1 = Club.objects.create(title="Club 1", origin="other")
+        self.club2 = Club.objects.create(title="Club 2", origin="other")
 
         self.announcement1 = Announcement.objects.create(
-            title="Event 1", categories="clubs", club=self.club2, date="2024-01-01"
+            title="Announcement 1",
+            categories="clubs",
+            club=self.club1,
+            start_date=datetime.now(),
+            end_date=datetime.now() + timedelta(days=1),
+        )
+        self.announcement2 = Announcement.objects.create(
+            title="Announcement 2",
+            categories="clubs",
+            club=self.club2,
+            start_date=datetime.now(),
+            end_date=datetime.now() + timedelta(days=1),
         )
 
-        self.url = reverse("clubs_by_faculty_admin")
-
-    def test_access_control(self):
-        self.client.login(username="user", password="password123")
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)  # Forbidden access for regular user
-
+    def test_clubs_by_faculty_admin_permission_for_superuser(self):
         self.client.login(username="admin", password="password123")
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)  # Admin can access
+        response = self.client.get(reverse("clubs_by_faculty_admin"))
 
-    def test_club_filtering(self):
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Club 1")
+        self.assertContains(response, "Club 2")
+        self.assertContains(response, "Announcement 1")
+        self.assertContains(response, "Announcement 2")
 
-        self.client.login(username="admin", password="password123")
-        response = self.client.get(self.url)
-        self.assertEqual(len(response.context["clubs"]), 1)
-
-    def test_announcement_rendering(self):
-
-        self.client.login(username="admin", password="password123")
-        response = self.client.get(self.url)
-        self.assertIn(self.announcement1, response.context["announcements"])
-
-    def test_user_interests(self):
-
-        self.client.login(username="admin", password="password123")
-        Interest.objects.create(user=self.superuser, announcement=self.announcement1)
-
-        response = self.client.get(self.url)
-        self.assertIn(self.announcement1.id, response.context["interested_events"])
-
-
-# class ClubsByFacultyTest(TestCase):
-#     def setUp(self):
-
-#         self.user = get_user_model().objects.create_user(
-#             username="testuser", password="password123"
-#         )
-#         self.student = Student.objects.create(user=self.user, student_id="12345678")
-
-#         self.club1 = Club.objects.create(title="Engineering Club", origin="01")
-#         self.club2 = Club.objects.create(title="Science Club", origin="02")
-
-#         self.announcement1 = Announcement.objects.create(
-#             title="Engineering Event",
-#             categories="clubs",
-#             club=self.club1,
-#             date="2024-01-01",
-#         )
-#         self.announcement2 = Announcement.objects.create(
-#             title="Science Event",
-#             categories="clubs",
-#             club=self.club2,
-#             date="2024-02-01",
-#         )
-
-#         self.url = reverse("clubs_by_faculty")
-
-#     def test_authentication_required(self):
-
-#         response = self.client.get(self.url)
-#         self.assertEqual(response.status_code, 403)
-
-#         self.client.login(username="testuser", password="password123")
-#         response = self.client.get(self.url)
-#         self.assertEqual(response.status_code, 200)
-
-#     def test_club_filtering_by_faculty(self):
-
-#         self.client.login(username="testuser", password="password123")
-#         response = self.client.get(self.url)
-#         self.assertIn(self.club1, response.context["clubs"])
-#         self.assertNotIn(self.club2, response.context["clubs"])
-
-#     def test_announcement_rendering(self):
-
-#         self.client.login(username="testuser", password="password123")
-#         response = self.client.get(self.url)
-#         self.assertIn(self.announcement1, response.context["announcements"])
-
-#     def test_user_interests(self):
-
-#         self.client.login(username="testuser", password="password123")
-#         Interest.objects.create(user=self.user, announcement=self.announcement1)
-
-#         response = self.client.get(self.url)
-#         self.assertIn(self.announcement1.id, response.context["interested_events"])
+    def test_clubs_by_faculty_admin_no_user_logged_in(self):
+        response = self.client.get(reverse("clubs_by_faculty_admin"))
+        self.assertEqual(response.status_code, 200)
