@@ -523,8 +523,6 @@ def my_account(request):
         # หากมีการส่งฟอร์ม (POST) ให้บันทึกการเปลี่ยนแปลง
         if request.method == "POST":
             form = StudentProfileForm(request.POST, request.FILES, instance=student)
-        if request.method == "POST":
-            form = StudentProfileForm(request.POST, request.FILES, instance=student)
             if form.is_valid():
                 form.save()  # บันทึกการเปลี่ยนแปลง
                 # เมื่อบันทึกเสร็จแล้วให้รีเฟรชหน้า
