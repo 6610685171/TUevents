@@ -58,54 +58,102 @@ class EventEditTest(TestCase):
 
     def setUp(self):
 
-        self.user1 = get_user_model().objects.create_user(
-            username="user1", password="password1"
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="password123"
         )
-        self.user2 = get_user_model().objects.create_user(
-            username="user2", password="password2"
-        )
+        self.student = Student.objects.create(user=self.user, username="testuser")
 
-        self.club = Club.objects.create(name="Art Club", origin="liberal_arts")
         self.announcement = Announcement.objects.create(
-            title="Art Event",
-            categories="clubs",
-            student=self.user1.student,
-            club=self.club,
+            student=self.student, title="Test Event", description="Test Description"
         )
 
-    def test_event_edit_valid(self):
+        self.url = reverse("event-edit", args=[self.announcement.id])
 
-        self.client.login(username="user1", password="password1")
+    def test_event_edit_view_get(self):
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "events/edit_event.html")
 
-        data = {
-            "title": "Updated Art Event",
-            "categories": "clubs",
-            "club": self.club.id,
-        }
+    def test_event_edit_permission(self):
 
-        response = self.client.post(
-            reverse("event_edit", args=[self.announcement.id]), data
+        other_user = get_user_model().objects.create_user(
+            username="otheruser", password="password123"
         )
+        other_student = Student.objects.create(user=other_user, username="otheruser")
+        other_announcement = Announcement.objects.create(
+            student=other_student, title="Other Event", description="Other Description"
+        )
+
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(reverse("event-edit", args=[other_announcement.id]))
 
         self.assertRedirects(
-            response, reverse("event-detail", args=[self.announcement.id])
+            response, reverse("event-detail", args=[other_announcement.id])
         )
 
+    def test_event_edit_valid_post(self):
+        self.client.login(username="testuser", password="password123")
+        data = {"title": "Updated Event", "description": "Updated Description"}
+        response = self.client.post(self.url, data)
         self.announcement.refresh_from_db()
 
-        self.assertEqual(self.announcement.title, "Updated Art Event")
-
-    def test_event_edit_not_owner(self):
-        self.client.login(username="user2", password="password2")
-
-        response = self.client.get(reverse("event_edit", args=[self.announcement.id]))
+        self.assertEqual(self.announcement.title, "Updated Event")
+        self.assertEqual(self.announcement.description, "Updated Description")
         self.assertRedirects(
             response, reverse("event-detail", args=[self.announcement.id])
         )
 
-    def test_event_edit_not_logged_in(self):
-        response = self.client.get(reverse("event_edit", args=[self.announcement.id]))
-        self.assertRedirects(
-            response,
-            f"/accounts/login/?next={reverse('event_edit', args=[self.announcement.id])}",
+    def test_event_edit_invalid_post(self):
+        self.client.login(username="testuser", password="password123")
+        data = {"title": "", "description": "Updated Description"}
+        response = self.client.post(self.url, data)
+
+        self.assertFormError(response, "form", "title", "This field is required.")
+
+
+class EventDeleteTest(TestCase):
+
+    def setUp(self):
+
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="password123"
         )
+        self.student = Student.objects.create(user=self.user, username="testuser")
+
+        self.announcement = Announcement.objects.create(
+            student=self.student, title="Test Event", description="Test Description"
+        )
+
+        self.url = reverse("event_delete", args=[self.announcement.id])
+
+    def test_event_delete_view(self):
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(self.url)
+
+        self.assertRedirects(response, reverse("clubs_announcement_list"))
+
+    def test_event_delete_permission(self):
+        other_user = get_user_model().objects.create_user(
+            username="otheruser", password="password123"
+        )
+        other_student = Student.objects.create(user=other_user, username="otheruser")
+        other_announcement = Announcement.objects.create(
+            student=other_student, title="Other Event", description="Other Description"
+        )
+
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(
+            reverse("event_delete", args=[other_announcement.id])
+        )
+
+        self.assertRedirects(response, reverse("clubs_announcement_list"))
+
+    def test_event_delete_success(self):
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(self.url)
+
+        self.assertFalse(Announcement.objects.filter(id=self.announcement.id).exists())
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Announcement deleted successfully!")

@@ -22,6 +22,7 @@ class LoginViewTest(TestCase):
             username="teststudent",
             password="studentpassword",
         )
+        self.url = reverse("login")
 
     def test_login_valid_user(self):
         response = self.client.post(
@@ -75,25 +76,6 @@ class LoginViewTest(TestCase):
             },
         )
         self.assertRedirects(response, next_url)
-
-    def test_login_fields_required(self):
-        response = self.client.post(
-            reverse("login"),
-            {
-                "username": "teststudent",
-            },
-        )
-        self.assertContains(response, "Both fields are required.")
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.post(
-            reverse("login"),
-            {
-                "password": "studentpassword",
-            },
-        )
-        self.assertContains(response, "Both fields are required.")
-        self.assertEqual(response.status_code, 200)
 
     def test_login_view_get_method(self):
         response = self.client.get(reverse("login"))

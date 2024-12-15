@@ -140,7 +140,6 @@ class ToggleInterestTest(TestCase):
         url = reverse(
             "toggle_interest", kwargs={"announcement_id": self.announcement.id}
         )
-
         response = self.client.get(url)
 
         self.assertTrue(
@@ -148,15 +147,12 @@ class ToggleInterestTest(TestCase):
                 user=self.user, announcement=self.announcement
             ).exists()
         )
-
         self.assertEqual(response.status_code, 302)
-
         self.assertRedirects(response, "/")
 
     def test_toggle_interest_delete(self):
         Interest.objects.create(user=self.user, announcement=self.announcement)
         self.client.login(username="testuser", password="testpassword")
-
         url = reverse(
             "toggle_interest", kwargs={"announcement_id": self.announcement.id}
         )
@@ -168,3 +164,65 @@ class ToggleInterestTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/")
+
+
+class EditProfileViewTest(TestCase):
+
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="password123"
+        )
+        self.student = Student.objects.create(
+            user=self.user,
+            username="testuser",
+            email="test@example.com",
+            student_id=12345,
+        )
+        self.url = reverse("edit_profile")
+        self.original_image = self.student.image
+
+    def test_edit_profile_view_get(self):
+
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "my_account/edit_profile.html")
+        self.assertContains(response, "<form")
+
+    def test_edit_profile_view_post_valid_with_image(self):
+
+        self.client.login(username="testuser", password="password123")
+        new_image = SimpleUploadedFile(
+            name="new_profile_pic.jpg",
+            content=b"file_content",
+            content_type="image/jpeg",
+        )
+        data = {"image": new_image}
+        response = self.client.post(self.url, data, follow=True)
+        self.student.refresh_from_db()
+        self.assertNotEqual(self.student.image.name, self.original_image.name)
+
+    def test_edit_profile_view_post_valid_remove_image(self):
+
+        self.client.login(username="testuser", password="password123")
+
+        data = {
+            "image": "",
+            "remove_image": "on",
+        }
+
+        response = self.client.post(self.url, data, follow=True)
+
+        self.student.refresh_from_db()
+        self.assertEqual(self.student.image.name, "")
+
+        self.assertRedirects(response, reverse("my_account"))
+
+    def test_edit_profile_view_post_invalid(self):
+
+        self.client.login(username="testuser", password="password123")
+
+        response = self.client.post(self.url, {}, follow=True)
+
+        form = response.context.get("form")
+
+        self.assertFalse(form.errors.get("image"))
