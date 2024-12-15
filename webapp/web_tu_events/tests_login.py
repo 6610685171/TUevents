@@ -1,68 +1,106 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.messages import get_messages
+from django.contrib.auth.forms import AuthenticationForm
+from .models import Student
 
 
-class LoginViewTests(TestCase):
+class LoginViewTest(TestCase):
+
     def setUp(self):
-        self.client = Client()
-        self.student_user = User.objects.create_user(
-            username="6610611111", password="studentpassword"
+        self.user = User.objects.create_user(
+            username="teststudent", password="studentpassword"
         )
-        self.admin_user = User.objects.create_superuser(
-            username="adminuser", password="adminpassword"
+        self.superuser = User.objects.create_superuser(
+            username="testadmin", password="adminpassword"
         )
-        self.club_user = User.objects.create_user(
-            username="clubuser", password="clubpassword"
-        )
-        self.login_url = reverse("login")
-
-    def post_login(self, username, password):
-        return self.client.post(
-            self.login_url, {"username": username, "password": password}
+        self.student = Student.objects.create(
+            user=self.user,
+            email="student@example.com",
+            name="Test Student",
+            student_id=12345,
+            username="teststudent",
+            password="studentpassword",
         )
 
-    def test_invalid_username(self):
-        response = self.post_login("no_user", "password")
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Invalid username.", messages)
-        self.assertRedirects(response, self.login_url)
+    def test_login_valid_user(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "teststudent",
+                "password": "studentpassword",
+            },
+        )
+        self.assertRedirects(response, reverse("home"))
 
-    def test_invalid_password(self):
-        response = self.post_login("clubuser", "wrongpassword")
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Invalid password.", messages)
-        self.assertRedirects(response, self.login_url)
+    def test_login_invalid_username(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "invaliduser",
+                "password": "studentpassword",
+            },
+        )
+        self.assertContains(response, "Invalid username.")
+        self.assertEqual(response.status_code, 200)
 
-    def test_missing_username_and_password(self):
-        response = self.post_login("", "")
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Both fields are required.", messages)
-        self.assertRedirects(response, self.login_url)
+    def test_login_invalid_password(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "teststudent",
+                "password": "invalidpassword",
+            },
+        )
+        self.assertContains(response, "Invalid password.")
+        self.assertEqual(response.status_code, 200)
 
-    def test_student_login(self):
-        response = self.post_login("6610611111", "studentpassword")
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Welcome, Student!", messages)
-        self.assertTemplateUsed(response, "home.html")
-
-    def test_admin_login(self):
-        response = self.post_login("adminuser", "adminpassword")
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Welcome, Admin! Redirecting to the admin panel.", messages)
+    def test_login_redirect_to_admin_for_superuser(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "testadmin",
+                "password": "adminpassword",
+            },
+        )
         self.assertRedirects(response, reverse("admin:index"))
 
-    def test_club_account_login(self):
-        response = self.post_login("clubuser", "clubpassword")
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Welcome, Club Account!", messages)
-        self.assertTemplateUsed(response, "home.html")
+    def test_login_with_next_url(self):
+        next_url = "/my_account/personal_info"
+        response = self.client.post(
+            reverse("login") + f"?next={next_url}",
+            {
+                "username": "teststudent",
+                "password": "studentpassword",
+            },
+        )
+        self.assertRedirects(response, next_url)
+
+    def test_login_fields_required(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "teststudent",
+            },
+        )
+        self.assertContains(response, "Both fields are required.")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            reverse("login"),
+            {
+                "password": "studentpassword",
+            },
+        )
+        self.assertContains(response, "Both fields are required.")
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_view_get_method(self):
+        response = self.client.get(reverse("login"))
+        self.assertTemplateUsed(response, "login.html")
+        self.assertIsInstance(response.context["form"], AuthenticationForm)
 
     def test_logout(self):
-        self.client.login(username="6610611111", password="studentpassword")
+        self.client.login(username="teststudent", password="studentpassword")
         response = self.client.get(reverse("logout"))
-        # messages = [msg.message for msg in get_messages(response.wsgi_request)]
-        # self.assertIn("Successfully logged out", messages)
-        # self.assertNotIn("_auth_user_id", self.client.session)
         self.assertRedirects(response, reverse("login"))
