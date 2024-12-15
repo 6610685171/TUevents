@@ -9,10 +9,16 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from .forms import FoundForm, LostForm, ClubAnnouncementForm, StudentProfileForm
 from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 # Create your views here.
+
+
 def home(request):
+    all_announcement = Announcement.objects.exclude(categories="clubs").exclude(
+        categories="alerts"
+    )
     all_announcement = Announcement.objects.exclude(categories="clubs").exclude(
         categories="alerts"
     )
@@ -22,8 +28,18 @@ def home(request):
         "-date"
     )
 
+    alerts = Announcement.objects.filter(categories="alerts")
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
+        "-date"
+    )
+
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
         interested_events = list(
             Interest.objects.filter(user=request.user).values_list(
                 "announcement_id", flat=True
@@ -58,8 +74,17 @@ def all_events(request):
         categories="alerts"
     )
 
+    all_announcement = Announcement.objects.exclude(categories="clubs").exclude(
+        categories="alerts"
+    )
+
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
         interested_events = list(
             Interest.objects.filter(user=request.user).values_list(
                 "announcement_id", flat=True
@@ -95,6 +120,9 @@ def event_detail(request, announcement_id):
         interested_event_ids = Interest.objects.filter(user=request.user).values_list(
             "announcement__id", flat=True
         )
+        interested_event_ids = Interest.objects.filter(user=request.user).values_list(
+            "announcement__id", flat=True
+        )
     else:
         interested_event_ids = []
 
@@ -117,11 +145,21 @@ def category_events(request, category):
                 "announcement_id", flat=True
             )
         )
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
     else:
         interested_events = []
     return render(
         request,
         "events/category_events.html",
+        {
+            "announcement": announcement,
+            "category": category,
+            "interested_events": interested_events,
+        },
         {
             "announcement": announcement,
             "category": category,
@@ -165,7 +203,7 @@ def login_view(request):
 
         else:
             messages.error(request, "Both fields are required.")
-            return render(request, "login.html", {"form": form})
+            return redirect("login")
 
     else:
         form = AuthenticationForm()
@@ -175,6 +213,7 @@ def login_view(request):
 
 
 # โพสของที่เจอ
+@login_required
 def create_found_item(request):
     if request.method == "POST":
         form = FoundForm(request.POST, request.FILES)
@@ -192,10 +231,12 @@ def create_found_item(request):
 # หน้ารวมของที่เจอ
 def found_items_list(request):
     found_items = Found.objects.all().order_by("founded_status", "-id")
+    found_items = Found.objects.all().order_by("founded_status", "-id")
     return render(request, "found/found_items_list.html", {"found_items": found_items})
 
 
 # โพสของหาย
+@login_required
 def create_lost_item(request):
     if request.method == "POST":
         form = LostForm(request.POST, request.FILES)
@@ -212,6 +253,7 @@ def create_lost_item(request):
 
 # หน้ารวมของหาย
 def lost_items_list(request):
+    lost_items = Lost.objects.filter().order_by("founded_status", "-id")
     lost_items = Lost.objects.filter().order_by("founded_status", "-id")
     return render(request, "lost/lost_items_list.html", {"lost_items": lost_items})
 
@@ -256,11 +298,19 @@ def all_club_list(request):
     #     faculty_name = "All Faculties"  # สำหรับแสดงว่าเป็นทุกคณะ
     # else:
     student_id = str(student.student_id)  # ดึง student_id
+    # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
+    faculty_code = student_id[2:4]
+    faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))
+    clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # กรองตามคณะ
     faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
     faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))
     clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))  # กรองตามคณะ
 
     # กรองประกาศที่เกี่ยวข้องกับ clubs
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
+        "-date"
+    )
+
     all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
         "-date"
     )
@@ -273,6 +323,11 @@ def all_club_list(request):
 
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
         interested_events = list(
             Interest.objects.filter(user=request.user).values_list(
                 "announcement_id", flat=True
@@ -293,6 +348,7 @@ def all_club_list(request):
             "tu_clubs": tu_clubs,  # Clubs ของ TU
             "faculty_name": faculty_name,  # ชื่อคณะ
             "interested_events": interested_events,
+            "interested_events": interested_events,
         },
     )
 
@@ -304,10 +360,19 @@ def tu_clubs_list(request):
         "-date"
     )
 
+    all_club_announcements = Announcement.objects.filter(categories="clubs").order_by(
+        "-date"
+    )
+
     tu_club_announcements = all_club_announcements.filter(club__in=clubs)
 
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
         interested_events = list(
             Interest.objects.filter(user=request.user).values_list(
                 "announcement_id", flat=True
@@ -337,6 +402,11 @@ def club_detail(request, club_id):
 
     if request.user.is_authenticated:
         # ถ้าผู้ใช้งานล็อกอินให้หากิจกรรมที่ผู้ใช้งานสนใจ
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
         interested_events = list(
             Interest.objects.filter(user=request.user).values_list(
                 "announcement_id", flat=True
@@ -381,6 +451,8 @@ def lost_edit(request, lost_id):
         if form.is_valid():
             if not request.FILES.get("image"):
                 form.instance.image = lost.image
+            if not request.FILES.get("image"):
+                form.instance.image = lost.image
             form.save()
             return redirect("lost_detail", lost_id=lost_id)
     else:
@@ -423,6 +495,8 @@ def found_delete(request, found_id):
 
 # กดสนใจกิจกรรม
 # @login_required
+
+
 def toggle_interest(request, announcement_id):
     announcement = get_object_or_404(Announcement, id=announcement_id)
     user = request.user
@@ -444,13 +518,17 @@ def toggle_interest(request, announcement_id):
 def my_account(request):
     if request.user.is_authenticated:
         student = request.user.student
+        student = request.user.student
 
         # หากมีการส่งฟอร์ม (POST) ให้บันทึกการเปลี่ยนแปลง
         if request.method == "POST":
             form = StudentProfileForm(request.POST, request.FILES, instance=student)
+        if request.method == "POST":
+            form = StudentProfileForm(request.POST, request.FILES, instance=student)
             if form.is_valid():
                 form.save()  # บันทึกการเปลี่ยนแปลง
-                return redirect("my_account")  # เมื่อบันทึกเสร็จแล้วให้รีเฟรชหน้า
+                # เมื่อบันทึกเสร็จแล้วให้รีเฟรชหน้า
+                return redirect("my_account")
 
         else:
             form = StudentProfileForm(instance=student)
@@ -474,6 +552,12 @@ def lost_found_history(request):
         found_items = Found.objects.filter(student=request.user.student).order_by(
             "founded_status", "-id"
         )
+        lost_items = Lost.objects.filter(student=request.user.student).order_by(
+            "founded_status", "-id"
+        )
+        found_items = Found.objects.filter(student=request.user.student).order_by(
+            "founded_status", "-id"
+        )
 
     return render(
         request,
@@ -484,6 +568,9 @@ def lost_found_history(request):
 
 def my_events(request):
     if request.user.is_authenticated:
+        interested_events = Interest.objects.filter(user=request.user).select_related(
+            "announcement"
+        )
         interested_events = Interest.objects.filter(user=request.user).select_related(
             "announcement"
         )
@@ -535,6 +622,8 @@ def get_faculty_name(faculty_code):
     }
     full_name = faculties.get(faculty_code, "Unknown Faculty")
     english_name = full_name.split(" (")[0]
+    full_name = faculties.get(faculty_code, "Unknown Faculty")
+    english_name = full_name.split(" (")[0]
     return english_name
 
 
@@ -554,12 +643,18 @@ def clubs_by_faculty(request):
     # if len(student_id) < 4:
     #     return HttpResponse("Error: Invalid student ID format.")
 
+    # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
+    faculty_code = student_id[2:4]
+    # ฟังก์ชันแปลง faculty_code เป็นชื่อคณะ
+    faculty_name = get_faculty_name(get_faculty_by_code(faculty_code))
     faculty_code = student_id[2:4]  # ดึงตัวเลขตัวที่ 3-4 (จากการแปลงเป็น string)
     faculty_name = get_faculty_name(
         get_faculty_by_code(faculty_code)
     )  # ฟังก์ชันแปลง faculty_code เป็นชื่อคณะ
 
     # กรอง Club ตามคณะ
+    # ฟังก์ชัน `get_faculty_by_code` ใช้แปลง `faculty_code` เป็นชื่อคณะ
+    clubs = Club.objects.filter(origin=get_faculty_by_code(faculty_code))
     clubs = Club.objects.filter(
         origin=get_faculty_by_code(faculty_code)
     )  # ฟังก์ชัน `get_faculty_by_code` ใช้แปลง `faculty_code` เป็นชื่อคณะ
@@ -576,7 +671,13 @@ def clubs_by_faculty(request):
                 "announcement_id", flat=True
             )
         )
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
     else:
+        interested_events = []
         interested_events = []
 
     # ส่งข้อมูลไปยังเทมเพลต
@@ -599,6 +700,8 @@ def edit_profile(request):
 
     if request.method == "POST":
         form = StudentProfileForm(request.POST, request.FILES, instance=student)
+    if request.method == "POST":
+        form = StudentProfileForm(request.POST, request.FILES, instance=student)
         if form.is_valid():
             form.save()  # บันทึกข้อมูลที่แก้ไขลงในฐานข้อมูล
             return redirect("my_account")  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
@@ -616,15 +719,17 @@ def event_edit(request, announcement_id):
 
     # ตรวจสอบสิทธิ์ของผู้ใช้ว่าเป็นเจ้าของประกาศ
     if announcement.student != request.user.student:
-        return redirect(
-            "event-detail", announcement_id=announcement_id
-        )  # ถ้าไม่ใช่เจ้าของประกาศจะไม่สามารถแก้ไขได้
+        # ถ้าไม่ใช่เจ้าของประกาศจะไม่สามารถแก้ไขได้
+        return redirect("event-detail", announcement_id=announcement_id)
 
     # หากรับการร้องขอแบบ POST ให้บันทึกข้อมูลที่แก้ไข
     if request.method == "POST":
         form = ClubAnnouncementForm(request.POST, request.FILES, instance=announcement)
+    if request.method == "POST":
+        form = ClubAnnouncementForm(request.POST, request.FILES, instance=announcement)
         if form.is_valid():
             form.save()  # บันทึกข้อมูลที่แก้ไข
+            # กลับไปที่หน้ารายละเอียดของประกาศที่แก้ไข
             return redirect(
                 "event-detail", announcement_id=announcement.id
             )  # กลับไปที่หน้ารายละเอียดของประกาศที่แก้ไข
@@ -661,6 +766,11 @@ def club_post_history(request):
         announcements = []  # ถ้าไม่มี student ให้ return list ว่าง
     else:
         # ดึงประกาศทั้งหมดที่ผู้ใช้โพสต์โดยใช้ student ของผู้ใช้
+        announcements = Announcement.objects.filter(
+            student=request.user.student
+        ).order_by(
+            "-date"
+        )  # กรองโดย student ของผู้ใช้
         announcements = Announcement.objects.filter(
             student=request.user.student
         ).order_by(
@@ -721,6 +831,9 @@ def clubs_by_faculty_admin(request):
     if not request.user.is_superuser:
         return HttpResponse("You do not have permission to view this page.")
 
+    # กรองออกเฉพาะ clubs ที่มี origin เป็น 'tu'
+    clubs = Club.objects.exclude(origin="tu")
+
     clubs = Club.objects.exclude(origin="tu")  # กรองออกเฉพาะ clubs ที่มี origin เป็น 'tu'
     faculty_name = "All Faculties"  # สำหรับ admin จะดูข้อมูลทุกคณะ
 
@@ -736,7 +849,13 @@ def clubs_by_faculty_admin(request):
                 "announcement_id", flat=True
             )
         )
+        interested_events = list(
+            Interest.objects.filter(user=request.user).values_list(
+                "announcement_id", flat=True
+            )
+        )
     else:
+        interested_events = []
         interested_events = []
 
     # ส่งข้อมูลไปยังเทมเพลต

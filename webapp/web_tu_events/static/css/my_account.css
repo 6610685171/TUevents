@@ -71,7 +71,8 @@
 
 .student-id,
 .email,
-.name {
+.name,
+.club {
     margin-top: 10px;
     display: flex;
     flex-direction: row;
@@ -120,6 +121,7 @@
 
 .sub-info {
     margin-top: 10px;
+    margin-left: 10px;
     font-family: "Red Hat Display", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
