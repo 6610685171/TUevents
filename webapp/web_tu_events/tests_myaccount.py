@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Student, Interest, Announcement, Club
+from .models import Student, Interest, Announcement, Club, Lost, Found
 from django.contrib import messages
 from datetime import date
 from .forms import StudentProfileForm
@@ -226,3 +226,69 @@ class EditProfileViewTest(TestCase):
         form = response.context.get("form")
 
         self.assertFalse(form.errors.get("image"))
+
+
+class LostFoundHistoryViewTest(TestCase):
+
+    def setUp(self):
+
+        self.user = User.objects.create_user(username="testuser", password="password")
+
+        self.student = Student.objects.create(
+            user=self.user,
+            name="Test Student",
+            email="test@student.com",
+            student_id=12345,
+        )
+        self.user.student = self.student
+        self.user.save()
+
+        self.lost_item = Lost.objects.create(
+            items_name="Lost Phone",
+            description="Lost my phone near the cafeteria",
+            lost_at="Library",
+            contact="testcontact",
+            student=self.student,
+            founded_status=False,
+        )
+        self.found_item = Found.objects.create(
+            items_name="Found Wallet",
+            description="Found a wallet in the park",
+            found_at="Park",
+            contact="testcontact",
+            student=self.student,
+            founded_status=True,
+        )
+
+        self.url = reverse("lost_found_history")
+
+    def test_lost_found_history_view_for_authenticated_user(self):
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Lost Phone")
+        self.assertContains(response, "Found Wallet")
+        self.assertContains(response, "Library")
+
+    def test_lost_found_history_view_for_unauthenticated_user(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Lost Phone")
+        self.assertNotContains(response, "Found Wallet")
+
+    def test_lost_found_history_view_for_user_without_student_profile(self):
+
+        no_student_user = User.objects.create_user(
+            username="no_student_user", password="password"
+        )
+
+        self.client.login(username="no_student_user", password="password")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Lost Phone")
+        self.assertNotContains(response, "Found Wallet")

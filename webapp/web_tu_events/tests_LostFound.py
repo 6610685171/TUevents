@@ -12,8 +12,7 @@ class LostAndFoundTests(TestCase):
         self.owner_user = User.objects.create_user(
             username="6610611111", password="password"
         )
-        self.student = Student.objects.create(
-            user=self.owner_user, student_id="123456")
+        self.student = Student.objects.create(user=self.owner_user, student_id="123456")
         self.other_user = User.objects.create_user(
             username="6610612222", password="password"
         )
@@ -58,7 +57,7 @@ class LostAndFoundTests(TestCase):
             "founded_status": False,
             "image": self.mock_image,
         }
-        url = reverse('create_found_item')
+        url = reverse("create_found_item")
         response = self.client.post(url, data)
         self.assertNotEqual(response.status_code, 200)
 
@@ -89,7 +88,7 @@ class LostAndFoundTests(TestCase):
             "found_at": "Library",
             "contact": "0123456789",
             "founded_status": False,
-            "image": self.mock_image
+            "image": self.mock_image,
         }
         response = self.client.post(reverse("create_found_item"), data)
         self.assertEqual(response.status_code, 200)
@@ -137,7 +136,7 @@ class LostAndFoundTests(TestCase):
             "founded_status": False,
             "image": self.mock_image,
         }
-        url = reverse('create_lost_item')
+        url = reverse("create_lost_item")
         response = self.client.post(url, data)
         self.assertNotEqual(response.status_code, 200)
 
@@ -156,8 +155,9 @@ class LostAndFoundTests(TestCase):
         self.assertEqual(Lost.objects.count(), 1)
         lost_item = Lost.objects.last()
         self.assertEqual(lost_item.items_name, "Lost Wallet")
-        self.assertEqual(lost_item.description,
-                         "Brown leather wallet lost in the cafeteria.")
+        self.assertEqual(
+            lost_item.description, "Brown leather wallet lost in the cafeteria."
+        )
 
     def test_create_lost_item_post_invalid_data(self):
 
@@ -167,7 +167,7 @@ class LostAndFoundTests(TestCase):
             "found_at": "Library",
             "contact": "987654321",
             "founded_status": False,
-            "image": self.mock_image
+            "image": self.mock_image,
         }
         response = self.client.post(reverse("create_found_item"), data)
         self.assertEqual(response.status_code, 200)
@@ -190,15 +190,6 @@ class LostAndFoundTests(TestCase):
         self.assertContains(response, self.lost_item.description)
         self.assertContains(response, self.lost_item.lost_at)
 
-    def test_lost_edit_view(self):
-
-        response = self.client.get(
-            reverse("lost_edit", kwargs={"lost_id": self.lost_item.id})
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "lost/edit_lost_item.html")
-        self.assertContains(response, self.lost_item.items_name)
-
     def test_owner_can_delete_lost_item(self):
 
         response = self.client.post(
@@ -207,18 +198,28 @@ class LostAndFoundTests(TestCase):
         self.assertRedirects(response, reverse("lost_items_list"))
         self.assertEqual(Lost.objects.count(), 0)
 
-    def test_non_owner_cannot_edit_lost_item(self):
+    def test_lost_edit_view_owner(self):
 
-        self.client.login(username="6610612222", password="password")
-        response = self.client.get(
-            reverse("lost_edit", kwargs={"lost_id": self.lost_item.id})
-        )
-        self.assertEqual(response.status_code, 200)
+        self.client.login(username="6610611111", password="password")
 
-    def test_non_owner_cannot_delete_lost_item(self):
+        data = {
+            "items_name": "Updated Lost Wallet",
+            "description": "Updated description.",
+            "lost_at": "Library",
+            "contact": "9876543210",
+            "founded_status": False,
+        }
 
         response = self.client.post(
-            reverse("lost_delete", kwargs={"lost_id": self.lost_item.id})
+            reverse("lost_edit", kwargs={"lost_id": self.lost_item.id}), data
         )
+
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(Lost.objects.count(), 0)
+
+        self.assertRedirects(
+            response, reverse("lost_detail", kwargs={"lost_id": self.lost_item.id})
+        )
+
+        updated_lost_item = Lost.objects.get(id=self.lost_item.id)
+        self.assertEqual(updated_lost_item.items_name, "Updated Lost Wallet")
+        self.assertEqual(updated_lost_item.description, "Updated description.")

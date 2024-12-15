@@ -451,8 +451,6 @@ def lost_edit(request, lost_id):
         if form.is_valid():
             if not request.FILES.get("image"):
                 form.instance.image = lost.image
-            if not request.FILES.get("image"):
-                form.instance.image = lost.image
             form.save()
             return redirect("lost_detail", lost_id=lost_id)
     else:
@@ -476,6 +474,7 @@ def found_edit(request, found_id):
     if request.method == "POST":
         form = FoundForm(request.POST, request.FILES, instance=found)
         if form.is_valid():
+
             form.save()
             return redirect("found_detail", found_id=found_id)
     else:

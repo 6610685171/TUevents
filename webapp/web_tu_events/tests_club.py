@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from web_tu_events.views import get_faculty_by_code, get_faculty_name
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 
 
 class ClubAnnouncementTest(TestCase):
@@ -158,17 +160,15 @@ class AllClubListAdminViewTest(TestCase):
 class ClubsByFacultyAdminTestCase(TestCase):
 
     def setUp(self):
-        # Create a superuser for permission testing
+
         self.superuser = User.objects.create_superuser(
             username="admin", email="admin@example.com", password="password123"
         )
 
-        # Create a regular user
         self.user = User.objects.create_user(
             username="user", email="user@example.com", password="password123"
         )
 
-        # Create some clubs and announcements
         self.club1 = Club.objects.create(title="Club 1", origin="other")
         self.club2 = Club.objects.create(title="Club 2", origin="other")
 
@@ -200,3 +200,77 @@ class ClubsByFacultyAdminTestCase(TestCase):
     def test_clubs_by_faculty_admin_no_user_logged_in(self):
         response = self.client.get(reverse("clubs_by_faculty_admin"))
         self.assertEqual(response.status_code, 200)
+
+
+class ClubsByFacultyTest(TestCase):
+
+    def setUp(self):
+
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="password123"
+        )
+        self.student = Student.objects.create(
+            user=self.user, student_id="12345678", username="testuser"
+        )
+
+        self.club_1 = Club.objects.create(title="Club 1", origin="12")
+        self.club_2 = Club.objects.create(title="Club 2", origin="12")
+        self.club_3 = Club.objects.create(title="Club 3", origin="34")
+
+        self.announcement_1 = Announcement.objects.create(
+            title="Event 1",
+            categories="clubs",
+            club=self.club_1,
+            start_date="2024-12-01",
+            end_date="2024-12-15",
+        )
+        self.announcement_2 = Announcement.objects.create(
+            title="Event 2",
+            categories="clubs",
+            club=self.club_2,
+            start_date="2024-12-01",
+            end_date="2024-12-15",
+        )
+        self.announcement_3 = Announcement.objects.create(
+            title="Event 3",
+            categories="clubs",
+            club=self.club_3,
+            start_date="2024-12-01",
+            end_date="2024-12-15",
+        )
+
+        self.interest = Interest.objects.create(
+            user=self.user, announcement=self.announcement_1
+        )
+
+        self.url = reverse("clubs_by_faculty")
+
+    def test_clubs_by_faculty_unauthenticated(self):
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You need to log in first.")
+
+    def test_clubs_by_faculty_invalid_faculty(self):
+
+        self.student.student_id = "99000000"
+        self.student.save()
+
+        self.client.login(username="testuser", password="password123")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerySetEqual(response.context["clubs"], [])
+        self.assertQuerySetEqual(response.context["announcements"], [])
+
+    def test_clubs_by_faculty_with_no_interests(self):
+
+        Interest.objects.all().delete()
+
+        self.client.login(username="testuser", password="password123")
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.context["interested_events"], [])
