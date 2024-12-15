@@ -521,6 +521,7 @@ def my_account(request):
         student = request.user.student
 
         # หากมีการส่งฟอร์ม (POST) ให้บันทึกการเปลี่ยนแปลง
+
         if request.method == "POST":
             form = StudentProfileForm(request.POST, request.FILES, instance=student)
             if form.is_valid():
@@ -618,8 +619,6 @@ def get_faculty_name(faculty_code):
         "nursing": "Faculty of Nursing (คณะพยาบาลศาสตร์)",
         "public_health": "Faculty of Public Health (คณะสาธารณสุขศาสตร์)",
     }
-    full_name = faculties.get(faculty_code, "Unknown Faculty")
-    english_name = full_name.split(" (")[0]
     full_name = faculties.get(faculty_code, "Unknown Faculty")
     english_name = full_name.split(" (")[0]
     return english_name
