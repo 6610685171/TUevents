@@ -25,7 +25,7 @@
 > [TU Events](https://tuevents.pythonanywhere.com/) <img src="https://lh3.googleusercontent.com/d/13CfuysoEKqjabs7jiXpL8AmNi4HbOMYG" alt="" width="25" height="25" >
 
 ###
-> [Document](https://drive.google.com/file/d/1DUwrXWk0ZCuq9S0JozgZRp7VAPnmgyP-/view) <img src="https://www.freeiconspng.com/uploads/document-icon-24.png" alt="" width="25" height="25" >
+> [Document](https://drive.google.com/file/d/1OhCzJd4tYWNseydSyv8z0FhtICv9m6tS/view?usp=drive_link) <img src="https://www.freeiconspng.com/uploads/document-icon-24.png" alt="" width="25" height="25" >
 
 ###
 > [Interview](https://youtu.be/djXF1hmh3-s?feature=shared) <img src="https://www.freeiconspng.com/uploads/youtube-logo-picture-download-1.png" alt="" width="50" >
