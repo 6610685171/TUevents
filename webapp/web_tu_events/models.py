@@ -39,13 +39,12 @@ class Club(models.Model):
         return self.title
    
 class Student(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(blank=True,null=True)
     email = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    student_id = models.IntegerField(unique=True,blank=True,null=True)
+    student_id = models.CharField(max_length=10,unique=True,blank=True,null=True)
     username = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=30)
     
     club = models.ForeignKey(Club, on_delete=models.SET_NULL, null=True, blank=True)    
     
@@ -66,7 +65,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(blank=True,null=True)
-    date = models.DateTimeField(auto_now=True,auto_now_add=False)
+    date = models.DateTimeField(auto_now_add=True)
     categories = models.CharField(max_length=100,choices=CATEGORIES_CHOICES)
     start_date = models.DateTimeField(auto_now=False, auto_now_add=False,help_text="กรอกวันที่เริ่มกิจกรรม")    
     end_date = models.DateTimeField(auto_now=False, auto_now_add=False,help_text="กรอกวันที่สิ้นสุดกิจกรรม")
