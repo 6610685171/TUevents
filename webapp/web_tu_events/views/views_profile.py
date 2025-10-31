@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 
-@login_required
+@login_required(login_url='/login/')
 def my_account(request):
     student = getattr(request.user, "student", None)
 
@@ -16,7 +16,7 @@ def my_account(request):
 
     return render(request, "my_account/personal_info.html", {"student": student})
 
-@login_required
+@login_required(login_url='/login/')
 def edit_profile(request):
     # ดึงข้อมูล Student ของ user ที่ล็อกอินอยู่
     student = getattr(request.user, "student", None)
@@ -35,7 +35,7 @@ def edit_profile(request):
     context = {"form": form, "student": student}
     return render(request, "my_account/edit_profile.html", context)
 
-@login_required
+@login_required(login_url='/login/')
 def my_events(request):
     user_interests = (
         Interest.objects
@@ -47,7 +47,7 @@ def my_events(request):
     return render(request, "my_account/my_events.html", context)
 
 
-@login_required
+@login_required(login_url='/login/')
 def lost_found_history(request):
     student = getattr(request.user, "student", None)
     lost_items, found_items = [], []
