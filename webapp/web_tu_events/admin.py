@@ -5,7 +5,7 @@ from django.db.models import Count
 class StudentAdmin(admin.ModelAdmin):
     list_display = ["username" ,"name" ,"email", "student_id","club"]
     search_fields = ('name', 'email', 'student_id', 'username')
-    readonly_fields = ('password',)
+    # readonly_fields = ('password',)
             
     # แสดงเฉพาะข้อมูลของuserที่ไม่ใช่admin    
     def get_queryset(self, request):
